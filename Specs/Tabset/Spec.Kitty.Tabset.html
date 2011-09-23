@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kitty.Tabset</title>
+    <link rel="stylesheet" type="text/css" href="../../Jasmine/jasmine.css">
+    <script type="text/javascript" src="../../Jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../Jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="../../jQuery/jQuery.js"></script>
+    <script src="../../Scripts/Tabset/Kitty.Tabset.js"></script>
+  </head>
+  <body>
+    <div id="fixture">
+      <div id="tabs">
+        <a class="tabActivator" href="#panel1">Panel 1</a>
+        <a class="tabActivator" href="#panel2">Panel 2</a>
+        <a class="tabActivator" href="#panel3">Panel 3</a>        
+        <div id="panel1" class="panel">Panel 1</div>
+        <div id="panel2" class="panel">Panel 2</div>
+        <div id="panel3" class="panel">Panel 3</div>        
+      </div>
+    </div>
+    <script src="Spec.Kitty.Tabset.js"></script>
+    <script type="text/javascript">
+      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      jasmine.getEnv().execute();
+    </script>
+  </body>
+</html>

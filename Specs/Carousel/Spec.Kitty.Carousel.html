@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kitty.Carousel</title>
+    <link rel="stylesheet" type="text/css" href="../../Jasmine/jasmine.css">
+    <script type="text/javascript" src="../../Jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../Jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="../../jQuery/jQuery.js"></script>
+    <script src="../../Scripts/Carousel/Kitty.Carousel.js"></script>
+    <style>
+      .carousel {
+        width: 400px;
+      }
+      
+      .carousel .clip {
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .carousel .clip .items {
+        position: relative;
+        overflow: hidden;
+        left: 0;
+      }
+            
+      .carousel .clip .items .item {
+        width: 200px;
+        float: left;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="fixture">
+      
+      <div class="carousel">
+        <div class="clip">
+          <ul class="items">
+            <li class="item">Item1</li>
+            <li class="item">Item2</li>
+            <li class="item">Item3</li>
+            <li class="item">Item4</li>
+            <li class="item">Item5</li>
+            <li class="item">Item6</li>
+          </ul>            
+        </div>
+      </div>
+      
+    </div>
+    <script src="Spec.Kitty.Carousel.js"></script>
+    <script type="text/javascript">
+      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      jasmine.getEnv().execute();
+    </script>
+  </body>
+</html>

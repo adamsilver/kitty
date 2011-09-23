@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kitty.Utils</title>
+    <link rel="stylesheet" type="text/css" href="../../Jasmine/jasmine.css">
+    <script type="text/javascript" src="../../Jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../Jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="../../jQuery/jQuery.js"></script>
+    <script src="../../Scripts/Utils/Kitty.Utils.js"></script>
+
+    <!-- tests -->
+    <script src="Spec.Kitty.Utils.js"></script>
+  
+  </head>
+  <body>
+    <div id="fixture">
+      Inner text<SPAN CLASS="myClass"></SPAN><a href="#">Dude</a>
+    </div>
+    <script type="text/javascript">
+      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      jasmine.getEnv().execute();
+    </script>
+  </body>
+</html>
