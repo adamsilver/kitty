@@ -8,6 +8,7 @@ describe("Accordion", function() {
     rootNode = $("#accordion");
     panels = rootNode.find(".panel");
     links = rootNode.find("a.activator");
+    accordion = new Kitty.Accordion(rootNode);
   });
 
   afterEach(function() {
@@ -15,8 +16,7 @@ describe("Accordion", function() {
   });
   
   describe("creating a new accordion", function() {    
-    it("closes all the panels except for the first", function() {      
-      accordion = new Kitty.Accordion(rootNode);      
+    it("closes all the panels except for the first", function() {         
       expect($(panels[0]).css("display")).toBe("block");
       expect($(panels[1]).css("display")).toBe("none");
       expect($(panels[2]).css("display")).toBe("none");
@@ -24,9 +24,6 @@ describe("Accordion", function() {
   });
 
   describe("activating a panel", function() {
-    beforeEach(function() {
-      accordion = new Kitty.Accordion(rootNode);
-    });
     it("opens the panel", function() {      
       $(links[1]).click();
       waits(400);
@@ -46,7 +43,6 @@ describe("Accordion", function() {
 
   describe("deactivating a panel", function() {    
     it("closes the active panel", function() {      
-      accordion = new Kitty.Accordion(rootNode);
       $(links[0]).click();
       waits(400);
       runs(function() {
@@ -57,16 +53,18 @@ describe("Accordion", function() {
   
   describe("destroying the accordion", function() {    
     beforeEach(function() {
-      accordion = new Kitty.Accordion(rootNode);
+      spyOn($.fn, "unbind");
       accordion.destroy();
     });
     it("restores to original html state", function() {
       expect($("#fixture").html()).toBe(originalHtml);
     });
     it("removes event handlers", function() {
-      expect(links).not.toHandle("click", accordion.handleActivator_onClick);
+      expect($.fn.unbind.mostRecentCall.object[0]).toBe(links[0]);
+      expect($.fn.unbind.mostRecentCall.object[1]).toBe(links[1]);
+      expect($.fn.unbind.mostRecentCall.object[2]).toBe(links[2]);
+      expect($.fn.unbind).toHaveBeenCalledWith("click", accordion.handleActivator_onClick);
+      //expect(links).not.toHandle("click", accordion.handleActivator_onClick);
     });
-
   });
-
 });
