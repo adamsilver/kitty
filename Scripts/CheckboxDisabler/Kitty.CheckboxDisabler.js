@@ -41,6 +41,6 @@ Kitty.CheckboxDisabler.prototype.enableRemaining = function() {
   }
 }
 
-Kitty.CheckboxDisabler.prototype.teardown = function() {
+Kitty.CheckboxDisabler.prototype.destroy = function() {
   $(this.checkboxes).unbind("change", this.handleCheckbox_onChange);
 }
