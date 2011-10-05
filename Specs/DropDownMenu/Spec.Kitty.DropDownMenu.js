@@ -12,6 +12,19 @@ describe("DropDownMenu", function() {
     topLevelLinks = container.find("ul > li > a");
   });
 
+  describe("Creating a new Drop Down Menu", function() {
+    describe("With options", function() {
+      it("overrides the hide class", function() {
+        menu = new Kitty.DropDownMenu(container, {cssHide: "offScreen"});
+        var link = topLevelLinks.filter(":eq(0)");
+        link.trigger("mouseenter"); // show to setup DOM state
+        link.parents("li").trigger("mouseleave");
+        var subMenu = link.parents("li").find("div.subMenu");
+        expect(subMenu).toHaveClass("offScreen");
+      });
+    });
+  });
+
   describe("Hovering over a top level link", function() {    
     it("Displays the sub menu", function() {
       menu = new Kitty.DropDownMenu(container);
