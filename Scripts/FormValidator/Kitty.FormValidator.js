@@ -21,4 +21,7 @@ Kitty.FormValidator.prototype.addValidator = function(fieldName, rules) {
 	if(!rules) {
 		throw "Invalid rules. Must provide be an array of rules (at least 1).";
 	}
+	if(!rules.length) {
+		throw "Invalid rules. Must provide be an array of rules (at least 1).";
+	}
 }

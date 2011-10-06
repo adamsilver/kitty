@@ -52,6 +52,9 @@ describe("Form Validator", function() {
         expect(function() {
           formValidator.addValidator("username");
         }).toThrow("Invalid rules. Must provide be an array of rules (at least 1).");
+        expect(function() {
+          formValidator.addValidator("username", []);
+        }).toThrow("Invalid rules. Must provide be an array of rules (at least 1).");
       });
     });
     describe("With valid params", function() {
