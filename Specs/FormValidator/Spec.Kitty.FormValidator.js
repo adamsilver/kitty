@@ -1,56 +1,33 @@
-describe("FormValidator", function() {
+describe("Form Validator", function() {
   
-  describe("Creating a new FormValidator", function() {    
-    describe("Without a form node", function() {
-      it("Throws an error", function() {
-        
-      });
-    });
-  });
-  
-  describe("addValidator", function() {
-    it("adds a validator", function() {
-      
-    });
-    
-    describe("Without a field name", function() {
-      
-    });
-    
-  });
-  
-  describe("removeValidator", function() {
-    it("removes the validator", function() {
-      
-    });
-  });
-  
-  describe("validate", function() {
-    
-    describe("form with errors", function() {
-      it("returns false", function() {
-        
-      })
-    });
-    
-    describe("form without errors", function() {
-      it("returns true", function() {
-        
-      });
-    });
-    
-  });
-  
-  describe("clearErrors", function() {
-    
-  });
-  
-  describe("getErrors", function() {
-    
+  jasmine.getFixtures().fixturesPath = '.';
+
+  beforeEach(function() {
+    jasmine.getFixtures().load('Spec.Kitty.FormValidator.Fixture1.html');
   });
 
-  describe("whatever", function() {
-	  	
+  describe("Creating a new form validator", function() {
+    describe("Without a form argument", function() {
+      it("throws an error", function() {
+        expect(function() {
+          new Kitty.FormValidator();
+        }).toThrow("Invalid container. Must be a jquery object with form element.");
+      });
+    });
+    describe("With an invalid form argument", function() {
+      it("throws an error", function() {
+        expect(function() {
+          new Kitty.FormValidator({});
+        }).toThrow("Invalid container. Must be a jquery object with form element.");
+      });
+    });
+    describe("With a valid jQuery object but not a form", function() {
+      it("throws an error", function() {
+        expect(function() {
+          new Kitty.FormValidator($("body"));
+        }).toThrow("Invalid container. Must be a jquery object with form element.");
+      });
+    });
   });
   
 });
