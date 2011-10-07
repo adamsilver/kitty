@@ -47,22 +47,36 @@ describe("Form Validator", function() {
       });
     });
     describe("With no rules", function() {
+      var errorMessage = "Invalid rules. Must provide be an array of rules (at least 1).";
       it("throws an error", function() {
         var formValidator = new Kitty.FormValidator($("form"));        
         expect(function() {
           formValidator.addValidator("username");
-        }).toThrow("Invalid rules. Must provide be an array of rules (at least 1).");
+        }).toThrow(errorMessage);
         expect(function() {
           formValidator.addValidator("username", []);
-        }).toThrow("Invalid rules. Must provide be an array of rules (at least 1).");
+        }).toThrow(errorMessage);
+        expect(function() {
+          formValidator.addValidator("username", [{method: function() {}}]);
+        }).toThrow(errorMessage);
+        expect(function() {
+          formValidator.addValidator("username", [{message: "error"}]);
+        }).toThrow(errorMessage);
+        expect(function() {
+          formValidator.addValidator("username", [{message: true, method: function() {}}]);
+        }).toThrow(errorMessage);
       });
     });
     describe("With valid params", function() {
-      it("doesn't throw an error", function() {
-        var formValidator = new Kitty.FormValidator($("form"));        
-        expect(function() {
-          //formValidator.addValidator("username");
-        }).not.toThrow();  
+      it("adds the validator to the validators collection", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        var rule = {
+            method: function() { return true },
+            message: "bad username"
+        }
+        formValidator.addValidator("username", [rule]);
+        expect(formValidator.validators[0].fieldName).toBe("username");
+        expect(formValidator.validators[0].rules[0]).toBe(rule);
       });
     });
   });
