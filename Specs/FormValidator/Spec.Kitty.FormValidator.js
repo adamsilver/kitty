@@ -1,9 +1,23 @@
 describe("Form Validator", function() {
   
+
+
   jasmine.getFixtures().fixturesPath = '.';
+
+  var fixture1 = null;
+  var invalidMethod = function() {
+    return false;
+  }
+  var validMethod = function() {
+    return true;
+  }
+  var rules = {
+    usernameInvalid: {method: invalidMethod, message: "bad"}
+  }
 
   beforeEach(function() {
     jasmine.getFixtures().load('Spec.Kitty.FormValidator.Fixture1.html');
+    fixture1 = $("#fixture1");
   });
 
   describe("Creating a new form validator", function() {
@@ -77,6 +91,33 @@ describe("Form Validator", function() {
         formValidator.addValidator("username", [rule]);
         expect(formValidator.validators[0].fieldName).toBe("username");
         expect(formValidator.validators[0].rules[0]).toBe(rule);
+      });
+    });
+    describe("With rule params to pass to the method", function() {
+      describe("Invalid rule params", function() {
+        it("skipped", function() {});
+      });
+      describe("Valid rule params", function() {
+        
+      });
+    });
+  });
+
+  describe("Validating the form", function() {
+    describe("Invalid", function() {
+      it("Returns false", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalid]);
+        expect(formValidator.validate()).toBe(false);
+      });
+      it("calls the validator method with correct arguments", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalid]);
+        spyOn(rules.usernameInvalid, "method");
+        formValidator.validate();
+        var args = rules.usernameInvalid.method.mostRecentCall.args;
+        expect(args[0][0]).toBe($("[name=username]")[0]);
+        expect(rules.usernameInvalid.method).toHaveBeenCalled();
       });
     });
   });
