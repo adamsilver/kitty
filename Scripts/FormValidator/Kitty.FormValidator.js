@@ -38,11 +38,15 @@ Kitty.FormValidator.prototype.addValidator = function(fieldName, rules) {
 	this.validators.push({fieldName: fieldName, rules: rules});
 }
 Kitty.FormValidator.prototype.validate = function() {
-	var validator = null;
+	var validator = null, validatorValid = true, anyInvalid = false;
 	for(var i = 0; i < this.validators.length; i++) {
 		validator = this.validators[i];
 		for(var j = 0; j < validator.rules.length; j++) {
-			validator.rules[j].method($("[name="+validator.fieldName+"]"));
+			validatorValid = validator.rules[j].method($("[name="+validator.fieldName+"]"), validator.rules[j].params);
+			if(!validatorValid) {
+				anyInvalid = true;
+			}
 		}
 	}
+	return !anyInvalid;
 }

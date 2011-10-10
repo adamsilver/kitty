@@ -1,7 +1,5 @@
 describe("Form Validator", function() {
   
-
-
   jasmine.getFixtures().fixturesPath = '.';
 
   var fixture1 = null;
@@ -12,7 +10,12 @@ describe("Form Validator", function() {
     return true;
   }
   var rules = {
-    usernameInvalid: {method: invalidMethod, message: "bad"}
+    usernameInvalid: {method: invalidMethod, message: "bad"},
+    usernameInvalidWithParams: {
+      method: invalidMethod,
+      message: "bad",
+      params: {whatever: 1}
+    }
   }
 
   beforeEach(function() {
@@ -60,7 +63,7 @@ describe("Form Validator", function() {
         }).toThrow("Invalid form field.");
       });
     });
-    describe("With no rules", function() {
+    describe("With invalid rules", function() {
       var errorMessage = "Invalid rules. Must provide be an array of rules (at least 1).";
       it("throws an error", function() {
         var formValidator = new Kitty.FormValidator($("form"));        
@@ -94,12 +97,7 @@ describe("Form Validator", function() {
       });
     });
     describe("With rule params to pass to the method", function() {
-      describe("Invalid rule params", function() {
-        it("skipped", function() {});
-      });
-      describe("Valid rule params", function() {
         
-      });
     });
   });
 
@@ -116,10 +114,23 @@ describe("Form Validator", function() {
         spyOn(rules.usernameInvalid, "method");
         formValidator.validate();
         var args = rules.usernameInvalid.method.mostRecentCall.args;
-        expect(args[0][0]).toBe($("[name=username]")[0]);
+        var field = $("form [name=username]");
+        expect(args[0][0]).toBe(field[0]);
         expect(rules.usernameInvalid.method).toHaveBeenCalled();
       });
+      it("calls the validator with optional params", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalidWithParams]);
+        spyOn(rules.usernameInvalidWithParams, "method");
+        formValidator.validate();
+        var args = rules.usernameInvalidWithParams.method.mostRecentCall.args;
+        expect(args[1]).toBe(rules.usernameInvalidWithParams.params);
+      });
     });
+  });
+
+  describe("Retrieving errors from a form", function() {
+    
   });
   
 });
