@@ -15,7 +15,8 @@ describe("Form Validator", function() {
       method: invalidMethod,
       message: "bad",
       params: {whatever: 1}
-    }
+    },
+    usernameValid: {method: validMethod, message: "Yay"}
   }
 
   beforeEach(function() {
@@ -130,7 +131,16 @@ describe("Form Validator", function() {
   });
 
   describe("Retrieving errors from a form", function() {
-    
+    describe("Valid form", function() {
+      var formValidator = new Kitty.FormValidator($("form"));
+      formValidator.addValidator("username", [rules.usernameVvalid]);
+      it("returns 0 errors", function() {
+        
+      });
+    });
+    describe("Invalid form", function() {
+      
+    });
   });
   
 });
