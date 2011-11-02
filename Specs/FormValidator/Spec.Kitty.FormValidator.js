@@ -11,6 +11,7 @@ describe("Form Validator", function() {
   }
   var rules = {
     usernameInvalid: {method: invalidMethod, message: "bad"},
+    usernameInvalid2: {method: invalidMethod, message: "very bad"},
     usernameInvalidWithParams: {
       method: invalidMethod,
       message: "bad",
@@ -103,43 +104,81 @@ describe("Form Validator", function() {
   });
 
   describe("Validating the form", function() {
+
+    it("calls the validator method with correct arguments", function() {
+      var formValidator = new Kitty.FormValidator($("form"));
+      formValidator.addValidator("username", [rules.usernameInvalid]);
+      spyOn(rules.usernameInvalid, "method");
+      formValidator.validate();
+      var args = rules.usernameInvalid.method.mostRecentCall.args;
+      var field = $("form [name=username]");
+      expect(args[0][0]).toBe(field[0]);
+      expect(rules.usernameInvalid.method).toHaveBeenCalled();
+    });
+    it("calls the validator with optional params", function() {
+      var formValidator = new Kitty.FormValidator($("form"));
+      formValidator.addValidator("username", [rules.usernameInvalidWithParams]);
+      spyOn(rules.usernameInvalidWithParams, "method");
+      formValidator.validate();
+      var args = rules.usernameInvalidWithParams.method.mostRecentCall.args;
+      expect(args[1]).toBe(rules.usernameInvalidWithParams.params);
+    });
+
     describe("Invalid", function() {
       it("Returns false", function() {
         var formValidator = new Kitty.FormValidator($("form"));
         formValidator.addValidator("username", [rules.usernameInvalid]);
         expect(formValidator.validate()).toBe(false);
-      });
-      it("calls the validator method with correct arguments", function() {
+      });      
+    });
+
+    describe("Valid", function() {
+      it("Returns true", function() {
         var formValidator = new Kitty.FormValidator($("form"));
-        formValidator.addValidator("username", [rules.usernameInvalid]);
-        spyOn(rules.usernameInvalid, "method");
-        formValidator.validate();
-        var args = rules.usernameInvalid.method.mostRecentCall.args;
-        var field = $("form [name=username]");
-        expect(args[0][0]).toBe(field[0]);
-        expect(rules.usernameInvalid.method).toHaveBeenCalled();
-      });
-      it("calls the validator with optional params", function() {
-        var formValidator = new Kitty.FormValidator($("form"));
-        formValidator.addValidator("username", [rules.usernameInvalidWithParams]);
-        spyOn(rules.usernameInvalidWithParams, "method");
-        formValidator.validate();
-        var args = rules.usernameInvalidWithParams.method.mostRecentCall.args;
-        expect(args[1]).toBe(rules.usernameInvalidWithParams.params);
+        formValidator.addValidator("username", [rules.usernameValid]);
+        expect(formValidator.validate()).toBe(true);
       });
     });
+
   });
 
   describe("Retrieving errors from a form", function() {
-    describe("Valid form", function() {
-      var formValidator = new Kitty.FormValidator($("form"));
-      formValidator.addValidator("username", [rules.usernameVvalid]);
+    describe("Valid form", function() {      
       it("returns 0 errors", function() {
-        
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameValid]);
+        formValidator.validate();
+        expect(formValidator.getErrors().length).toBe(0);  
       });
     });
     describe("Invalid form", function() {
-      
+      it("returns the errors", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalid]);
+        formValidator.validate();
+        var errors = formValidator.getErrors();
+        expect(errors.length).toBe(1);  
+        expect(errors[0].fieldName).toBe("username");
+        expect(errors[0].message).toBe(rules.usernameInvalid.message);
+      });
+    });
+    describe("More than one rule in a validator", function() {
+      it("only validates one rule for a validator", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalid, rules.usernameInvalid2]);
+        formValidator.validate();
+        var errors = formValidator.getErrors();
+        expect(errors.length).toBe(1);
+      });
+    });
+    describe("Validating the form twice", function() {
+      it("Resets the errors before validating", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [rules.usernameInvalid]);
+        formValidator.validate();
+        formValidator.validate(); // for a second time
+        expect(formValidator.getErrors().length).toBe(1); // not 2
+      });
     });
   });
   

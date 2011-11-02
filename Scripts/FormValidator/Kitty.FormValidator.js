@@ -1,6 +1,7 @@
 var Kitty = Kitty || {};
 Kitty.FormValidator = function(form) {
 	this.form = form;
+	this.errors = [];
 	this.validators = [];
 	var invalidContainerMessage = "Invalid container. Must be a jquery object with form element.";
 	if(typeof form == "undefined") {
@@ -38,15 +39,23 @@ Kitty.FormValidator.prototype.addValidator = function(fieldName, rules) {
 	this.validators.push({fieldName: fieldName, rules: rules});
 }
 Kitty.FormValidator.prototype.validate = function() {
-	var validator = null, validatorValid = true, anyInvalid = false;
+	this.errors = [];
+	var validator = null, validatorValid = true;
 	for(var i = 0; i < this.validators.length; i++) {
 		validator = this.validators[i];
 		for(var j = 0; j < validator.rules.length; j++) {
 			validatorValid = validator.rules[j].method($("[name="+validator.fieldName+"]"), validator.rules[j].params);
 			if(!validatorValid) {
-				anyInvalid = true;
+				this.errors.push({
+					fieldName: validator.fieldName,
+					message: validator.rules[j].message
+				});
+				break;
 			}
 		}
 	}
-	return !anyInvalid;
+	return this.errors.length === 0;
+}
+Kitty.FormValidator.prototype.getErrors = function() {
+	return this.errors;
 }
