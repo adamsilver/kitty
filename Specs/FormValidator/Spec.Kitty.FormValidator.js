@@ -10,6 +10,7 @@ describe("Form Validator", function() {
     return true;
   }
   var rules = {
+    passwordInvalid: {method: invalidMethod, message: "bad"},
     usernameInvalid: {method: invalidMethod, message: "bad"},
     usernameInvalid2: {method: invalidMethod, message: "very bad"},
     usernameInvalidWithParams: {
@@ -152,11 +153,14 @@ describe("Form Validator", function() {
       it("returns the errors", function() {
         var formValidator = new Kitty.FormValidator($("form"));
         formValidator.addValidator("username", [rules.usernameInvalid]);
+        formValidator.addValidator("password", [rules.passwordInvalid]);
         formValidator.validate();
         var errors = formValidator.getErrors();
-        expect(errors.length).toBe(1);  
+        expect(errors.length).toBe(2);  
         expect(errors[0].fieldName).toBe("username");
         expect(errors[0].message).toBe(rules.usernameInvalid.message);
+        expect(errors[1].fieldName).toBe("password");
+        expect(errors[1].message).toBe(rules.passwordInvalid.message);
       });
     });
     describe("When a validator has more than one failed rule", function() {
