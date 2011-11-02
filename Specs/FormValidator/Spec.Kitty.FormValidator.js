@@ -184,4 +184,16 @@ describe("Form Validator", function() {
     });
   });
   
+  describe("Removing a validator", function() {
+    it("Removes the validator", function() {
+      
+    });
+  });
+
+  describe("Removing a rule from a validator", function() {
+    it("Removes the rule", function() {
+      
+    });
+  })
+
 });
