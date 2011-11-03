@@ -34,19 +34,24 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a radio input", function() {
 			var imageLabelFixer = null;
 			var img = null;
+			var radio = null;
 			jasmine.getFixtures().fixturesPath = '.';
 			beforeEach(function() {
 				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture1.html');
-				var img = $("label img");
-				console.log(img[0].src)
+				img = $("label img");
+				radio = $("#radio1");
 				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				
 			});
 			it("Should check the radio", function() {
-				//img.trigger("click");
+				img.trigger("click");
+				expect(radio.prop("checked")).toBe(true);
 			});
 			describe("That is already checked", function() {
 				it("Should uncheck the radio", function() {
-					
+					radio.prop("checked", true);
+					img.trigger("click");
+					expect(radio.prop("checked")).toBe(false);
 				});
 			});
 		});
