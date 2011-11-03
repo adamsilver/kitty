@@ -5,9 +5,9 @@ describe("Image Label Fixer", function() {
 	// the event should trigger a click on the label element,
 	// which in turn should place focus on the related input
 
-	beforeEach(function() {
-		
-	});
+	//
+
+	
 
 	describe("Clicking an image inside a label", function() {
 		describe("That relates to textarea", function() {
@@ -30,9 +30,19 @@ describe("Image Label Fixer", function() {
 				
 			});
 		});
+		
 		describe("The relates to a radio input", function() {
+			var imageLabelFixer = null;
+			var img = null;
+			jasmine.getFixtures().fixturesPath = '.';
+			beforeEach(function() {
+				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture1.html');
+				var img = $("label img");
+				console.log(img[0].src)
+				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+			});
 			it("Should check the radio", function() {
-				
+				//img.trigger("click");
 			});
 			describe("That is already checked", function() {
 				it("Should uncheck the radio", function() {
