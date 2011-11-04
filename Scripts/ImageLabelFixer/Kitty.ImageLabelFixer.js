@@ -1,7 +1,7 @@
 var Kitty = Kitty || {};
 Kitty.ImageLabelFixer = function(img) {
 	this.img = img;
-	this.img.bind("click", $.proxy(this, "handleImg_onClick"));
+	this.img.on("click", $.proxy(this, "handleImg_onClick"));
 }
 Kitty.ImageLabelFixer.prototype.handleImg_onClick = function(e) {
 	var relatedElement = $("#"+this.img.parents("label").attr("for"));
