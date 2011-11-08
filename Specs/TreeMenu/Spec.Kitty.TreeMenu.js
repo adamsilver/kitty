@@ -11,7 +11,7 @@ describe("Tree Menu", function() {
 		treeMenu = new Kitty.TreeMenu(rootList);
 	});
 
-	describe("Creating a new menu", function() {
+	describe("Creating a new tree menu", function() {
 		it("Collapses all the menus", function() {
 			var subMenus = rootList.find("ul");
 			for(var i = 0; i < subMenus.length; i++) {
@@ -20,8 +20,9 @@ describe("Tree Menu", function() {
 		});
 	});
 
-	describe("Link with a sub menu", function() {
-		describe("Clicking a link", function() {
+	
+	describe("Clicking a link", function() {
+		describe("That has a sub menu", function() {
 			it("Reveals the menu", function() {
 				var link1 = rootList.find("a:first");
 				link1.trigger("click");
@@ -35,12 +36,9 @@ describe("Tree Menu", function() {
 				expect(fakeEvent.preventDefault).toHaveBeenCalled();
 			});
 		});
-	});
-
-	describe("Link without a sub menu", function() {
-		describe("Clicking a link", function() {
+		describe("That doesn't have a sub menu", function() {
 			it("Follows the link as normal with default behaviour", function() {
-				
+				expect(1).toBe(2);
 			});
 		});
 	});
