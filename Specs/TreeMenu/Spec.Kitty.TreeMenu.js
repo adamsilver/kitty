@@ -29,7 +29,9 @@ describe("Tree Menu", function() {
 				expect(link1.parent().find("ul:first")).not.toHaveClass("hide");
 			});
 			it("Prevents default behaviour", function() {
+				var link1 = rootList.find("a:first");
 				var fakeEvent = {
+					target: link1[0],
 					preventDefault: jasmine.createSpy()
 				}
 				treeMenu.handleLink_onClick(fakeEvent);
@@ -38,7 +40,12 @@ describe("Tree Menu", function() {
 		});
 		describe("That doesn't have a sub menu", function() {
 			it("Follows the link as normal with default behaviour", function() {
-				expect(1).toBe(2);
+				var link2 = rootList.find(">li:eq(1) a");
+				var fakeEvent = {
+					preventDefault: jasmine.createSpy()
+				}
+				treeMenu.handleLink_onClick(fakeEvent);
+				expect(fakeEvent.preventDefault).not.toHaveBeenCalled();
 			});
 		});
 	});

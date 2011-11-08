@@ -4,11 +4,12 @@ Kitty.TreeMenu = function(rootList) {
 	rootList.find("a").on("click", $.proxy(this, "handleLink_onClick"));
 }
 Kitty.TreeMenu.prototype.handleLink_onClick = function(e) {
+	var list = $(e.target).parent().find("> ul");
+	if(!list.length) {
+		return true;
+	}
 	e.preventDefault();
-
 	var hideClass = "hide";
-
-	var list = $(e.target).parent().find("ul");
 	if(list.hasClass(hideClass)) {
 		list.removeClass(hideClass);
 	}
