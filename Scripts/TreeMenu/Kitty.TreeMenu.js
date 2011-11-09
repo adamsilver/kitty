@@ -15,5 +15,6 @@ Kitty.TreeMenu.prototype.handleLink_onClick = function(e) {
 	}
 	else {
 		list.addClass(hideClass);
+		list.find("ul").addClass(hideClass);
 	}
 }

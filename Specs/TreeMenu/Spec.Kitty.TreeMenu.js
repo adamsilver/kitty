@@ -58,7 +58,12 @@ describe("Tree Menu", function() {
 			expect(link1.parent().find("ul:first")).toHaveClass("hide");
 		});
 		it("Collapses all sub menus", function() {
-			
+			var link1 = rootList.find("a:first");			
+			var subMenus = link1.parent().find("ul ul");
+			subMenus.removeClass("hide");
+			link1.trigger("click"); // open it first
+			link1.trigger("click"); // then close it
+			expect(subMenus).toHaveClass("hide");
 		});
 	});
 
