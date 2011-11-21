@@ -16,7 +16,6 @@ describe("Tooltip", function() {
 		$("body .tooltip").remove();
 	});
 
-
 	describe("Activing a tooltip", function() {
 		it("Appends a tooltip to the body", function() {
 			activator.focus();
@@ -40,6 +39,13 @@ describe("Tooltip", function() {
 			});
 		});
 		describe("Via mouseenter", function() {
+			it("blah", function() {
+				var e = jQuery.Event("mouseover", { pageX: 64, pageY: 32 });
+				activator.trigger(e);
+				expect(tooltip.tooltip.css("left")).toBe("84px");
+			});
+		});
+		describe("Via mousemove", function() {
 			
 		});
 	});
