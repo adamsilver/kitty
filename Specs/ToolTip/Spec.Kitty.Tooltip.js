@@ -28,7 +28,7 @@ describe("Tooltip", function() {
 		it("Displays the specified content", function() {
 			activator.focus();
 			expect(tooltip.tooltip.html()).toBe(tooltipContent);
-		})
+		});
 		describe("Via keyboard focus", function() {
 			it("Displays the tooltip with an offset of 20 in both x and y position", function() {
 				activator.focus();
@@ -38,11 +38,18 @@ describe("Tooltip", function() {
 				expect(tooltipOffset.top).toBe(activatorOffset.top + 20);
 			});
 		});
-		describe("Via mouseenter", function() {
-			it("blah", function() {
+		describe("Via mouseover", function() {
+			it("Shows the tooltip", function() {
 				var e = jQuery.Event("mouseover", { pageX: 64, pageY: 32 });
 				activator.trigger(e);
-				expect(tooltip.tooltip.css("left")).toBe("84px");
+				expect(tooltip.tooltip).not.toHaveClass("offScreen");
+			});
+			it("Positions itself relative to the mouse coordinates", function() {
+				var e = jQuery.Event("mouseover", { pageX: 64, pageY: 32 });
+				activator.trigger(e);
+				var tooltipOffset = tooltip.tooltip.offset();
+				expect(tooltipOffset.left).toBe(84);
+				expect(tooltipOffset.top).toBe(52);
 			});
 		});
 		describe("Via mousemove", function() {

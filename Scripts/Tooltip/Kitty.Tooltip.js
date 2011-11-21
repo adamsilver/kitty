@@ -17,6 +17,7 @@ Kitty.Tooltip.prototype.handleActivator_onBlur = function(e) {
 	this.tooltip.remove();
 }
 Kitty.Tooltip.prototype.handleActivator_onMouseover = function(e) {
+	this.tooltip.removeClass("offScreen");
 	this.tooltip.css("left", (e.pageX + 20) + "px");
 	this.tooltip.css("top", (e.pageY + 20) + "px");
 	$("body").append(this.tooltip);
