@@ -50,6 +50,11 @@ describe("Tooltip", function() {
 				activator.blur(); // act
 				expect(tooltip.tooltip).toHaveClass("offScreen");
 			});
+			it("Removes the appended node from the body", function() {
+				activator.focus(); // setup state
+				activator.blur(); // act
+				expect($("body .tooltip")).not.toExist();
+			});
 		});
 		describe("Via mouseleave", function() {
 			

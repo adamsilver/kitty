@@ -13,4 +13,5 @@ Kitty.Tooltip.prototype.handleActivator_onFocus = function(e) {
 }
 Kitty.Tooltip.prototype.handleActivator_onBlur = function(e) {
 	this.tooltip.addClass("offScreen");
+	this.tooltip.remove();
 }
