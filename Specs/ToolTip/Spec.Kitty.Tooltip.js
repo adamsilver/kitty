@@ -16,7 +16,7 @@ describe("Tooltip", function() {
 		$("body .tooltip").remove();
 	});
 
-	describe("Activing a tooltip", function() {
+	describe("Showing a tooltip", function() {
 		it("Appends a tooltip to the body", function() {
 			activator.focus();
 			var appendedTooltip = $("body .tooltip");
@@ -67,7 +67,7 @@ describe("Tooltip", function() {
 			});
 		});
 	});
-	describe("Deactivating a tooltip", function() {
+	describe("Hiding a tooltip", function() {
 		describe("Via keyboard blur", function() {
 			it("Hides the tooltip", function() {
 				activator.focus(); // setup state
