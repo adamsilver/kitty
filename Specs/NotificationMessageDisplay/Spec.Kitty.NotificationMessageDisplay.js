@@ -11,6 +11,9 @@ describe("Notification Message Display", function() {
 		container = $("#notifications");
 		notificationMessageDisplay = new Kitty.NotificationMessageDisplay(container);
 	});
+	afterEach(function() {
+		jasmine.Clock.uninstallMock();
+	});
 
 	describe("Creating a notification", function() {
 		beforeEach(function() {
@@ -48,12 +51,21 @@ describe("Notification Message Display", function() {
 	});
 
 	describe("Mousing over a notification", function() {
-		it("Will not close the notification after a period of time", function() {
-			
+		var notificationMessage = null;
+		beforeEach(function() {
+			notificationMessageDisplay.createNotification("Message");
+			notificationMessage = container.find(".notification");
+			notificationMessage.trigger("mouseover");
+		});
+		it("Will not close the notification after a period of time", function() {			
+			jasmine.Clock.tick(3000);
+			expect(container.find(".notification")).toExist();
 		});
 		describe("And then mousing out of the notification", function() {
 			it("Closes after a certain period of time", function() {
-			
+				notificationMessage.trigger("mouseout");
+				jasmine.Clock.tick(3000);
+				expect(container.find(".notification")).not.toExist();
 			});
 		});
 	});
