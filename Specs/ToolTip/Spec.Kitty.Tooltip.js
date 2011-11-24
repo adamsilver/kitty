@@ -48,12 +48,23 @@ describe("Tooltip", function() {
 				var e = jQuery.Event("mouseover", { pageX: 64, pageY: 32 });
 				activator.trigger(e);
 				var tooltipOffset = tooltip.tooltip.offset();
-				expect(tooltipOffset.left).toBe(84);
-				expect(tooltipOffset.top).toBe(52);
+				expect(tooltipOffset.left).toBe(64 + 20);
+				expect(tooltipOffset.top).toBe(32 + 20);
 			});
 		});
 		describe("Via mousemove", function() {
-			
+			it("Shows the tooltip", function() {
+				var e = jQuery.Event("mouseover", { pageX: 64, pageY: 32 });
+				activator.trigger(e);
+				expect(tooltip.tooltip).not.toHaveClass("offScreen");
+			});
+			it("Positions itself relative to the mouse coordinates", function() {
+				var e = jQuery.Event("mousemove", { pageX: 64, pageY: 32 });
+				activator.trigger(e);
+				var tooltipOffset = tooltip.tooltip.offset();
+				expect(tooltipOffset.left).toBe(64 + 20);
+				expect(tooltipOffset.top).toBe(32 + 20);
+			});
 		});
 	});
 	describe("Deactivating a tooltip", function() {
@@ -70,7 +81,16 @@ describe("Tooltip", function() {
 			});
 		});
 		describe("Via mouseleave", function() {
-			
+			it("Hides the tooltip", function() {
+				activator.focus(); // to setup state so that it is showing
+				activator.trigger("mouseleave");
+				expect(tooltip.tooltip).toHaveClass("offScreen");
+			});
+			it("Removes the appended node from the body", function() {
+				activator.focus(); // to setup state so that it is showing
+				activator.trigger("mouseleave");
+				expect($("body .tooltip")).not.toExist();
+			});
 		});
 	});
 	describe("Destroying tooltip", function() {
