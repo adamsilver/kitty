@@ -5,6 +5,9 @@ Kitty.StarRating = function(radioContainers) {
 	this.currentRating = this.radios.filter(":checked").val();
 	this.labels = radioContainers.find("label");
 	this.labels.on("mouseover", $.proxy(this, "handleLabel_onMouseover"));
+	this.labels.on("mouseout", $.proxy(this, "handleLabel_onMouseout"));
+	this.radios.on("focus", $.proxy(this, "handleRadio_onFocus"));
+	this.radios.on("blur", $.proxy(this, "handleRadio_onBlur"));
 }
 Kitty.StarRating.prototype.handleLabel_onMouseover = function(e) {
 	var relatedRadio = $(e.target).parent().find("input[type=radio]");
@@ -19,6 +22,14 @@ Kitty.StarRating.prototype.highlightStars = function(rating) {
 		else {
 			this.labels.filter(":eq("+i+")").removeClass("highlight");
 		}
-		
 	}
+}
+Kitty.StarRating.prototype.handleRadio_onFocus = function(e) {
+	this.highlightStars($(e.target).val());
+}
+Kitty.StarRating.prototype.handleLabel_onMouseout = function(e) {
+	this.highlightStars(0);
+}
+Kitty.StarRating.prototype.handleRadio_onBlur = function(e) {
+	this.highlightStars(0);
 }
