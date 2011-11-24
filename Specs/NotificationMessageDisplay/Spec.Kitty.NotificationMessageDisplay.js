@@ -11,10 +11,6 @@ describe("Notification Message Display", function() {
 		container = $("#notifications");
 		notificationMessageDisplay = new Kitty.NotificationMessageDisplay(container);
 	});
-	afterEach(function() {
-		jasmine.Clock.uninstallMock();
-	});
-
 	describe("Creating a notification", function() {
 		beforeEach(function() {
 			notificationMessageDisplay.createNotification("Message");
