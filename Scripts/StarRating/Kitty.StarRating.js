@@ -8,9 +8,10 @@ Kitty.StarRating = function(radioContainers) {
 	this.labels.on("mouseout", $.proxy(this, "handleLabel_onMouseout"));
 	this.radios.on("focus", $.proxy(this, "handleRadio_onFocus"));
 	this.radios.on("blur", $.proxy(this, "handleRadio_onBlur"));
+	this.radios.on("change", $.proxy(this, "handleRadio_onChange"));
 }
 Kitty.StarRating.prototype.handleLabel_onMouseover = function(e) {
-	var relatedRadio = $(e.target).parent().find("input[type=radio]");
+	var relatedRadio = $(e.target).parents(".radio").find("input[type=radio]");
 	var rating = relatedRadio.val();
 	this.highlightStars(rating);
 }
@@ -28,8 +29,11 @@ Kitty.StarRating.prototype.handleRadio_onFocus = function(e) {
 	this.highlightStars($(e.target).val());
 }
 Kitty.StarRating.prototype.handleLabel_onMouseout = function(e) {
-	this.highlightStars(0);
+	this.highlightStars(this.currentRating);
 }
 Kitty.StarRating.prototype.handleRadio_onBlur = function(e) {
 	this.highlightStars(0);
+}
+Kitty.StarRating.prototype.handleRadio_onChange = function(e) {
+	this.highlightStars($(e.target).val());
 }

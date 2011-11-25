@@ -41,6 +41,16 @@ describe("Star Rating", function() {
 			});
 		});
 	});
+
+	describe("Mouse over in element of rating label (of 3)", function() {
+		it("Highlights the first 3 stars", function() {
+			labels.filter(":eq(2)").find("span").trigger("mouseover");
+			for(var i = 0; i < 3; i++) {
+				expect(labels.filter(":eq("+i+")")).toHaveClass("highlight");
+			}
+		});
+	});
+
 	describe("Focus on a rating label (of 3)", function() {
 		it("Highlights the first 3 stars", function() {
 			radios.filter(":eq(2)").trigger("focus");
@@ -58,13 +68,30 @@ describe("Star Rating", function() {
 		});
 	});
 	describe("Mouse leaving a rating label", function() {
-		it("Unhighlights the first 3 stars", function() {
-			labels.filter(":eq(2)").trigger("mouseover"); // setup state
-			labels.filter(":eq(2)").trigger("mouseout");
-			for(var i = 0; i < 3; i++) {
-				expect(labels.filter(":eq("+i+")")).not.toHaveClass("highlight");
-			}
+
+		describe("No selected rating", function() {
+			it("Unhighlights the stars", function() {
+				labels.filter(":eq(2)").trigger("mouseover"); // setup state
+				labels.filter(":eq(2)").trigger("mouseout");
+				for(var i = 0; i < 3; i++) {
+					expect(labels.filter(":eq("+i+")")).not.toHaveClass("highlight");
+				}
+			});
 		});
+
+		describe("A selected rating of 3", function() {
+			it("Highlights the 3 stars", function() {
+				for(var j = 0; j < radios.length; j++) {
+					
+				}
+				labels.filter(":eq(2)").trigger("mouseover"); // setup state
+				labels.filter(":eq(2)").trigger("mouseout");
+				for(var i = 0; i < 3; i++) {
+					expect(labels.filter(":eq("+i+")")).toHaveClass("highlight");
+				}
+			});
+		});
+		
 	});
 	describe("Blurring the rating input", function() {
 		it("Unhighlights the first 3 stars", function() {
@@ -75,9 +102,12 @@ describe("Star Rating", function() {
 			}
 		});
 	});
-	describe("Selecting a rating", function() {
+	describe("Selecting a rating (rating 3)", function() {
 		it("Persists the chosen rating by highlighting the stars", function() {
-			
+			radios.filter(":eq(2)").click();
+			for(var i = 0; i < 3; i++) {
+				expect(labels.filter(":eq("+i+")")).toHaveClass("highlight");
+			}
 		});
 		it("Marks the radio as selected", function() {
 			
