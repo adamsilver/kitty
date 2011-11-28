@@ -158,8 +158,32 @@ describe("Star Rating", function() {
 		});
 	});
 	describe("Destroying the Star Rating control", function() {
-		it("Restores the HTML to original state");
-		it("Removes event handlers for radios");
-		it("Removes event handlers for labels");
+		beforeEach(function() {
+			setupFixture1();
+			spyOn($.fn, "off");
+			starRating.destroy();
+		})
+		it("Reveals the radio inputs", function(){
+			for(var i = 0; i < radios.length; i++) {
+				expect(radios.filter(":eq("+i+")")).not.toHaveClass("offScreen");
+			}
+		});
+		it("Removes event handlers for labels", function() {
+			expect($.fn.off.calls[0].object).toBe(starRating.labels);
+			expect($.fn.off).toHaveBeenCalledWith("mouseover", starRating.handleLabel_onMouseover);
+			
+			expect($.fn.off.calls[1].object).toBe(starRating.labels);
+			expect($.fn.off).toHaveBeenCalledWith("mouseout", starRating.handleLabel_onMouseout);
+		});
+		it("Removes event handlers for radios", function() {
+			expect($.fn.off.calls[2].object).toBe(starRating.radios);
+			expect($.fn.off).toHaveBeenCalledWith("focus", starRating.handleRadio_onFocus);
+
+			expect($.fn.off.calls[2].object).toBe(starRating.radios);
+			expect($.fn.off).toHaveBeenCalledWith("blur", starRating.handleRadio_onBlur);
+			
+			expect($.fn.off.calls[2].object).toBe(starRating.radios);
+			expect($.fn.off).toHaveBeenCalledWith("change", starRating.handleRadio_onChange);
+		});
 	});
 });
