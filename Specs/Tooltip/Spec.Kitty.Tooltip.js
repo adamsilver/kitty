@@ -94,6 +94,25 @@ describe("Tooltip", function() {
 		});
 	});
 	describe("Destroying tooltip", function() {
-		
+		beforeEach(function() {
+			spyOn($.fn, "off");
+			tooltip.destroy();			
+		});
+		it("Removes the events", function() {
+			expect($.fn.off.calls[0].object).toBe(tooltip.activator);
+			expect($.fn.off).toHaveBeenCalledWith("focus", tooltip.handleActivator_onFocus);
+
+			expect($.fn.off.calls[1].object).toBe(tooltip.activator);
+			expect($.fn.off).toHaveBeenCalledWith("blur", tooltip.handleActivator_onBlur);
+
+			expect($.fn.off.calls[2].object).toBe(tooltip.activator);
+			expect($.fn.off).toHaveBeenCalledWith("mouseover", tooltip.handleActivator_onMouseover);
+
+			expect($.fn.off.calls[3].object).toBe(tooltip.activator);
+			expect($.fn.off).toHaveBeenCalledWith("mousemove", tooltip.handleActivator_onMousemove);
+
+			expect($.fn.off.calls[4].object).toBe(tooltip.activator);
+			expect($.fn.off).toHaveBeenCalledWith("mouseleave", tooltip.handleActivator_onMouseleave);
+		});
 	});
 });

@@ -36,3 +36,10 @@ Kitty.Tooltip.prototype.hideTooltip = function() {
 	this.tooltip.addClass("offScreen");
 	this.tooltip.remove();
 }
+Kitty.Tooltip.prototype.destroy = function() {
+	this.activator.off("focus", this.handleActivator_onFocus);
+	this.activator.off("blur", this.handleActivator_onBlur);
+	this.activator.off("mouseover", this.handleActivator_onMouseover);
+	this.activator.off("mousemove", this.handleActivator_onMousemove);	
+	this.activator.off("mouseleave", this.handleActivator_onMouseleave);
+}
