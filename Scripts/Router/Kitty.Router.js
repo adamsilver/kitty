@@ -11,22 +11,21 @@ Kitty.Router.prototype.getHash = function() {
 	return document.location.hash.substr(1);
 }
 Kitty.Router.prototype.handleHashChange = function() {
-	debugger;
 	this.fireRoute(this.getHash());
 }
 Kitty.Router.prototype.fireRoute = function(url) {
-	var matches, urlFound, route;
-	for(var i = 0; i < this.routes.length; i++) {
-		route = this.routes[i];
-		matches = url.match(route.regex);
-		if(matches) {
-			urlFound = true;
-			var params = this.getParamsFromRoute(route.route, url);
-			for(var j = 0; j < route.callbacks.length; j++) {
-				route.callbacks[j](params);
-			}
-		}
-	}
+	var matches, urlFound, routes = this.routes, route;
+  for(var key in routes) {
+    route = routes[key];
+    matches = url.match(route.regex);
+    if(matches) {
+      urlFound = true;
+      var params = this.getParamsFromRoute(route.route, url);
+      for(var i = 0; i < route.callbacks.length; i++) {
+        route.callbacks[i](params);
+      }
+    }
+  }
 }
 Kitty.Router.prototype.route = function(route, callback) {
 	this.routes[route] = {
@@ -79,7 +78,7 @@ Kitty.Router.prototype.getParamsFromRoute = function(route, url) {
     });
   }
   
-  return { urlParams: urlParams, qs: qs };
+  return { urlParams: urlParams, queryStringParams: qs };
 }
 Kitty.Router.prototype.createRegexForRoute = function(route) {
 	if(typeof route !== "string") return route;
