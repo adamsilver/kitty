@@ -77,6 +77,7 @@ Kitty.FormValidator.prototype.removeRuleFromValidator = function(fieldName, rule
 				rule = rules[j];
 				if(rule.method == ruleFunction) {
 					rules.splice(j, 1);
+					break;
 				}	
 			}
 			break;

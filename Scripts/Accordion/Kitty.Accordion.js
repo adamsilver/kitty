@@ -10,9 +10,9 @@ Kitty.Accordion = function(container) {
 Kitty.Accordion.prototype.handleActivator_onClick = function(e) {
   e.preventDefault();
   var link = $(e.target);
-  var href = link.attr("href");
-  var panel = $(href);
-  
+  var href = link[0].href;
+  href = href.substr(href.indexOf("#"), href.length);
+  var panel = $(href);  
   if(panel.css("display") == "none") {
     panel.animate({"height": "show"}, { duration: 300} );
   }
@@ -23,6 +23,9 @@ Kitty.Accordion.prototype.hideCurrentlyOpenPanel = function() {
   this.panels.filter(":eq("+this.currentlyOpenPanelIndex+")").animate({"height": "hide"}, {duration: 300});
 }
 Kitty.Accordion.prototype.destroy = function() {
-  this.panels.removeAttr("style");
+  //this.panels.removeAttr("style");
+  for(var i = 0; i < this.panels.length; i++) {
+    this.panels[i].removeAttribute("style");
+  }
   this.links.unbind("click", this.handleActivator_onClick);  
 }
