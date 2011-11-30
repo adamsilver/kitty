@@ -59,3 +59,11 @@ Kitty.FormValidator.prototype.validate = function() {
 Kitty.FormValidator.prototype.getErrors = function() {
 	return this.errors;
 }
+Kitty.FormValidator.prototype.removeValidator = function(fieldName) {
+	for(var i = 0; i < this.validators.length; i++) {
+		if(this.validators[i].fieldName === fieldName) {
+			this.validators.splice(i, 1);
+			break;
+		}
+	}
+}

@@ -185,9 +185,18 @@ describe("Form Validator", function() {
   });
   
   describe("Removing a validator", function() {
-    it("Removes the validator", function() {
-      
-    });
+      it("Removes the validator", function() {
+        var formValidator = new Kitty.FormValidator($("form"));
+        formValidator.addValidator("username", [{
+          method: function() { return true}, message: "username blah"
+        }]);
+        formValidator.addValidator("password", [{
+          method: function() { return true}, message: "password blah"
+        }]);
+        formValidator.removeValidator("username");
+        expect(formValidator.validators.length).toBe(1);
+        expect(formValidator.validators[0].fieldName).not.toBe("username");
+      });
   });
 
   describe("Removing a rule from a validator", function() {
