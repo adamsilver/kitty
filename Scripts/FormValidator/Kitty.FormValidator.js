@@ -67,3 +67,19 @@ Kitty.FormValidator.prototype.removeValidator = function(fieldName) {
 		}
 	}
 }
+Kitty.FormValidator.prototype.removeRuleFromValidator = function(fieldName, ruleFunction) {
+	var validator = null, rules, rule;
+	for(var i = 0; i < this.validators.length; i++) {
+		validator = this.validators[i]
+		if(validator.fieldName === fieldName) {
+			rules = validator.rules;
+			for(var j = 0; j < rules.length; j++) {
+				rule = rules[j];
+				if(rule.method == ruleFunction) {
+					rules.splice(j, 1);
+				}	
+			}
+			break;
+		}
+	}
+}
