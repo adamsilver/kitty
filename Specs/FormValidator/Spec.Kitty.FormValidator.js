@@ -118,8 +118,10 @@ describe("Form Validator", function() {
       formValidator.addValidator("username", [rules.usernameInvalidWithParams]);
       spyOn(rules.usernameInvalidWithParams, "method");
       formValidator.validate();
+      debugger;
       var args = rules.usernameInvalidWithParams.method.mostRecentCall.args;
       expect(args[1]).toBe(rules.usernameInvalidWithParams.params);
+      expect(args[1].whatever).toBe(rules.usernameInvalidWithParams.params.whatever);
     });
 
     describe("Which contains errors", function() {
