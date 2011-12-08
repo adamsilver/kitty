@@ -36,7 +36,7 @@ Kitty.FormValidator.prototype.addValidator = function(fieldName, rules) {
 			}
 		}
 	}
-	this.validators.push({fieldName: fieldName, rules: rules});
+	this.validators.push({fieldName: fieldName, rules: rules, field: field});
 }
 Kitty.FormValidator.prototype.validate = function() {
 	this.errors = [];
@@ -44,7 +44,7 @@ Kitty.FormValidator.prototype.validate = function() {
 	for(var i = 0; i < this.validators.length; i++) {
 		validator = this.validators[i];
 		for(var j = 0; j < validator.rules.length; j++) {
-			validatorValid = validator.rules[j].method($("[name="+validator.fieldName+"]"), validator.rules[j].params);
+			validatorValid = validator.rules[j].method(validator.field, validator.rules[j].params);
 			if(!validatorValid) {
 				this.errors.push({
 					fieldName: validator.fieldName,
