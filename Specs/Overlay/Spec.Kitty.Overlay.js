@@ -1,19 +1,30 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Kitty.Overlay</title>
-    <link rel="stylesheet" type="text/css" href="../../Jasmine/jasmine.css">
-    <script type="text/javascript" src="../../Jasmine/jasmine.js"></script>
-    <script type="text/javascript" src="../../Jasmine/jasmine-html.js"></script>
-    <script type="text/javascript" src="../../Jasmine/jasmine-jquery.js"></script>
-    <script type="text/javascript" src="../../jQuery/jQuery.js"></script>
-    <script src="../../Scripts/Overlay/Kitty.Overlay.js"></script>
-  </head>
-  <body>
-    <script src="Spec.Kitty.Overlay.js"></script>
-    <script type="text/javascript">
-      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-      jasmine.getEnv().execute();
-    </script>
-  </body>
-</html>
+describe("Overlay", function() {
+  
+  var overlay, overlayElement;
+
+  beforeEach(function() {
+    overlay = new Kitty.Overlay();  
+    overlayElement = $(".overlay");
+  });
+
+  afterEach(function() {
+    overlay = null;
+    overlayElement.remove();
+    overlayElement = null;
+  });
+
+  describe("Showing an overlay", function() {
+    it("Shows the overlay", function() {
+      overlay.show();
+      expect(overlayElement).not.toHaveClass("offScreen");
+    });
+  });
+
+  describe("Hiding the overlay", function() {
+    it("Hides the overlay", function() {
+      overlay.hide();
+      expect(overlayElement).toHaveClass("offScreen");
+    });
+  });
+
+});
