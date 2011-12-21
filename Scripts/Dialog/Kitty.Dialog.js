@@ -1,6 +1,8 @@
 var Kitty = Kitty || {};
 
-Kitty.Dialog = function() {
+Kitty.Dialog = function(options) {
+  this.options = options || {};
+  this.overlay = this.options.overlay || null;
   this.body = $("body");
   this.container = $("<div class='dialog off'/>");
   this.body.append(this.container);
@@ -11,6 +13,9 @@ Kitty.Dialog.prototype.setHtml = function(html) {
 }
 
 Kitty.Dialog.prototype.show = function(coordinates) {
+  if(this.overlay) {
+    this.overlay.show();
+  }
   this.container.removeClass("off");  
   coordinates = coordinates || {};  
   this.container.css({ top: coordinates.y || this.getCenterPositionY(), left: coordinates.x || this.getCenterPositionX() })
@@ -29,7 +34,10 @@ Kitty.Dialog.prototype.getCenterPositionX = function() {
 }
 
 Kitty.Dialog.prototype.hide = function() {
-  this.container.addClass("off")
+  this.container.addClass("off");
+  if(this.overlay) {
+    this.overlay.hide();
+  }
 }
 
 Kitty.Dialog.prototype.destroy = function() {
