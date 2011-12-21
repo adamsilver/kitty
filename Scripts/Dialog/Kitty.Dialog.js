@@ -32,6 +32,6 @@ Kitty.Dialog.prototype.hide = function() {
   this.container.addClass("off")
 }
 
-Kitty.Dialog.prototype.teardown = function() {
+Kitty.Dialog.prototype.destroy = function() {
   this.container.remove();
 }
