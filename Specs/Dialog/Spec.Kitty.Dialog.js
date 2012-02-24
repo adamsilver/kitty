@@ -42,17 +42,17 @@ describe("Dialog", function() {
         dialog.show();      
         var positionX = Math.floor( ( ( $(window).width() + -dialogElement.width() ) / 2 ) + $(window).scrollLeft() );
         var positionY = Math.floor( ( ( $(window).height() + -dialogElement.height() ) / 2 ) + $(window).scrollTop() );
-      
-        expect(parseInt(dialogElement.css("top"), 10)).toBe(positionY);
-        expect(parseInt(dialogElement.css("left"), 10)).toBe(positionX);
+
+        expect(parseInt(dialogElement[0].style.top, 10)).toBe(positionY);
+        expect(parseInt(dialogElement[0].style.left, 10)).toBe(positionX);
       });        
     });
     
     describe("Showing a dialog with a given position", function() {
       it("Sets the position", function() {
         dialog.show({x: 10, y: 20});      
-        expect(parseInt(dialogElement.css("left"), 10)).toBe(10);
-        expect(parseInt(dialogElement.css("top"), 10)).toBe(20);
+        expect(parseInt(dialogElement[0].style.left, 10)).toBe(10);
+        expect(parseInt(dialogElement[0].style.top, 10)).toBe(20);
       });
     });
     

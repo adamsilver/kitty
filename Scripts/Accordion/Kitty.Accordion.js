@@ -23,9 +23,9 @@ Kitty.Accordion.prototype.hideCurrentlyOpenPanel = function() {
   this.panels.filter(":eq("+this.currentlyOpenPanelIndex+")").animate({"height": "hide"}, {duration: 300});
 }
 Kitty.Accordion.prototype.destroy = function() {
-  //this.panels.removeAttr("style");
-  for(var i = 0; i < this.panels.length; i++) {
-    this.panels[i].removeAttribute("style");
-  }
+  this.panels.removeAttr("style");
+  //for(var i = 0; i < this.panels.length; i++) {
+    //this.panels[i].removeAttribute("style");
+  //}
   this.links.unbind("click", this.handleActivator_onClick);  
 }
