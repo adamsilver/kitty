@@ -3,23 +3,20 @@ Kitty.FormValidator = function(form) {
 	this.form = form;
 	this.errors = [];
 	this.validators = [];
-	var invalidContainerMessage = "Invalid container. Must be a jquery object with form element.";
+	var invalidContainerMessage = "Must be a form element.";
 	if(typeof form == "undefined") {
 		throw invalidContainerMessage;
 	}
-	if(!(form instanceof jQuery)) {
-		throw invalidContainerMessage;
-	}
-	if(!form.is("form")) {
+	if(!form.tagName || form.tagName.toLowerCase() != "form") {
 		throw invalidContainerMessage;
 	}
 }
 Kitty.FormValidator.prototype.addValidator = function(fieldName, rules) {
 	var exceptionMessageRules = "Invalid rules. Must provide be an array of rules (at least 1).";
-	var field = this.form.find("[name="+fieldName+"]");
+	var field = this.form.elements[fieldName];
 	var rule;
 	// if field does not exist
-	if(!field.length) {
+	if(!field) {
 		throw "Invalid form field.";
 	}
 	if(!rules) {
