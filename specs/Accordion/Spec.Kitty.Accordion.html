@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kitty.Accordion</title>
+    <link rel="stylesheet" type="text/css" href="../../vendor/Jasmine/jasmine.css">
+    <script type="text/javascript" src="../../vendor/Jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../../vendor/Jasmine/jasmine-html.js"></script>
+    <script type="text/javascript" src="../../vendor/Jasmine/jasmine-jquery.js"></script>
+    <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+    <script src="../../src/Accordion/Kitty.Accordion.js"></script>
+  </head>
+  <body>
+    <div id="fixture">
+      <div id="accordion">
+        <div><a class="activator" href="#panel1">Panel 1</a></div>
+        <div id="panel1" class="panel"><p>Panel 1</p><p>Panel 1</p></div>
+        <div><a class="activator" href="#panel2">Panel 2</a></div>
+        <div id="panel2" class="panel"><p>Panel 2</p><p>Panel 2</p></div>
+        <div><a class="activator" href="#panel3">Panel 3</a></div>
+        <div id="panel3" class="panel"><p>Panel 3</p><p>Panel 3</p></div>
+      </div>
+    </div>
+    <script src="Spec.Kitty.Accordion.js"></script>
+    <script type="text/javascript">
+      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+      jasmine.getEnv().execute();
+    </script>
+  </body>
+</html>
