@@ -1,4 +1,3 @@
-KittyJS
-======
+# Kitty
 
-A bunch of JavaScript components built on top of jQuery and test driven with Jasmine.
+Useful JavaScript components test driven with Jasmine.
