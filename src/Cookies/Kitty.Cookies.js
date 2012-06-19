@@ -5,7 +5,7 @@ Kitty.Cookies = {
     if (days) {
       var date = days;
       if (!(date instanceof Date)) {
-        date = new Date()
+        date = new Date();
         date.setDate(date.getDate() + (days || -1));
       }
       expires = "expires=" + date.toGMTString();
@@ -29,4 +29,4 @@ Kitty.Cookies = {
   remove: function(name) {
     this.create(name, "", -1);
   }
-}
+};

@@ -30,8 +30,8 @@ Kitty.FormValidator = function (form) {
  * var formValidator = new Kitty.FormValidator(formNode);
  * formValidator.addValidator("username", [{
  *    method: function() {
- *    	// some test here and return true or false
- *    	return true;
+ *        // some test here and return true or false
+ *        return true;
  *    },
  *    message: "This value for username is unacceptable"
  * }])

@@ -10,7 +10,7 @@ Kitty.CharacterRemainingIndicator = function(field, options) {
     textBefore: "You have ",
     textAfter: " characters remaining.",
     indicator: $("<div class='indicator'/>")
-  }
+  };
   
   this.options = $.extend(this.options, options);
   
@@ -22,7 +22,7 @@ Kitty.CharacterRemainingIndicator = function(field, options) {
   
   $(this.field).bind("change keypress keydown", $.proxy(this.handleField_onChange, this));
   
-}
+};
 
 Kitty.CharacterRemainingIndicator.prototype.checkValidField = function(field) {
   if(!field || !field.tagName) {
@@ -35,13 +35,13 @@ Kitty.CharacterRemainingIndicator.prototype.checkValidField = function(field) {
     return false;
   }
   return true;
-}
+};
 
 Kitty.CharacterRemainingIndicator.prototype.handleField_onChange = function(e) {
   var remainingCharacterCount = this.options.maxLength - this.field.value.length;
   this.setIndicator(remainingCharacterCount);
-}
+};
 
 Kitty.CharacterRemainingIndicator.prototype.setIndicator = function(remainingCharacterCount) {
   this.options.indicator.html(this.options.textBefore + remainingCharacterCount + this.options.textAfter);
-}
+};

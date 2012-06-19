@@ -8,14 +8,14 @@ Kitty.ContextualSubmit = function(field, submitButton) {
 	this.clonedSubmitButton = this.submitButton.clone();
 	this.clonedSubmitButton.attr("id", "");
 	this.clonedSubmitButton.addClass("offScreen");
-}
+};
 Kitty.ContextualSubmit.prototype.handleField_onFocus = function(e) {
 	this.form.prepend(this.clonedSubmitButton);
-}
+};
 Kitty.ContextualSubmit.prototype.handleField_onBlur = function(e) {
 	this.clonedSubmitButton.remove();
-}
+};
 Kitty.ContextualSubmit.prototype.destroy = function() {
 	this.field.unbind("focus", this.handleField_onFocus);
 	this.field.unbind("blur", this.handleField_onBlur);
-}
+};
