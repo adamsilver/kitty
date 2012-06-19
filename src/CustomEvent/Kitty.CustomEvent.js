@@ -1,8 +1,22 @@
+/**
+ * @namespace
+ */
 var Kitty = Kitty || {};
+
+/**
+ * Typical publish subscribe object
+ * @class
+ * @constructor
+ */
 Kitty.CustomEvent = function() {
   this.subscribers = [];
 }
 
+/**
+ * Subscribe to an event
+ * @param  {Function} fn The function that is called when the event is published
+ * @return {[type]}      [description]
+ */
 Kitty.CustomEvent.prototype.subscribe = function(fn) {
   this.subscribers.push(fn);
 }

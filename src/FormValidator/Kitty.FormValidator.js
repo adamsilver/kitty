@@ -1,4 +1,14 @@
+/**
+ * @namespace
+ */
 var Kitty = Kitty || {};
+
+/**
+ * Validates form fields within a form.
+ * @constructor
+ * @class
+ * @param {Element} form The form node
+ */
 Kitty.FormValidator = function (form) {
 	this.form = form;
 	this.errors = [];
@@ -11,6 +21,21 @@ Kitty.FormValidator = function (form) {
 		throw invalidContainerMessage;
 	}
 };
+
+/**
+ * Adds a field to be validated against given rules
+ * @param {String} fieldName The name of the field to validate
+ * @param {Array[Object]} rules The rules for the validator to check against
+ * @example
+ * var formValidator = new Kitty.FormValidator(formNode);
+ * formValidator.addValidator("username", [{
+ *    method: function() {
+ *    	// some test here and return true or false
+ *    	return true;
+ *    },
+ *    message: "This value for username is unacceptable"
+ * }])
+ */
 Kitty.FormValidator.prototype.addValidator = function (fieldName, rules) {
 	var exceptionMessageRules = "Invalid rules. Must provide be an array of rules (at least 1).",
 		field = this.form.elements[fieldName],
@@ -29,13 +54,22 @@ Kitty.FormValidator.prototype.addValidator = function (fieldName, rules) {
 	if (rules.length) {
 		for (i = 0; i < rules.length; i++) {
 			rule = rules[i];
-			if (typeof rule.method !== "function" || typeof rule.message !== "string") {
+			if (typeof rule.method !== "function" ||
+					typeof rule.message !== "string") {
 				throw exceptionMessageRules;
 			}
 		}
 	}
 	this.validators.push({fieldName: fieldName, rules: rules, field: field});
 };
+
+/**
+ * Iterates through the list of fields to validate
+ * @return {Boolean} Returns false if there are errors, otherwise true
+ * @example
+ * var formValidator = new Kitty.FormValidator(formNode);
+ * formValidator.validate();
+ */
 Kitty.FormValidator.prototype.validate = function () {
 	this.errors = [];
 	var validator = null,
@@ -45,7 +79,8 @@ Kitty.FormValidator.prototype.validate = function () {
 	for (i = 0; i < this.validators.length; i++) {
 		validator = this.validators[i];
 		for (j = 0; j < validator.rules.length; j++) {
-			validatorValid = validator.rules[j].method(validator.field, validator.rules[j].params);
+			validatorValid = validator.rules[j].method(validator.field,
+					validator.rules[j].params);
 			if (!validatorValid) {
 				this.errors.push({
 					fieldName: validator.fieldName,
@@ -57,9 +92,21 @@ Kitty.FormValidator.prototype.validate = function () {
 	}
 	return this.errors.length === 0;
 };
+
+/**
+ * Retrieve a list of errors. Typically called after determining that validate
+ * returned false
+ * @return {Array[Object]} List of errors in format { fieldName: "",
+ * message: "" }
+ */
 Kitty.FormValidator.prototype.getErrors = function () {
 	return this.errors;
 };
+
+/**
+ * Remove a validator from the form validator
+ * @param  {String} fieldName The name of the field to remove from validation
+ */
 Kitty.FormValidator.prototype.removeValidator = function (fieldName) {
 	var i;
 	for (i = 0; i < this.validators.length; i++) {
@@ -69,7 +116,14 @@ Kitty.FormValidator.prototype.removeValidator = function (fieldName) {
 		}
 	}
 };
-Kitty.FormValidator.prototype.removeRuleFromValidator = function (fieldName, ruleFunction) {
+
+/**
+ * Remove a single rule from a validator
+ * @param  {String} fieldName The name of the field
+ * @param  {Function} ruleFunction The function reference for the rule
+ */
+Kitty.FormValidator.prototype.removeRuleFromValidator = function (fieldName,
+		ruleFunction) {
 	var validator = null,
 		rules,
 		rule,
