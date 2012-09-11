@@ -11,7 +11,7 @@ describe("ListCollapser", function() {
   }
 
   beforeEach(function() {
-    jasmine.getFixtures().load('Spec.Kitty.ListCollapser.Fixture1.html');
+    jasmine.getFixtures().load('Spec.kitty.ListCollapser.Fixture1.html');
     container = $("#listContainer");
     listItems = container.find("li");
   });
@@ -19,7 +19,7 @@ describe("ListCollapser", function() {
   describe("Creating a new list collapser", function() {
     
     beforeEach(function() {
-      listCollapser = new Kitty.ListCollapser(container);
+      listCollapser = new kitty.ListCollapser(container);
     });
 
     describe("With default options", function() {
@@ -50,7 +50,7 @@ describe("ListCollapser", function() {
     describe("With custom options", function() {
       
       beforeEach(function() {
-        listCollapser = new Kitty.ListCollapser(container, { 
+        listCollapser = new kitty.ListCollapser(container, { 
           collapseAfter: 5,
           expandText: "Expand woop",
           collapseText: "Collapse woop"
@@ -74,7 +74,7 @@ describe("ListCollapser", function() {
   describe("Toggling the list", function() {
 
     beforeEach(function() {
-      listCollapser = new Kitty.ListCollapser(container, { collapseAfter: 4 });
+      listCollapser = new kitty.ListCollapser(container, { collapseAfter: 4 });
     });
 
     it("prevents the default action", function() {
@@ -118,7 +118,7 @@ describe("ListCollapser", function() {
   describe("Destroying the list collapser", function() {
     
     beforeEach(function() {
-      listCollapser = new Kitty.ListCollapser(container);
+      listCollapser = new kitty.ListCollapser(container);
       listCollapser.destroy();
     });
 

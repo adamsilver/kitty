@@ -7,9 +7,9 @@ describe("Notification Message Display", function() {
 
 	beforeEach(function() {
 		jasmine.Clock.useMock();
-		jasmine.getFixtures().load('Spec.Kitty.NotificationMessageDisplay.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.NotificationMessageDisplay.Fixture1.html');
 		container = $("#notifications");
-		notificationMessageDisplay = new Kitty.NotificationMessageDisplay(container);
+		notificationMessageDisplay = new kitty.NotificationMessageDisplay(container);
 	});
 	describe("Creating a notification", function() {
 		beforeEach(function() {
@@ -40,7 +40,7 @@ describe("Notification Message Display", function() {
 			var fakeClickEvent = {
 				preventDefault: jasmine.createSpy()
 			}
-			var notificationObj = new Kitty.NotificationMessageDisplay.Notification("message");
+			var notificationObj = new kitty.NotificationMessageDisplay.Notification("message");
 			notificationObj.handleCloseButton_onClick(fakeClickEvent);
 			expect(fakeClickEvent.preventDefault).toHaveBeenCalled();
 		});

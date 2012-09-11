@@ -1,6 +1,6 @@
-var Kitty = Kitty || {};
+var kitty = kitty || {};
 
-Kitty.Utils = {
+kitty.Utils = {
 	innerXhtml: function(node) {
 		var s = "";
 		if(!node) {

@@ -8,7 +8,7 @@ describe("Accordion", function() {
     rootNode = $("#accordion");
     panels = rootNode.find(".panel");
     links = rootNode.find("a.activator");
-    accordion = new Kitty.Accordion(rootNode);
+    accordion = new kitty.Accordion(rootNode);
   });
 
   afterEach(function() {

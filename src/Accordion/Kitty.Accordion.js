@@ -1,5 +1,5 @@
-var Kitty = Kitty || {};
-Kitty.Accordion = function (container) {
+var kitty = kitty || {};
+kitty.Accordion = function (container) {
     this.container = container;
     this.panels = container.find(".panel");
     this.links = container.find("a.activator");
@@ -7,7 +7,7 @@ Kitty.Accordion = function (container) {
     this.links.bind("click", $.proxy(this.handleActivator_onClick, this));
     this.currentlyOpenPanelIndex = 0;
 };
-Kitty.Accordion.prototype.handleActivator_onClick = function (e) {
+kitty.Accordion.prototype.handleActivator_onClick = function (e) {
     e.preventDefault();
     var link = $(e.target),
         href = link[0].href,
@@ -20,10 +20,10 @@ Kitty.Accordion.prototype.handleActivator_onClick = function (e) {
     this.hideCurrentlyOpenPanel();
     this.currentlyOpenPanelIndex = this.panels.index(panel);
 };
-Kitty.Accordion.prototype.hideCurrentlyOpenPanel = function () {
+kitty.Accordion.prototype.hideCurrentlyOpenPanel = function () {
     this.panels.filter(":eq(" + this.currentlyOpenPanelIndex + ")").animate({"height": "hide"}, {duration: 300});
 };
-Kitty.Accordion.prototype.destroy = function () {
+kitty.Accordion.prototype.destroy = function () {
     this.panels.removeAttr("style");
     //for(var i = 0; i < this.panels.length; i++) {
       //this.panels[i].removeAttribute("style");

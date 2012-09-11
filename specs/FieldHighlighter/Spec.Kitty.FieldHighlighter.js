@@ -8,7 +8,7 @@ describe("FieldHighlighter", function() {
     fixture = $("#fixture");
     field = $('<input type="text" />');
     fixture.append(field);
-    highlighter = new Kitty.FieldHighlighter(field);  
+    highlighter = new kitty.FieldHighlighter(field);  
   });
   
   afterEach(function() {

@@ -6,9 +6,9 @@ describe("Tree Menu", function() {
 	var treeMenu = null;
 
 	beforeEach(function() {
-		jasmine.getFixtures().load('Spec.Kitty.TreeMenu.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.TreeMenu.Fixture1.html');
 		rootList = $("ul#root")
-		treeMenu = new Kitty.TreeMenu(rootList);
+		treeMenu = new kitty.TreeMenu(rootList);
 	});
 
 	describe("Creating a new tree menu", function() {

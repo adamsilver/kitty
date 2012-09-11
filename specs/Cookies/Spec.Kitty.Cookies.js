@@ -2,7 +2,7 @@ describe("Cookies", function() {
   
   describe("create", function() {    
     it("sets it's value", function() {
-      Kitty.Cookies.create("key", "newValue");      
+      kitty.Cookies.create("key", "newValue");      
       var cookies = document.cookie.split(";");
       var cookie;
       var collection = {};
@@ -20,15 +20,15 @@ describe("Cookies", function() {
     it("returns the value of the cookie", function() {    
       var cookie = "adam" + "=" + "silver" + "; expires=" + "" + "; path=/";
       document.cookie = cookie;
-      expect(Kitty.Cookies.read("adam")).toBe("silver");      
+      expect(kitty.Cookies.read("adam")).toBe("silver");      
     });
   });
   
   describe("remove", function() {
     it("removes the cookie", function() {
-      Kitty.Cookies.create("adam", "benjamin");
-      Kitty.Cookies.remove("adam");
-      expect(Kitty.Cookies.read("adam")).toBeNull();
+      kitty.Cookies.create("adam", "benjamin");
+      kitty.Cookies.remove("adam");
+      expect(kitty.Cookies.read("adam")).toBeNull();
     });
   })
   

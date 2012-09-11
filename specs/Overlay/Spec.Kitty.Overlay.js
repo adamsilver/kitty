@@ -3,7 +3,7 @@ describe("Overlay", function() {
   var overlay, overlayElement;
 
   beforeEach(function() {
-    overlay = new Kitty.Overlay();  
+    overlay = new kitty.Overlay();  
     overlayElement = $(".overlay");
   });
 

@@ -1,5 +1,5 @@
-var Kitty = Kitty || {};
-Kitty.ListCollapser = function(container, options) {
+var kitty = kitty || {};
+kitty.ListCollapser = function(container, options) {
   this.container = container;
   this.options = options || {};
   this.options.collapseAfter = this.options.collapseAfter || 4;
@@ -12,16 +12,16 @@ Kitty.ListCollapser = function(container, options) {
   this.collapse();
   this.collapsed = true;
 };
-Kitty.ListCollapser.prototype.createToggleButton = function() {
+kitty.ListCollapser.prototype.createToggleButton = function() {
   this.toggleButton = $('<a href="#" class="toggleItems"></a>');
   this.container.append(this.toggleButton);
   this.toggleButton.bind("click", $.proxy(this, "handleToggleButton_onClick"));
 };
-Kitty.ListCollapser.prototype.destroy = function() {
+kitty.ListCollapser.prototype.destroy = function() {
   this.expand();
   this.toggleButton.remove();
 };
-Kitty.ListCollapser.prototype.handleToggleButton_onClick = function(e) {
+kitty.ListCollapser.prototype.handleToggleButton_onClick = function(e) {
   e.preventDefault();
   if(this.collapsed) {
     this.expand();
@@ -30,12 +30,12 @@ Kitty.ListCollapser.prototype.handleToggleButton_onClick = function(e) {
     this.collapse();
   }
 };
-Kitty.ListCollapser.prototype.expand = function() {
+kitty.ListCollapser.prototype.expand = function() {
   this.collapsibleLis.removeClass("hide");
   this.toggleButton.text(this.options.collapseText);
   this.collapsed = false;
 };
-Kitty.ListCollapser.prototype.collapse = function() {
+kitty.ListCollapser.prototype.collapse = function() {
   this.collapsibleLis.addClass("hide");
   this.collapsed = true;
   this.toggleButton.text(this.options.expandText);

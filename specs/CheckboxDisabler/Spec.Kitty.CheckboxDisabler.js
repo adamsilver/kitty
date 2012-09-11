@@ -9,7 +9,7 @@ describe("CheckboxDisabler", function() {
     fixture = $("#fixture");
     originalHtml = fixture.html();
     checkboxes = fixture.find("input[type=checkbox]");
-    checkboxDisabler = new Kitty.CheckboxDisabler(checkboxes, 2);
+    checkboxDisabler = new kitty.CheckboxDisabler(checkboxes, 2);
   });  
   afterEach(function() {
     fixture.html(originalHtml);

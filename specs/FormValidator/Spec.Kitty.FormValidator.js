@@ -1,4 +1,4 @@
-/*global Kitty*/
+/*global kitty*/
 
 describe("Form Validator", function() {
 	jasmine.getFixtures().fixturesPath = '.';
@@ -37,7 +37,7 @@ describe("Form Validator", function() {
 		};
 
 	beforeEach(function() {
-		jasmine.getFixtures().load('Spec.Kitty.FormValidator.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.FormValidator.Fixture1.html');
 		fixture1 = $("#fixture1");
 	});
 
@@ -48,7 +48,7 @@ describe("Form Validator", function() {
 		describe("Without a form argument", function() {
 			it("throws an error", function() {
 				expect(function() {
-					new Kitty.FormValidator();
+					new kitty.FormValidator();
 				}).toThrow(invalidFormElementMessage);
 			});
 		});
@@ -56,7 +56,7 @@ describe("Form Validator", function() {
 		describe("With an invalid form argument", function() {
 			it("throws an error", function() {
 				expect(function() {
-					new Kitty.FormValidator(document.createElement("div"));
+					new kitty.FormValidator(document.createElement("div"));
 				}).toThrow(invalidFormElementMessage);
 			});
 		});
@@ -67,7 +67,7 @@ describe("Form Validator", function() {
 		
 		describe("With non-existant form field", function() {
 			it("throws an error", function() {
-				var formValidator = new Kitty
+				var formValidator = new kitty
 						.FormValidator(document.forms["fixture1"]);
 
 				expect(function() {
@@ -81,7 +81,7 @@ describe("Form Validator", function() {
 								" rules (at least 1).";
 
 			it("throws an error", function() {
-				var formValidator = new Kitty
+				var formValidator = new kitty
 						.FormValidator(document.forms["fixture1"]);
 
 				expect(function() {
@@ -115,7 +115,7 @@ describe("Form Validator", function() {
 
 		describe("With valid params", function() {
 			it("adds the validator to the validators collection", function() {
-				var formValidator = new Kitty
+				var formValidator = new kitty
 						.FormValidator(document.forms["fixture1"]);
 				
 				var rule = {
@@ -135,7 +135,7 @@ describe("Form Validator", function() {
 
 	describe("Validating the form", function() {
 		it("calls the validator method with correct arguments", function() {
-			var formValidator = new Kitty
+			var formValidator = new kitty
 					.FormValidator(document.forms["fixture1"]);
 
 			formValidator.addValidator("username", [rules.usernameInvalid]);
@@ -148,7 +148,7 @@ describe("Form Validator", function() {
 			expect(rules.usernameInvalid.method).toHaveBeenCalled();
 		});
 		it("calls the validator with optional params", function() {
-			var formValidator = new Kitty
+			var formValidator = new kitty
 					.FormValidator(document.forms["fixture1"]);
 
 			formValidator.addValidator("username",
@@ -166,7 +166,7 @@ describe("Form Validator", function() {
 
 		describe("Which contains errors", function() {
 			it("Returns false", function() {
-				var formValidator = new Kitty.FormValidator(document
+				var formValidator = new kitty.FormValidator(document
 						.forms["fixture1"]);
 
 				formValidator.addValidator("username", [rules.usernameInvalid]);
@@ -176,7 +176,7 @@ describe("Form Validator", function() {
 
 		describe("Which contains no errors", function() {
 			it("Returns true", function() {
-				var formValidator = new Kitty.FormValidator(document
+				var formValidator = new kitty.FormValidator(document
 						.forms["fixture1"]);
 				formValidator.addValidator("username", [rules.usernameValid]);
 				expect(formValidator.validate()).toBe(true);
@@ -189,7 +189,7 @@ describe("Form Validator", function() {
 
 		describe("Which doesn't contain errors", function() {
 			it("returns 0 errors", function() {
-				var formValidator = new Kitty.FormValidator(document
+				var formValidator = new kitty.FormValidator(document
 						.forms["fixture1"]);
 				formValidator.addValidator("username", [rules.usernameValid]);
 				formValidator.validate();
@@ -199,7 +199,7 @@ describe("Form Validator", function() {
 
 		describe("Which contains errors", function() {
 			it("returns the errors", function() {
-				var formValidator = new Kitty.FormValidator(document
+				var formValidator = new kitty.FormValidator(document
 						.forms["fixture1"]);
 
 				formValidator.addValidator("username", [rules.usernameInvalid]);
@@ -217,7 +217,7 @@ describe("Form Validator", function() {
 		describe("When a validator has more than one failed rule", function() {
 			it("Only returns the first erroneous rule in the errors collection",
 				function() {
-					var formValidator = new Kitty
+					var formValidator = new kitty
 					.FormValidator(document.forms["fixture1"]);
 
 					formValidator.addValidator("username", [rules
@@ -232,7 +232,7 @@ describe("Form Validator", function() {
 		describe("When validating the form for a second time", function() {
 			// so that errors don't keep on rising and/or contain duplicates
 			it("Resets the errors before validating", function() {
-				var formValidator = new Kitty.FormValidator(document
+				var formValidator = new kitty.FormValidator(document
 						.forms["fixture1"]);
 
 				formValidator.addValidator("username", [rules.usernameInvalid]);
@@ -246,7 +246,7 @@ describe("Form Validator", function() {
 
 	describe("Removing a validator", function() {
 		it("Removes the validator", function() {
-			var formValidator = new Kitty.FormValidator(document
+			var formValidator = new kitty.FormValidator(document
 					.forms["fixture1"]);
 
 			formValidator.addValidator("username", [{
@@ -269,7 +269,7 @@ describe("Form Validator", function() {
 
 	describe("Removing a rule from a validator", function() {
 		it("Removes the rule", function() {
-			var formValidator = new Kitty.FormValidator(document
+			var formValidator = new kitty.FormValidator(document
 					.forms["fixture1"]);
 			
 			formValidator.addValidator("username", [{

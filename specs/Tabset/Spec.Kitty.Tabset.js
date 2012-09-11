@@ -14,7 +14,7 @@ describe("Tabset", function() {
     
     it("Hides all tab panels except for the first", function() {
       var container = $("#tabs");
-      var tabset = new Kitty.Tabset(container);      
+      var tabset = new kitty.Tabset(container);      
       expect($("#panel1").hasClass("hide")).toBe(false);
       expect($("#panel2").hasClass("hide")).toBe(true);
       expect($("#panel3").hasClass("hide")).toBe(true);
@@ -27,7 +27,7 @@ describe("Tabset", function() {
     
     it("Hides the active panel and displays the new panel", function() {
       var container = $("#tabs");
-      var tabset = new Kitty.Tabset(container);      
+      var tabset = new kitty.Tabset(container);      
       $("a[href$='#panel2']").trigger("click");
       expect($("#panel1").hasClass("hide")).toBe(true);
       expect($("#panel2").hasClass("hide")).toBe(false);      
@@ -35,7 +35,7 @@ describe("Tabset", function() {
 
     it("Highlights the tab link and unhighlights previously active link", function() {
       var container = $("#tabs");
-      var tabset = new Kitty.Tabset(container);     
+      var tabset = new kitty.Tabset(container);     
       var link2 = $("a[href$='#panel2']");
       var link3 = $("a[href$='#panel3']");
       
@@ -51,7 +51,7 @@ describe("Tabset", function() {
     
     it("Removes the events from the tab links", function() {
       var container = $("#tabs");
-      var tabset = new Kitty.Tabset(container);
+      var tabset = new kitty.Tabset(container);
       tabset.destroy();
       var link2 = $("a[href='#panel2']");
       link2.click();
@@ -62,7 +62,7 @@ describe("Tabset", function() {
     
     it("Displays all the panels", function() {
       var container = $("#tabs");
-      var tabset = new Kitty.Tabset(container);			
+      var tabset = new kitty.Tabset(container);			
       tabset.destroy();
       expect($("#panel1").hasClass("hide")).toBe(false);  
       expect($("#panel2").hasClass("hide")).toBe(false);  

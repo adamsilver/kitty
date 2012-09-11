@@ -1,4 +1,4 @@
-describe("Kitty.Router", function() {
+describe("kitty.Router", function() {
 	
 	function changeLocation(newLocation) {
 		document.location.hash = newLocation;
@@ -11,7 +11,7 @@ describe("Kitty.Router", function() {
 	describe("Reacting to a particular route", function() {
 		it("Fires the callback with url params", function() {
 			var callback = jasmine.createSpy();
-			var router = new Kitty.Router();
+			var router = new kitty.Router();
 			router.route("/some/path/:some_param/", callback);
 			changeLocation("/some/path/123/");
 			waits(0);
@@ -23,7 +23,7 @@ describe("Kitty.Router", function() {
 
 		it("Fires callback with query string params", function() {
 			var callback = jasmine.createSpy();
-			var router = new Kitty.Router();
+			var router = new kitty.Router();
 			router.route("/some/path/", callback);
 			changeLocation("/some/path/?some_qs_param=woop");
 			waits(0);

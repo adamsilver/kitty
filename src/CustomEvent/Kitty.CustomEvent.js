@@ -1,14 +1,14 @@
 /**
  * @namespace
  */
-var Kitty = Kitty || {};
+var kitty = kitty || {};
 
 /**
  * Typical publish subscribe object
  * @class
  * @constructor
  */
-Kitty.CustomEvent = function() {
+kitty.CustomEvent = function() {
   this.subscribers = [];
 }
 
@@ -17,11 +17,11 @@ Kitty.CustomEvent = function() {
  * @param  {Function} fn The function that is called when the event is published
  * @return {[type]}      [description]
  */
-Kitty.CustomEvent.prototype.subscribe = function(fn) {
+kitty.CustomEvent.prototype.subscribe = function(fn) {
   this.subscribers.push(fn);
 }
 
-Kitty.CustomEvent.prototype.unSubscribe = function(fn) {
+kitty.CustomEvent.prototype.unSubscribe = function(fn) {
   for(var i = 0; i < this.subscribers.length; i++) {
     if(this.subscribers[i] === fn) {
       this.subscribers.pop(i, 1);
@@ -30,7 +30,7 @@ Kitty.CustomEvent.prototype.unSubscribe = function(fn) {
   }
 }
 
-Kitty.CustomEvent.prototype.publish = function() {
+kitty.CustomEvent.prototype.publish = function() {
   for(var i = this.subscribers.length-1; i>=0; i--) {
     try {
       this.subscribers[i].apply(this, arguments);

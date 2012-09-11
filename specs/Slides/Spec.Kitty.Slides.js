@@ -8,7 +8,7 @@ describe("Slides", function () {
   var paginationLinks = null;
 
   beforeEach(function () {
-    jasmine.getFixtures().load('Spec.Kitty.Slides.Fixture1.html');
+    jasmine.getFixtures().load('Spec.kitty.Slides.Fixture1.html');
     fixture1 = $("#slides");
     items = fixture1.find(".items .item");
   });
@@ -16,7 +16,7 @@ describe("Slides", function () {
   describe("Creating a new carousel", function () {
     describe("Without options", function () {
       beforeEach(function () {
-        slides = new Kitty.Slides(fixture1);
+        slides = new kitty.Slides(fixture1);
       });
       it("Has default delay", function () {
         expect(slides.options.delay).toBe(400);
@@ -25,7 +25,7 @@ describe("Slides", function () {
 
     describe("With options", function () {
       beforeEach(function () {
-        slides = new Kitty.Slides(fixture1, {
+        slides = new kitty.Slides(fixture1, {
           delay: 1000
         });
       });
@@ -37,7 +37,7 @@ describe("Slides", function () {
     describe("With more than one item", function () {
       beforeEach(function () {
         jasmine.Clock.useMock();
-        slides = new Kitty.Slides(fixture1);
+        slides = new kitty.Slides(fixture1);
         paginationLinks = fixture1.find(".pagination a");
       })
       it("Creates pagination 'dots'", function () {
@@ -68,7 +68,7 @@ describe("Slides", function () {
 
   describe("Clicking pagination 'dot'", function () {
     beforeEach(function () {
-      slides = new Kitty.Slides(fixture1);
+      slides = new kitty.Slides(fixture1);
       paginationLinks = fixture1.find(".pagination a");
     });
     it("Cancels default behaviour", function () {

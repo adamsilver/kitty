@@ -10,13 +10,13 @@ describe("Star Rating", function() {
 
 	// has checked radio
 	function setupFixture1() {
-		jasmine.getFixtures().load('Spec.Kitty.StarRating.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.StarRating.Fixture1.html');
 		commonSetup();
 	}
 
 	// doesn't have checked radio
 	function setupFixture2() {
-		jasmine.getFixtures().load('Spec.Kitty.StarRating.Fixture2.html');
+		jasmine.getFixtures().load('Spec.kitty.StarRating.Fixture2.html');
 		commonSetup();
 	}
 
@@ -24,7 +24,7 @@ describe("Star Rating", function() {
 		radioContainers = $(".radio");
 		radios = $(".radio input");
 		labels = $(".radio label");
-		starRating = new Kitty.StarRating(radioContainers);
+		starRating = new kitty.StarRating(radioContainers);
 	}
 
 	describe("Creating a new Star Rating control", function() {

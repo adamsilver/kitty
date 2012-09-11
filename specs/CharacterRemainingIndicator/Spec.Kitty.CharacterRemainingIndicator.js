@@ -13,22 +13,22 @@ describe("CharacterRemainingIndicator", function() {
   describe("Creating an instance", function() {
     describe("No specified field", function() {
       it("Throws an error", function() {
-        expect(function() { new Kitty.CharacterRemainingIndicator() }).toThrow("Provide a valid input.");  
+        expect(function() { new kitty.CharacterRemainingIndicator() }).toThrow("Provide a valid input.");  
       });
     });
     describe("Invalid field (not a textarea of input)", function() {
       it("Throws an error", function() {
-        expect(function() { new Kitty.CharacterRemainingIndicator({}) }).toThrow("Provide a valid input.");
+        expect(function() { new kitty.CharacterRemainingIndicator({}) }).toThrow("Provide a valid input.");
       });
     });
     describe("Invalid input type (not text/password", function() {
       it("Throws an error", function() {
-        expect(function() { new Kitty.CharacterRemainingIndicator($('<input type="radio"/>')[0]) }).toThrow("Provide a valid input.");
+        expect(function() { new kitty.CharacterRemainingIndicator($('<input type="radio"/>')[0]) }).toThrow("Provide a valid input.");
       });
     });
     describe("With no options", function() {
       it("Has the correct defaults", function() {
-        var remaining = new Kitty.CharacterRemainingIndicator(textarea);        
+        var remaining = new kitty.CharacterRemainingIndicator(textarea);        
         expect(remaining.options.maxLength).toBe(100);
         expect(remaining.options.textBefore).toBe("You have ");
         expect(remaining.options.textAfter).toBe(" characters remaining.");
@@ -36,13 +36,13 @@ describe("CharacterRemainingIndicator", function() {
         expect(remaining.options.indicator.hasClass("indicator")).toBe(true);
       });
       it("Appends the indicator node to the parent of the field.", function() {
-        var remaining = new Kitty.CharacterRemainingIndicator(textarea);
+        var remaining = new kitty.CharacterRemainingIndicator(textarea);
         expect($("#fixture").find("div.indicator")[0]).toBeTruthy();
       });
     });
     
     it("Sets the indicator html", function() {
-      var remaining = new Kitty.CharacterRemainingIndicator(textarea);
+      var remaining = new kitty.CharacterRemainingIndicator(textarea);
       expect($("#fixture").find("div.indicator").html()).toBe(remaining.options.textBefore + "100" + remaining.options.textAfter);
     });
     
@@ -50,7 +50,7 @@ describe("CharacterRemainingIndicator", function() {
       it("Overrides the options.", function() {
         var indicator = $("<div class='adam'></div>");
         $("#fixture").append(indicator);
-        var remaining = new Kitty.CharacterRemainingIndicator(textarea, {
+        var remaining = new kitty.CharacterRemainingIndicator(textarea, {
           textBefore: "Yo before",
           textAfter: "Yo after",
           maxLength: 94,
@@ -67,7 +67,7 @@ describe("CharacterRemainingIndicator", function() {
   
   describe("Entering text", function() {
     it("Updates the indicator to display the remaining character count", function() {   
-      var remaining = new Kitty.CharacterRemainingIndicator(textarea);
+      var remaining = new kitty.CharacterRemainingIndicator(textarea);
       var $textarea = $(textarea);
       var $indicator = $textarea.parent().find("div.indicator");
       
@@ -81,7 +81,7 @@ describe("CharacterRemainingIndicator", function() {
   
   describe("Deleting text", function() {
     it("Updates the indicator to display the remaining character count", function() {
-      var remaining = new Kitty.CharacterRemainingIndicator(textarea);
+      var remaining = new kitty.CharacterRemainingIndicator(textarea);
       var $textarea = $(textarea);
       var $indicator = $textarea.parent().find("div.indicator");
       

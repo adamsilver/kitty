@@ -1,17 +1,17 @@
-var Kitty = Kitty || {};
+var kitty = kitty || {};
 
-Kitty.CheckboxDisabler = function(checkboxes, limit) {
+kitty.CheckboxDisabler = function(checkboxes, limit) {
   this.checkboxes = checkboxes;
   this.limit = limit;
   $(this.checkboxes).bind("change", $.proxy(this.handleCheckbox_onChange, this));
   this.checkState();
 };
 
-Kitty.CheckboxDisabler.prototype.handleCheckbox_onChange = function(e) {
+kitty.CheckboxDisabler.prototype.handleCheckbox_onChange = function(e) {
   this.checkState();
 };
 
-Kitty.CheckboxDisabler.prototype.checkState = function() {
+kitty.CheckboxDisabler.prototype.checkState = function() {
   var checkboxesChecked = 0;
   for(var i = 0; i < this.checkboxes.length; i++) {
     if(this.checkboxes[i].checked) {
@@ -27,7 +27,7 @@ Kitty.CheckboxDisabler.prototype.checkState = function() {
   }
 };
 
-Kitty.CheckboxDisabler.prototype.disableRemaining = function() {
+kitty.CheckboxDisabler.prototype.disableRemaining = function() {
   for(var i = 0; i < this.checkboxes.length; i++) {
     if(!this.checkboxes[i].checked) {
       $(this.checkboxes[i]).attr("disabled", true);
@@ -35,12 +35,12 @@ Kitty.CheckboxDisabler.prototype.disableRemaining = function() {
   }
 };
 
-Kitty.CheckboxDisabler.prototype.enableRemaining = function() {
+kitty.CheckboxDisabler.prototype.enableRemaining = function() {
   for(var i = 0; i < this.checkboxes.length; i++) {
     this.checkboxes[i].disabled = false;
   }
 };
 
-Kitty.CheckboxDisabler.prototype.destroy = function() {
+kitty.CheckboxDisabler.prototype.destroy = function() {
   $(this.checkboxes).unbind("change", this.handleCheckbox_onChange);
 };

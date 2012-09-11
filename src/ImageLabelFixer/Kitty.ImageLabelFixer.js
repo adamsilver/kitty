@@ -1,9 +1,9 @@
-var Kitty = Kitty || {};
-Kitty.ImageLabelFixer = function(img) {
+var kitty = kitty || {};
+kitty.ImageLabelFixer = function(img) {
 	this.img = img;
 	this.img.on("click", $.proxy(this, "handleImg_onClick"));
 };
-Kitty.ImageLabelFixer.prototype.handleImg_onClick = function(e) {
+kitty.ImageLabelFixer.prototype.handleImg_onClick = function(e) {
 	var relatedElement = $("#"+this.img.parents("label").attr("for"));
 	switch(relatedElement[0].tagName.toLowerCase()) {
 		case "textarea":

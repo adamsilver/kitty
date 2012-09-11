@@ -7,9 +7,9 @@ describe("Tooltip", function() {
 	var tooltipContent = '<div class="tooltipContent">Content</div>';
 
 	beforeEach(function() {
-		jasmine.getFixtures().load('Spec.Kitty.Tooltip.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.Tooltip.Fixture1.html');
 		activator = $("#activator");
-		tooltip = new Kitty.Tooltip(activator, tooltipContent);
+		tooltip = new kitty.Tooltip(activator, tooltipContent);
 	});
 
 	afterEach(function() {

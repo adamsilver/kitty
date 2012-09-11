@@ -3,7 +3,7 @@ describe("CustomEvent", function() {
   describe("subscribe", function() {
     
     it("adds a subscriber to it's collection", function() {
-      var event = new Kitty.CustomEvent();
+      var event = new kitty.CustomEvent();
       var myFunc = function() {};
       event.subscribe(myFunc);      
       expect(event.subscribers[0]).toBe(myFunc);
@@ -14,7 +14,7 @@ describe("CustomEvent", function() {
   describe("unSubscribe", function() {
     
     it("removes the subscriber from it's collection", function() {
-      var event = new Kitty.CustomEvent();
+      var event = new kitty.CustomEvent();
       var myFunc = function() {};
       event.subscribe(myFunc);
       event.unSubscribe(myFunc);
@@ -26,7 +26,7 @@ describe("CustomEvent", function() {
   describe("publish", function() {
     
     it("invokes each of the subscribers with params", function() {
-      var event = new Kitty.CustomEvent();
+      var event = new kitty.CustomEvent();
       
       var fns = {
         fn1: function() {},
@@ -49,7 +49,7 @@ describe("CustomEvent", function() {
     describe("and one of the subscribers throws an error", function () {
       
       it("proceeds to invoke all the other subscribers", function() {
-        var event = new Kitty.CustomEvent();
+        var event = new kitty.CustomEvent();
       
         var fns = {
           fn1: function() {

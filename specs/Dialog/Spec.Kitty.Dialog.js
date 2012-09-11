@@ -5,7 +5,7 @@ describe("Dialog", function() {
   describe("Without an overlay/mask/screen", function() {
     
     beforeEach(function() {
-      dialog = new Kitty.Dialog();
+      dialog = new kitty.Dialog();
       dialogElement = $(".dialog");
     });
 
@@ -81,7 +81,7 @@ describe("Dialog", function() {
     }
 
     beforeEach(function() {
-      dialog = new Kitty.Dialog({ overlay: overlayMock });
+      dialog = new kitty.Dialog({ overlay: overlayMock });
     });
       
     afterEach(function() {    

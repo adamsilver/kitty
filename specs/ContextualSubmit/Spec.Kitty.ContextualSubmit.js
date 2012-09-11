@@ -7,10 +7,10 @@ describe("Contextual Submit", function() {
 		submitButton = null;
 
 	beforeEach(function() {
-		jasmine.getFixtures().load('Spec.Kitty.ContextualSubmit.Fixture1.html');
+		jasmine.getFixtures().load('Spec.kitty.ContextualSubmit.Fixture1.html');
 		field = $("#someField");
 		submitButton = $("#submitButton");
-		contextualSubmit = new Kitty.ContextualSubmit(field, submitButton);
+		contextualSubmit = new kitty.ContextualSubmit(field, submitButton);
 	});
 
 	describe("Focusing on field", function() {

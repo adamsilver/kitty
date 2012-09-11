@@ -24,10 +24,10 @@ describe("Image Label Fixer", function() {
 		describe("That relates to textarea", function() {
 			var textarea = null;
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture3.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture3.html');
 				img = $("label img");
 				textarea = $("#textarea1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should receive focus", function() {
 				img.trigger("click");
@@ -37,10 +37,10 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a text input", function() {
 			var textInput = null;
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture4.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture4.html');
 				img = $("label img");
 				textInput = $("#textInput1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should receive focus", function() {
 				img.trigger("click");
@@ -50,10 +50,10 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a password input", function() {
 			var passwordInput = null;
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture5.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture5.html');
 				img = $("label img");
 				passwordInput = $("#passwordInput1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should receive focus", function() {
 				img.trigger("click");
@@ -63,10 +63,10 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a select", function() {
 			var selectInput = null;
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture6.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture6.html');
 				img = $("label img");
 				selectInput = $("#select1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should receive focus", function() {
 				img.trigger("click");
@@ -77,10 +77,10 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a radio input", function() {	
 			var radio = null;		
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture1.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture1.html');
 				img = $("label img");
 				radio = $("#radio1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should check the radio", function() {
 				img.trigger("click");
@@ -97,10 +97,10 @@ describe("Image Label Fixer", function() {
 		describe("The relates to a checkbox input", function() {
 			var checkbox = null;
 			beforeEach(function() {
-				jasmine.getFixtures().load('Spec.Kitty.ImageLabelFixer.Fixture2.html');
+				jasmine.getFixtures().load('Spec.kitty.ImageLabelFixer.Fixture2.html');
 				img = $("label img");
 				checkbox = $("#checkbox1");
-				imageLabelFixer = new Kitty.ImageLabelFixer(img);
+				imageLabelFixer = new kitty.ImageLabelFixer(img);
 			});
 			it("Should check the checkbox", function() {
 				img.trigger("click");

@@ -7,7 +7,7 @@ describe("DropDownMenu", function() {
   var topLevelLinks = null;
 
   beforeEach(function() {
-    jasmine.getFixtures().load('Spec.Kitty.DropDownMenu.Fixture1.html');
+    jasmine.getFixtures().load('Spec.kitty.DropDownMenu.Fixture1.html');
     container = $("#dropDownMenu");
     topLevelLinks = container.find("ul > li > a");
   });
@@ -15,7 +15,7 @@ describe("DropDownMenu", function() {
   describe("Creating a new Drop Down Menu", function() {
     describe("With options", function() {
       it("overrides the hide class", function() {
-        menu = new Kitty.DropDownMenu(container, {cssHide: "offScreen"});
+        menu = new kitty.DropDownMenu(container, {cssHide: "offScreen"});
         var link = topLevelLinks.filter(":eq(0)");
         link.trigger("mouseenter"); // show to setup DOM state
         link.parents("li").trigger("mouseleave");
@@ -27,7 +27,7 @@ describe("DropDownMenu", function() {
 
   describe("Hovering over a top level link", function() {    
     it("Displays the sub menu", function() {
-      menu = new Kitty.DropDownMenu(container);
+      menu = new kitty.DropDownMenu(container);
       var link = topLevelLinks.filter(":eq(0)");
       link.trigger("mouseenter");
       var subMenu = link.parents("li").find("div.subMenu");
@@ -37,7 +37,7 @@ describe("DropDownMenu", function() {
   
   describe("Move the mouse off the list item", function() {    
     it("Hides the sub menu", function() {
-       menu = new Kitty.DropDownMenu(container);
+       menu = new kitty.DropDownMenu(container);
        var link = topLevelLinks.filter(":eq(0)");
        link.trigger("mouseenter"); // show to setup DOM state
        link.parents("li").trigger("mouseleave");
@@ -48,7 +48,7 @@ describe("DropDownMenu", function() {
   
   describe("Tabbing to a top level menu item", function() {    
     it("Displays the menu", function() {
-      menu = new Kitty.DropDownMenu(container);
+      menu = new kitty.DropDownMenu(container);
       var link = topLevelLinks.filter(":eq(0)");
       link.trigger("focus");
       var subMenu = link.parents("li").find("div.subMenu");
@@ -58,7 +58,7 @@ describe("DropDownMenu", function() {
   
   describe("Tabbing away from a top level menu item", function() {    
     it("Hides the sub menu", function() {
-      menu = new Kitty.DropDownMenu(container);
+      menu = new kitty.DropDownMenu(container);
       var link = topLevelLinks.filter(":eq(0)");
       link.trigger("focus"); // show to setup DOM state
       link.trigger("blur");
@@ -69,7 +69,7 @@ describe("DropDownMenu", function() {
 
   describe("Tabbing to a sub menu link", function() {
     it("Displays the menu", function() {
-      menu = new Kitty.DropDownMenu(container);
+      menu = new kitty.DropDownMenu(container);
       var subMenu = container.find("div.subMenu:eq(0)");
       var link = subMenu.find("a:eq(0)");
       link.trigger("focus");
@@ -79,7 +79,7 @@ describe("DropDownMenu", function() {
 
   describe("Tabbing away from a sub menu link", function() {
     it("Hides the menu", function() {
-      menu = new Kitty.DropDownMenu(container);
+      menu = new kitty.DropDownMenu(container);
       var subMenu = container.find("div.subMenu:eq(0)");
       var link = subMenu.find("a:eq(0)");
       link.trigger("focus"); // show to setup DOM state

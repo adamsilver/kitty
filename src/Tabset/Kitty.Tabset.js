@@ -1,5 +1,5 @@
-var Kitty = Kitty || {};
-Kitty.Tabset = function(container) {
+var kitty = kitty || {};
+kitty.Tabset = function(container) {
   this.cssActive = "active";
   this.cssHide = "hide";
   this.links = container.find("a.tabActivator");
@@ -9,7 +9,7 @@ Kitty.Tabset = function(container) {
   container.find("a.tabActivator:first").addClass(this.cssActive);
   this.links.bind("click", $.proxy(this.handleLink_onClick, this));
 };
-Kitty.Tabset.prototype.handleLink_onClick = function(e) {
+kitty.Tabset.prototype.handleLink_onClick = function(e) {
   e.preventDefault();
   var link = $(e.target);
   var panel = $(this.getHref(link));
@@ -18,13 +18,13 @@ Kitty.Tabset.prototype.handleLink_onClick = function(e) {
   panel.removeClass(this.cssHide);
   link.addClass(this.cssActive);
 };
-Kitty.Tabset.prototype.destroy = function() {
+kitty.Tabset.prototype.destroy = function() {
   this.panels.removeClass(this.cssHide);
   this.links.unbind("click", this.handleLink_onClick);
 };
 // this is because IE doesn't always return the actual value but a relative full path
 // http://labs.thesedays.com/blog/2010/01/08/getting-the-href-value-with-jquery-in-ie/
-Kitty.Tabset.prototype.getHref = function(link) {
+kitty.Tabset.prototype.getHref = function(link) {
   var href = link.attr("href");
   href = href.slice(href.indexOf("#"),href.length);
   return href;

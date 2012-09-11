@@ -1,19 +1,19 @@
-var Kitty = Kitty || {};
-Kitty.Router = function() {
+var kitty = kitty || {};
+kitty.Router = function() {
 	this.routes = {};
 
 	var win = $(window);
   win.hashchange($.proxy(this.handleHashChange, this));
   win.hashchange();
 };
-Kitty.Router.prototype.getHash = function() {
+kitty.Router.prototype.getHash = function() {
 	// strip '#'
 	return document.location.hash.substr(1);
 };
-Kitty.Router.prototype.handleHashChange = function() {
+kitty.Router.prototype.handleHashChange = function() {
 	this.fireRoute(this.getHash());
 };
-Kitty.Router.prototype.fireRoute = function(url) {
+kitty.Router.prototype.fireRoute = function(url) {
 	var matches, urlFound, routes = this.routes, route;
   for(var key in routes) {
     route = routes[key];
@@ -27,14 +27,14 @@ Kitty.Router.prototype.fireRoute = function(url) {
     }
   }
 };
-Kitty.Router.prototype.route = function(route, callback) {
+kitty.Router.prototype.route = function(route, callback) {
 	this.routes[route] = {
 		regex: this.createRegexForRoute(route),
 		callbacks: [callback],
 		route: route
 	}
 };
-Kitty.Router.prototype.getParamsFromRoute = function(route, url) {
+kitty.Router.prototype.getParamsFromRoute = function(route, url) {
 	var urlParams = {};
   var paramsMatcher = /:([\w\d]+)/g;
   paramsMatcher.lastIndex = 0; // ie bug - check out sammy
@@ -80,7 +80,7 @@ Kitty.Router.prototype.getParamsFromRoute = function(route, url) {
   
   return { urlParams: urlParams, queryStringParams: qs };
 };
-Kitty.Router.prototype.createRegexForRoute = function(route) {
+kitty.Router.prototype.createRegexForRoute = function(route) {
 	if(typeof route !== "string") return route;
   
   // replace last / with empty string i.e. remove final slash if present

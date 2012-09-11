@@ -1,6 +1,6 @@
-var Kitty = Kitty || {};
+var kitty = kitty || {};
 
-Kitty.DefaultText = function(input) {
+kitty.DefaultText = function(input) {
   if(!input) {
     throw "Provide an input.";
   }
@@ -10,11 +10,11 @@ Kitty.DefaultText = function(input) {
   input.bind("blur", $.proxy(this.handleInput_onBlur));
 };
 
-Kitty.DefaultText.prototype.handleInput_onFocus = function(e) {
+kitty.DefaultText.prototype.handleInput_onFocus = function(e) {
   $(e.target).val("");
 };
 
-Kitty.DefaultText.prototype.handleInput_onBlur = function(e) {
+kitty.DefaultText.prototype.handleInput_onBlur = function(e) {
   var input = $(e.target);
   var defaultValue = input.prop("defaultValue");
   var newValue = input.val();
@@ -23,7 +23,7 @@ Kitty.DefaultText.prototype.handleInput_onBlur = function(e) {
   }
 };
 
-Kitty.DefaultText.prototype.teardown = function() {
+kitty.DefaultText.prototype.teardown = function() {
   this.input.unbind("focus");
   this.input.unbind("blur");
 };

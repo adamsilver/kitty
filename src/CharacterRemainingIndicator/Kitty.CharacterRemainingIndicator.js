@@ -1,6 +1,6 @@
-var Kitty = Kitty || {};
+var kitty = kitty || {};
 
-Kitty.CharacterRemainingIndicator = function(field, options) {
+kitty.CharacterRemainingIndicator = function(field, options) {
   this.field = field;
   if(!this.checkValidField(field)) {
     throw "Provide a valid input.";
@@ -24,7 +24,7 @@ Kitty.CharacterRemainingIndicator = function(field, options) {
   
 };
 
-Kitty.CharacterRemainingIndicator.prototype.checkValidField = function(field) {
+kitty.CharacterRemainingIndicator.prototype.checkValidField = function(field) {
   if(!field || !field.tagName) {
     return false;
   }
@@ -37,11 +37,11 @@ Kitty.CharacterRemainingIndicator.prototype.checkValidField = function(field) {
   return true;
 };
 
-Kitty.CharacterRemainingIndicator.prototype.handleField_onChange = function(e) {
+kitty.CharacterRemainingIndicator.prototype.handleField_onChange = function(e) {
   var remainingCharacterCount = this.options.maxLength - this.field.value.length;
   this.setIndicator(remainingCharacterCount);
 };
 
-Kitty.CharacterRemainingIndicator.prototype.setIndicator = function(remainingCharacterCount) {
+kitty.CharacterRemainingIndicator.prototype.setIndicator = function(remainingCharacterCount) {
   this.options.indicator.html(this.options.textBefore + remainingCharacterCount + this.options.textAfter);
 };

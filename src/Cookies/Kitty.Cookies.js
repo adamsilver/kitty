@@ -1,5 +1,5 @@
-var Kitty = Kitty || {};
-Kitty.Cookies = {
+var kitty = kitty || {};
+kitty.Cookies = {
   create: function(name, value, days) {
     var expires = "";
     if (days) {
