@@ -15,8 +15,8 @@ describe("Accordion", function() {
     fixture.html(originalHtml);
   });
   
-  describe("creating a new accordion", function() {    
-    it("closes all the panels except for the first", function() {         
+  describe("creating a new accordion", function() {
+    it("closes all the panels except for the first", function() {
       expect($(panels[0]).css("display")).toBe("block");
       expect($(panels[1]).css("display")).toBe("none");
       expect($(panels[2]).css("display")).toBe("none");
