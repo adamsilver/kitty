@@ -18,7 +18,7 @@ describe("Accordion", function() {
 		mockFirstPanel = jasmine.createSpyObj('mockFirstPanel', [
 			'css'
 		]);
-		mockPanels.filter.andCallFake(function(selector) {
+		mockPanels.filter.and.callFake(function(selector) {
 			if (selector === ":gt(0)") {
 				return mockFirstPanel;
 			}
@@ -26,7 +26,7 @@ describe("Accordion", function() {
 		mockActivators = jasmine.createSpyObj('mockActivators', [
 			'bind'
 		]);
-		mockContainer.find.andCallFake(function(selector) {
+		mockContainer.find.and.callFake(function(selector) {
 			if (selector === ".panel") {
 				return mockPanels;
 			}
@@ -35,7 +35,7 @@ describe("Accordion", function() {
 			}
 		});
 		mockProxyHandleActivatorClick = function() {};
-		spyOn($, 'proxy').andCallFake(function(fn) {
+		spyOn($, 'proxy').and.callFake(function(fn) {
 			if (fn === kitty.Accordion.prototype.handleActivator_onClick) {
 				return mockProxyHandleActivatorClick;
 			}
@@ -46,16 +46,16 @@ describe("Accordion", function() {
 		beforeEach(function() {
 			accordion = new kitty.Accordion(mockContainer);
 		});
-		it("Creates a public member for the container", function() {
+		it("Stores the container on the instance", function() {
 			expect(accordion.container).toBe(mockContainer);
 		});
-		it("Assigns a public member for the panels", function() {
+		it("Stores the panels on the instance", function() {
 			expect(accordion.panels).toBe(mockPanels);
 		});
 		it("Finds the panels", function() {
 			expect(mockContainer.find).toHaveBeenCalledWith('.panel');
 		});
-		it("Assigns a public member for the activators", function() {
+		it("Stores the links (activators) on the instance", function() {
 			expect(accordion.links).toBe(mockActivators);
 		});
 		it("Finds the activators", function() {
@@ -65,11 +65,11 @@ describe("Accordion", function() {
 			expect(mockPanels.filter).toHaveBeenCalledWith(":gt(0)");
 			expect(mockFirstPanel.css).toHaveBeenCalledWith("display", "none");
 		});
-		it("Listens for a click even on the activators", function() {
+		it("Listens for a click event on the activators", function() {
 			expect($.proxy).toHaveBeenCalledWith(accordion.handleActivator_onClick, accordion);
 			expect(mockActivators.bind).toHaveBeenCalledWith("click", mockProxyHandleActivatorClick);
 		});
-		it("Assigns a publc member currentlyOpenPanelIndex of zero", function() {
+		it("Stores the currentlyOpenPanelIndex on the instance", function() {
 			expect(accordion.currentlyOpenPanelIndex).toBe(0);
 		});
 	});

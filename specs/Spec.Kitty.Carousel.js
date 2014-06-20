@@ -25,8 +25,8 @@ describe("Carousel", function() {
 	});
 
 
-	describe("Moving the carousel backwards", function() {
-		it("Moves the carousel backwards.", function() {
+	xdescribe("Moving the carousel backwards", function() {
+		it("Moves the carousel backwards.", function(done) {
 			var carousel = new kitty.Carousel($carousel);
 			carousel.moveBackwards();
 			waits(450);
@@ -41,7 +41,7 @@ describe("Carousel", function() {
 		});
 	});
 
-	describe("Moving the carousel forwards", function() {
+	xdescribe("Moving the carousel forwards", function() {
 		it("Moves the carousel forwards.", function() {
 			var carousel = new kitty.Carousel($carousel);
 			carousel.moveForwards();

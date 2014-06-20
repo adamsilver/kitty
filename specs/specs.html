@@ -3,12 +3,16 @@
   <head>
     <title>kitty.Accordion</title>
     <link rel="stylesheet" type="text/css" href="../src/vendor/Jasmine/jasmine.css">
+
     <script type="text/javascript" src="../src/vendor/Jasmine/jasmine.js"></script>
     <script type="text/javascript" src="../src/vendor/Jasmine/jasmine-html.js"></script>
-    <script type="text/javascript" src="../src/vendor/Jasmine/jasmine-jquery.js"></script>
+    <script type="text/javascript" src="../src/vendor/Jasmine/boot.js"></script>
+
     <script type="text/javascript" src="../src/vendor/jQuery/jQuery.js"></script>
+    <script type="text/javascript" src="../src/vendor/Jasmine/jasmine-jquery.js"></script>
     <script type="text/javascript" src="../src/vendor/jQuery/jQuery.UnDelimit.js"></script>
     <script type="text/javascript" src="../src/vendor/jQuery/jQuery.HashChange.js"></script>
+
     <script src="../src/kitty/kitty.js"></script>
     <script src="../src/kitty/kitty.Accordion.js"></script>
     <script src="../src/kitty/kitty.Carousel.js"></script>
@@ -35,60 +39,10 @@
     <script src="../src/kitty/kitty.Tooltip.js"></script>
     <script src="../src/kitty/kitty.TreeMenu.js"></script>
     <script src="../src/kitty/kitty.Utils.js"></script>
-    <style>
-      .carousel {
-        width: 400px;
-      }
-
-      .carousel .clip {
-        overflow: hidden;
-        position: relative;
-      }
-
-      .carousel .clip .items {
-        position: relative;
-        overflow: hidden;
-        left: 0;
-      }
-
-      .carousel .clip .items .item {
-        width: 200px;
-        float: left;
-      }
-
-    </style>
-    <style>
-      .hide {
-        display: none;
-      }
-    </style>
-    <style>
-      .offScreen {
-        /*position: absolute;
-        left: -9999em;
-        top: 0;*/
-      }
-
-      .highlight{
-        background-color: yellow;
-      }
-    </style>
-    <style>
-      .offScreen {
-        position: absolute;
-        left: -9999em !important;
-        top: 0 !important;
-      }
-
-      .tooltip {
-        position: absolute;
-        border: 1px solid red;
-      }
-    </style>
   </head>
   <body>
 
-    <div id="fixture">
+    <!-- <div id="fixture">
       <div id="accordion">
         <div><a class="activator" href="#panel1">Panel 1</a></div>
         <div id="panel1" class="panel"><p>Panel 1</p><p>Panel 1</p></div>
@@ -97,8 +51,8 @@
         <div><a class="activator" href="#panel3">Panel 3</a></div>
         <div id="panel3" class="panel"><p>Panel 3</p><p>Panel 3</p></div>
       </div>
-    </div>
-
+    </div> -->
+<!--
     <div id="fixture2">
       <div class="carousel">
         <div class="clip">
@@ -133,10 +87,10 @@
 
     <div id="fixture5">
       Inner text<SPAN CLASS="myClass"></SPAN><a href="#">Dude</a>
-    </div>
+    </div> -->
 
     <script src="Spec.kitty.Accordion.js"></script>
-    <script src="Spec.kitty.Carousel.js"></script>
+    <!--<script src="Spec.kitty.Carousel.js"></script>
     <script src="Spec.kitty.CharacterRemainingIndicator.js"></script>
     <script src="Spec.kitty.CheckboxDisabler.js"></script>
     <script src="Spec.kitty.ContextualSubmit.js"></script>
@@ -147,9 +101,9 @@
     <script src="Spec.kitty.DropDownMenu.js"></script>
     <script src="Spec.kitty.FieldHighlighter.js"></script>
     <script src="Spec.kitty.FormValidator.js"></script>
-    <script src="Spec.kitty.GoogleMap.js"></script>
+    <script src="Spec.kitty.GoogleMap.js"></script>-->
     <!--[if (IE 6)|(IE 7)]><script src="Spec.kitty.ImageLabelFixer.js"></script><![endif]-->
-    <script src="Spec.kitty.ImageRollover.js"></script>
+    <!--<script src="Spec.kitty.ImageRollover.js"></script>
     <script src="Spec.kitty.ListCollapser.js"></script>
     <script src="Spec.kitty.NotificationMessageDisplay.js"></script>
     <script src="Spec.kitty.Overlay.js"></script>
@@ -160,10 +114,7 @@
     <script src="Spec.kitty.Tabset.js"></script>
     <script src="Spec.kitty.Tooltip.js"></script>
     <script src="Spec.kitty.TreeMenu.js"></script>
-    <script src="Spec.kitty.Utils.js"></script>
-    <script type="text/javascript">
-      jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-      jasmine.getEnv().execute();
-    </script>
+    <script src="Spec.kitty.Utils.js"></script>-->
+
   </body>
 </html>
