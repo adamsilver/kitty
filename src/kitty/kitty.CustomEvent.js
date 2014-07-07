@@ -9,7 +9,7 @@
  */
 kitty.CustomEvent = function() {
 	this.subscribers = [];
-}
+};
 
 /**
  * Subscribe to an event
@@ -18,7 +18,7 @@ kitty.CustomEvent = function() {
  */
 kitty.CustomEvent.prototype.subscribe = function(fn) {
 	this.subscribers.push(fn);
-}
+};
 
 kitty.CustomEvent.prototype.unSubscribe = function(fn) {
 	for (var i = 0; i < this.subscribers.length; i++) {
@@ -27,7 +27,7 @@ kitty.CustomEvent.prototype.unSubscribe = function(fn) {
 			break;
 		}
 	}
-}
+};
 
 kitty.CustomEvent.prototype.publish = function() {
 	for (var i = this.subscribers.length - 1; i >= 0; i--) {
@@ -35,4 +35,4 @@ kitty.CustomEvent.prototype.publish = function() {
 			this.subscribers[i].apply(this, arguments);
 		} catch (e) {}
 	}
-}
+};
