@@ -1,77 +1,78 @@
-/*global kitty*/
-
 describe("Form Validator", function() {
-	jasmine.getFixtures().fixturesPath = '.';
 
-	var fixture1 = null,
-		invalidMethod = function() {
-			return false;
+	var validator;
+	var mockForm;
+
+	var invalidMethod = function() {
+		return false;
+	};
+	var validMethod = function() {
+		return true;
+	};
+	var rules = {
+		passwordInvalid: {
+			method: invalidMethod,
+			message: "bad"
 		},
-		validMethod = function() {
-			return true;
+		usernameInvalid: {
+			method: invalidMethod,
+			message: "bad"
 		},
-		rules = {
-			passwordInvalid: {
-				method: invalidMethod,
-				message: "bad"
-			},
-			usernameInvalid: {
-				method: invalidMethod,
-				message: "bad"
-			},
-			usernameInvalid2: {
-				method: invalidMethod,
-				message: "very bad"
-			},
-			usernameInvalidWithParams: {
-				method: invalidMethod,
-				message: "bad",
-				params: {
-					whatever: 1
-				}
-			},
-			usernameValid: {
-				method: validMethod,
-				message: "Yay"
+		usernameInvalid2: {
+			method: invalidMethod,
+			message: "very bad"
+		},
+		usernameInvalidWithParams: {
+			method: invalidMethod,
+			message: "bad",
+			params: {
+				whatever: 1
 			}
-		};
+		},
+		usernameValid: {
+			method: validMethod,
+			message: "Yay"
+		}
+	};
 
-	beforeEach(function() {
-		jasmine.getFixtures().load('Spec.kitty.FormValidator.Fixture1.html');
-		fixture1 = $("#fixture1");
+	beforeEach(function () {
+		mockForm = {
+			elements: {
+				username: {},
+				password: {}
+			}
+		}
 	});
 
 	var invalidFormElementMessage = 'Must be a form element.';
 
 	describe("Creating a new form validator", function() {
-		
-		describe("Without a form argument", function() {
-			it("throws an error", function() {
-				expect(function() {
-					new kitty.FormValidator();
-				}).toThrow(invalidFormElementMessage);
-			});
-		});
-		
-		describe("With an invalid form argument", function() {
-			it("throws an error", function() {
-				expect(function() {
-					new kitty.FormValidator(document.createElement("div"));
-				}).toThrow(invalidFormElementMessage);
-			});
+		beforeEach(function () {
+			validator = new kitty.FormValidator(mockForm);
 		});
 
+		it("Stores the form as a property on the instance", function () {
+			expect(validator.form).toBe(mockForm);
+		});
+		it("Stores an empty errors array on the instance", function () {
+			expect(validator.errors).toBeDefined();
+			expect(validator.errors.length).toBe(0);
+		});
+		it("Stores an empty validators array on the instance", function () {
+			expect(validator.validators).toBeDefined();
+			expect(validator.validators.length).toBe(0);
+
+		});
 	});
 
 	describe("Adding a validator", function() {
-		
+
 		describe("With non-existant form field", function() {
-			it("throws an error", function() {
-				var formValidator = new kitty
-						.FormValidator(document.forms["fixture1"]);
+			it("Throws an error", function() {
+				validator = new kitty.FormValidator(mockForm);
 
 				expect(function() {
-					formValidator.addValidator();
+					validator.addValidator();
 				}).toThrow("Invalid form field.");
 			});
 		});
@@ -81,17 +82,17 @@ describe("Form Validator", function() {
 								" rules (at least 1).";
 
 			it("throws an error", function() {
-				var formValidator = new kitty
-						.FormValidator(document.forms["fixture1"]);
+				validator = new kitty
+						.FormValidator(mockForm);
 
 				expect(function() {
-					formValidator.addValidator("username");
+					validator.addValidator("username");
 				}).toThrow(errorMessage);
 				expect(function() {
-					formValidator.addValidator("username", []);
+					validator.addValidator("username", []);
 				}).toThrow(errorMessage);
 				expect(function() {
-					formValidator
+					validator
 							.addValidator("username", [{
 								method: function() {
 
@@ -99,12 +100,12 @@ describe("Form Validator", function() {
 							}]);
 				}).toThrow(errorMessage);
 				expect(function() {
-					formValidator.addValidator("username", [{
+					validator.addValidator("username", [{
 						message: "error"
 					}]);
 				}).toThrow(errorMessage);
 				expect(function() {
-					formValidator.addValidator("username", [{
+					validator.addValidator("username", [{
 						message: true,
 						method: function() {
 						}
@@ -115,48 +116,45 @@ describe("Form Validator", function() {
 
 		describe("With valid params", function() {
 			it("adds the validator to the validators collection", function() {
-				var formValidator = new kitty
-						.FormValidator(document.forms["fixture1"]);
-				
+				validator = new kitty.FormValidator(mockForm);
+
 				var rule = {
 					method: function() {
 						return true;
 					},
 					message: "bad username"
 				};
-				
-				formValidator.addValidator("username", [rule]);
-				expect(formValidator.validators[0].fieldName).toBe("username");
-				expect(formValidator.validators[0].rules[0]).toBe(rule);
+
+				validator.addValidator("username", [rule]);
+				expect(validator.validators[0].fieldName).toBe("username");
+				expect(validator.validators[0].rules[0]).toBe(rule);
 			});
 		});
 
 	});
 
 	describe("Validating the form", function() {
-		it("calls the validator method with correct arguments", function() {
-			var formValidator = new kitty
-					.FormValidator(document.forms["fixture1"]);
+		it("Calls the validator method with correct arguments", function() {
+			validator = new kitty
+					.FormValidator(mockForm);
 
-			formValidator.addValidator("username", [rules.usernameInvalid]);
+			validator.addValidator("username", [rules.usernameInvalid]);
 			spyOn(rules.usernameInvalid, "method");
-			formValidator.validate();
-			var args = rules.usernameInvalid.method.mostRecentCall.args;
+			validator.validate();
+			var args = rules.usernameInvalid.method.calls.mostRecent().args;
 			var firstArgument = args[0];
-			var field = document.forms["fixture1"].elements["username"];
+			var field = mockForm.elements["username"];
 			expect(firstArgument).toBe(field);
 			expect(rules.usernameInvalid.method).toHaveBeenCalled();
 		});
 		it("calls the validator with optional params", function() {
-			var formValidator = new kitty
-					.FormValidator(document.forms["fixture1"]);
+			validator = new kitty.FormValidator(mockForm);
 
-			formValidator.addValidator("username",
-						[rules.usernameInvalidWithParams]);
+			validator.addValidator("username", [rules.usernameInvalidWithParams]);
 
 			spyOn(rules.usernameInvalidWithParams, "method");
-			formValidator.validate();
-			var args = rules.usernameInvalidWithParams.method.mostRecentCall
+			validator.validate();
+			var args = rules.usernameInvalidWithParams.method.calls.mostRecent()
 					.args;
 			var secondArgument = args[1];
 			expect(secondArgument).toBe(rules.usernameInvalidWithParams.params);
@@ -166,20 +164,18 @@ describe("Form Validator", function() {
 
 		describe("Which contains errors", function() {
 			it("Returns false", function() {
-				var formValidator = new kitty.FormValidator(document
-						.forms["fixture1"]);
+				validator = new kitty.FormValidator(mockForm);
 
-				formValidator.addValidator("username", [rules.usernameInvalid]);
-				expect(formValidator.validate()).toBe(false);
+				validator.addValidator("username", [rules.usernameInvalid]);
+				expect(validator.validate()).toBe(false);
 			});
 		});
 
 		describe("Which contains no errors", function() {
 			it("Returns true", function() {
-				var formValidator = new kitty.FormValidator(document
-						.forms["fixture1"]);
-				formValidator.addValidator("username", [rules.usernameValid]);
-				expect(formValidator.validate()).toBe(true);
+				validator = new kitty.FormValidator(mockForm);
+				validator.addValidator("username", [rules.usernameValid]);
+				expect(validator.validate()).toBe(true);
 			});
 		});
 
@@ -189,23 +185,21 @@ describe("Form Validator", function() {
 
 		describe("Which doesn't contain errors", function() {
 			it("returns 0 errors", function() {
-				var formValidator = new kitty.FormValidator(document
-						.forms["fixture1"]);
-				formValidator.addValidator("username", [rules.usernameValid]);
-				formValidator.validate();
-				expect(formValidator.getErrors().length).toBe(0);
+				validator = new kitty.FormValidator(mockForm);
+				validator.addValidator("username", [rules.usernameValid]);
+				validator.validate();
+				expect(validator.getErrors().length).toBe(0);
 			});
 		});
 
 		describe("Which contains errors", function() {
 			it("returns the errors", function() {
-				var formValidator = new kitty.FormValidator(document
-						.forms["fixture1"]);
+				validator = new kitty.FormValidator(mockForm);
 
-				formValidator.addValidator("username", [rules.usernameInvalid]);
-				formValidator.addValidator("password", [rules.passwordInvalid]);
-				formValidator.validate();
-				var errors = formValidator.getErrors();
+				validator.addValidator("username", [rules.usernameInvalid]);
+				validator.addValidator("password", [rules.passwordInvalid]);
+				validator.validate();
+				var errors = validator.getErrors();
 				expect(errors.length).toBe(2);
 				expect(errors[0].fieldName).toBe("username");
 				expect(errors[0].message).toBe(rules.usernameInvalid.message);
@@ -217,14 +211,14 @@ describe("Form Validator", function() {
 		describe("When a validator has more than one failed rule", function() {
 			it("Only returns the first erroneous rule in the errors collection",
 				function() {
-					var formValidator = new kitty
-					.FormValidator(document.forms["fixture1"]);
+					validator = new kitty
+					.FormValidator(mockForm);
 
-					formValidator.addValidator("username", [rules
+					validator.addValidator("username", [rules
 						.usernameInvalid, rules.usernameInvalid2]);
 
-					formValidator.validate();
-					var errors = formValidator.getErrors();
+					validator.validate();
+					var errors = validator.getErrors();
 					expect(errors.length).toBe(1);
 			});
 		});
@@ -232,13 +226,12 @@ describe("Form Validator", function() {
 		describe("When validating the form for a second time", function() {
 			// so that errors don't keep on rising and/or contain duplicates
 			it("Resets the errors before validating", function() {
-				var formValidator = new kitty.FormValidator(document
-						.forms["fixture1"]);
+				validator = new kitty.FormValidator(mockForm);
 
-				formValidator.addValidator("username", [rules.usernameInvalid]);
-				formValidator.validate();
-				formValidator.validate(); // for a second time
-				expect(formValidator.getErrors().length).toBe(1); // not 2
+				validator.addValidator("username", [rules.usernameInvalid]);
+				validator.validate();
+				validator.validate(); // for a second time
+				expect(validator.getErrors().length).toBe(1); // not 2
 			});
 		});
 
@@ -246,33 +239,31 @@ describe("Form Validator", function() {
 
 	describe("Removing a validator", function() {
 		it("Removes the validator", function() {
-			var formValidator = new kitty.FormValidator(document
-					.forms["fixture1"]);
+			validator = new kitty.FormValidator(mockForm);
 
-			formValidator.addValidator("username", [{
+			validator.addValidator("username", [{
 				method: function() {
 					return true;
 				},
 				message: "username blah"
 			}]);
-			formValidator.addValidator("password", [{
+			validator.addValidator("password", [{
 				method: function() {
 					return true;
 				},
 				message: "password blah"
 			}]);
-			formValidator.removeValidator("username");
-			expect(formValidator.validators.length).toBe(1);
-			expect(formValidator.validators[0].fieldName).not.toBe("username");
+			validator.removeValidator("username");
+			expect(validator.validators.length).toBe(1);
+			expect(validator.validators[0].fieldName).not.toBe("username");
 		});
 	});
 
 	describe("Removing a rule from a validator", function() {
 		it("Removes the rule", function() {
-			var formValidator = new kitty.FormValidator(document
-					.forms["fixture1"]);
-			
-			formValidator.addValidator("username", [{
+			validator = new kitty.FormValidator(mockForm);
+
+			validator.addValidator("username", [{
 					method: validMethod,
 					message: "username blah"
 				},
@@ -280,9 +271,9 @@ describe("Form Validator", function() {
 					method: function() {},
 					message: "username blah 2"
 			}]);
-			formValidator.removeRuleFromValidator("username", validMethod);
-			expect(formValidator.validators[0].rules.length).toBe(1);
-			expect(formValidator.validators[0].rules[0].method).not
+			validator.removeRuleFromValidator("username", validMethod);
+			expect(validator.validators[0].rules.length).toBe(1);
+			expect(validator.validators[0].rules[0].method).not
 					.toBe(validMethod);
 		});
 	});

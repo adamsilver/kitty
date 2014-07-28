@@ -12,13 +12,6 @@ kitty.FormValidator = function(form) {
 	this.form = form;
 	this.errors = [];
 	this.validators = [];
-	var invalidContainerMessage = "Must be a form element.";
-	if (typeof form === "undefined") {
-		throw invalidContainerMessage;
-	}
-	if (!form.tagName || form.tagName.toLowerCase() !== "form") {
-		throw invalidContainerMessage;
-	}
 };
 
 /**
