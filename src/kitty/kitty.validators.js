@@ -3,7 +3,7 @@ kitty.validators = {
 		return field.value.length > 0;
 	},
 	minLength: function(field, params) {
-		return field.value.length > params.minLength;
+		return field.value.length >= params.minLength;
 	},
 	numbersOnly: function (field) {
 		var regex = /^\d+$|^$/;
