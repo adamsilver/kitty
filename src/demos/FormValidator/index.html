@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Specs</title>
+    </head>
+    <body>
+        <h1>Form Validator</h1>
+
+        <div id="errorSummary"></div>
+
+        <form method="post" action="index.html">
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username">
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="text" name="password" id="password">
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.clone.js"></script>
+        <script src="../../kitty/kitty.inherit.js"></script>
+        <script src="../../kitty/kitty.validators.js"></script>
+        <script src="../../kitty/kitty.FormValidator.js"></script>
+        <script src="DemoFormValidator.js"></script>
+        <script src="LoginFormValidator.js"></script>
+        <script>
+               new LoginFormValidator(document.forms[0]);
+        </script>
+    </body>
+</html>
