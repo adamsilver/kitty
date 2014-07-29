@@ -17,4 +17,19 @@ DemoFormValidator.prototype.setupValidators = function() {
 			message: "Password must contain 8 characters", method: kitty.validators.minLength, params: { minLength: 8 }
 		}
 	]);
+	this.addValidator("colour", [
+		{
+			message: "Must choose a colour",
+			method: function(controls) {
+				var valid = false;
+				for(var i = 0; i < controls.length; i++) {
+					if(controls[i].checked) {
+						valid = true;
+						break;
+					}
+				}
+				return valid;
+			}
+		}
+	])
 };

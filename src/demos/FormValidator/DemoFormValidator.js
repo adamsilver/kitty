@@ -24,10 +24,17 @@ DemoFormValidator.prototype.showFieldErrors = function() {
 	var errors = this.getErrors();
 	for (var i = 0, j = errors.length; i < j; i++) {
 		var error = errors[i];
-		var fieldContainer = $("#" + error.fieldName).parent(".field");
+		var fieldContainer = $("#" + error.fieldName).parents(".field");
+		var label = fieldContainer.find('label');
+		var legend = fieldContainer.find("legend");
 		var errorContainer = fieldContainer.find(".error");
 		errorContainer.remove();
 		fieldContainer.append('<div class="error">'+error.message+'</div>');
+		if(legend.length) {
+			legend.append('<span class="error"> Error</span>');
+		} else {
+			label.append('<span class="error"> Error</span>');
+		}
 	}
 };
 

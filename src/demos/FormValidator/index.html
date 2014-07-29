@@ -2,6 +2,25 @@
 <html>
     <head>
         <title>Specs</title>
+        <style>
+            .field {
+                margin-bottom: 20px;
+            }
+
+            .errorSummary {
+                color: red;
+            }
+
+            .error {
+                color: red;
+            }
+
+            span.error {
+                position: absolute;
+                left: -9999em;
+            }
+
+        </style>
     </head>
     <body>
         <h1>Form Validator</h1>
@@ -16,6 +35,23 @@
             <div class="field">
                 <label for="password">Password</label>
                 <input type="text" name="password" id="password">
+            </div>
+            <div class="field">
+                <fieldset>
+                    <legend>Favourite colour</legend>
+                    <div class="choice">
+                        <label for="colour">Red</label>
+                        <input type="radio" name="colour" id="colour">
+                    </div>
+                    <div class="choice">
+                        <label for="colour2">Blue</label>
+                        <input type="radio" name="colour" id="colour2">
+                    </div>
+                    <div class="choice">
+                        <label for="colour3">Yellow</label>
+                        <input type="radio" name="colour" id="colour3">
+                    </div>
+                </fieldset>
             </div>
             <div>
                 <input type="submit" value="Submit">
