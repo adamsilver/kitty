@@ -23,18 +23,22 @@ DemoFormValidator.prototype.showErrorSummary = function () {
 DemoFormValidator.prototype.showFieldErrors = function() {
 	var errors = this.getErrors();
 	for (var i = 0, j = errors.length; i < j; i++) {
-		var error = errors[i];
-		var fieldContainer = $("#" + error.fieldName).parents(".field");
-		var label = fieldContainer.find('label');
-		var legend = fieldContainer.find("legend");
-		var errorContainer = fieldContainer.find(".error");
-		errorContainer.remove();
-		fieldContainer.append('<div class="error">'+error.message+'</div>');
-		if(legend.length) {
-			legend.append('<span class="error"> Error</span>');
-		} else {
-			label.append('<span class="error"> Error</span>');
-		}
+		this.showFieldError(errors[i]);
+	}
+};
+
+DemoFormValidator.prototype.showFieldError = function (error) {
+	var errorSpan = '<span class="error"> Error</span>';
+	var fieldContainer = $("#" + error.fieldName).parents(".field");
+	var label = fieldContainer.find('label');
+	var legend = fieldContainer.find("legend");
+	var errorContainer = fieldContainer.find(".error");
+	errorContainer.remove();
+	fieldContainer.append('<div class="error">'+error.message+'</div>');
+	if(legend.length) {
+		legend.append(errorSpan);
+	} else {
+		label.append(errorSpan);
 	}
 };
 
@@ -48,13 +52,17 @@ DemoFormValidator.prototype.clearErrorSummary = function () {
 
 DemoFormValidator.prototype.getErrorSummaryHtml = function () {
 	var errors = this.getErrors();
-	var html = '';
+	var html = '<p>You have ' + errors.length + ' errors</p>';
 	html += '<ul>';
 	for (var i = 0, j = errors.length; i < j; i++) {
 		var error = errors[i];
-		html += '<li><a class="errorMessageAnchor" href="#' + error.fieldName +
-			'"><span class="errorMessageBody">' + error.message +
-			'</span> - <span class="errorMessageLink">Fix error</span></a></li>';
+		html += '<li>';
+		html += 	'<a class="errorMessageAnchor" href="#' + error.fieldName +	'">';
+		html += 		'<span class="errorMessageBody">' + error.message +	'</span>';
+		html +=			'-';
+		html += 		'<span class="errorMessageLink">Fix error</span>';
+		html +=		'</a>';
+		html +=	'</li>';
 	}
 	html += '</ul>';
 	return html;
