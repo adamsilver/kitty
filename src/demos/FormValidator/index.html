@@ -23,7 +23,7 @@
                 color: red;
             }
 
-            span.error {
+            span.error, #errorSummaryLink {
                 position: absolute;
                 left: -9999em;
             }
@@ -36,6 +36,8 @@
                 color: red;
             }
 
+
+
         </style>
     </head>
     <body>
@@ -43,6 +45,7 @@
 
         <p>Note: error text is injected into labels or legends to aid accessibility. Hidden visually using CSS.</p>
 
+        <a id="errorSummaryLink" href="#">Error Summary</a>
         <div id="errorSummary"></div>
 
         <form method="get" action="http://google.co.uk">

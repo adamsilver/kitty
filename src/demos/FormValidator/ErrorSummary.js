@@ -13,8 +13,7 @@ ErrorSummary.prototype.onErrorClicked = function(e) {
 ErrorSummary.prototype.showErrors = function (errors) {
     this.container.html(this.getErrorHtml(errors));
     this.container.removeClass('hide');
-    document.location.hash = "";
-    document.location.hash = "errorSummary"
+    document.getElementById('errorSummaryLink').focus();
 };
 
 ErrorSummary.prototype.getErrorHtml = function(errors) {
@@ -36,5 +35,4 @@ ErrorSummary.prototype.getErrorHtml = function(errors) {
 
 ErrorSummary.prototype.hideErrors = function() {
     this.container.addClass('hide');
-    document.location.hash = "";
 }
