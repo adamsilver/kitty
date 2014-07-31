@@ -1,6 +1,5 @@
 function DemoFormValidator(form, options) {
 	DemoFormValidator.superConstructor.apply(this, arguments);
-	this.errorSummaryContainer = document.getElementById("errorSummary");
 	$(this.form).on("submit", $.proxy(this, "onFormSubmit"));
 }
 
@@ -8,10 +7,10 @@ kitty.inherit(DemoFormValidator, kitty.FormValidator);
 
 DemoFormValidator.prototype.onFormSubmit = function (e) {
 	this.clearFieldErrors();
-	this.clearErrorSummary();
+	errorSummary.hideErrors();
 	if(!this.validate()) {
 		e.preventDefault();
-		this.showErrorSummary();
+		errorSummary.showErrors(this.getErrors());
 		this.showFieldErrors();
 	}
 };
@@ -44,26 +43,4 @@ DemoFormValidator.prototype.showFieldError = function (error) {
 
 DemoFormValidator.prototype.clearFieldErrors = function () {
 	$(this.form).find(".field .error").remove();
-};
-
-DemoFormValidator.prototype.clearErrorSummary = function () {
-	$(this.errorSummaryContainer).empty();
-};
-
-DemoFormValidator.prototype.getErrorSummaryHtml = function () {
-	var errors = this.getErrors();
-	var html = '<p>You have ' + errors.length + ' errors</p>';
-	html += '<ul>';
-	for (var i = 0, j = errors.length; i < j; i++) {
-		var error = errors[i];
-		html += '<li>';
-		html += 	'<a class="errorMessageAnchor" href="#' + error.fieldName +	'">';
-		html += 		'<span class="errorMessageBody">' + error.message +	'</span>';
-		html +=			'-';
-		html += 		'<span class="errorMessageLink">Fix error</span>';
-		html +=		'</a>';
-		html +=	'</li>';
-	}
-	html += '</ul>';
-	return html;
 };
