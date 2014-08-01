@@ -1,8 +1,8 @@
 kitty.ImageLabelFixer = function(img) {
 	this.img = img;
-	this.img.on("click", $.proxy(this, "handleImg_onClick"));
+	this.img.on("click", $.proxy(this, "onImageClicked"));
 };
-kitty.ImageLabelFixer.prototype.handleImg_onClick = function(e) {
+kitty.ImageLabelFixer.prototype.onImageClicked = function(e) {
 	var relatedElement = $("#" + this.img.parents("label").attr("for"));
 	switch (relatedElement[0].tagName.toLowerCase()) {
 		case "textarea":
@@ -16,11 +16,13 @@ kitty.ImageLabelFixer.prototype.handleImg_onClick = function(e) {
 					relatedElement.trigger("focus");
 					break;
 				case "radio":
+                    relatedElement[0].checked = true;
+                    break;
 				case "checkbox":
 					if (relatedElement[0].checked) {
-						relatedElement.prop("checked", false);
+                        relatedElement[0].checked = false;
 					} else {
-						relatedElement.prop("checked", true);
+                        relatedElement[0].checked = true;
 					}
 					break;
 			}
