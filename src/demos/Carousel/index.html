@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Carousel Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            .clip {
+                width: 600px;
+                overflow: hidden;
+            }
+
+            .items {
+                overflow: hidden;
+                position: relative;
+                left: 0;
+            }
+
+            .item {
+                float: left;
+                width: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Carousel</h1>
+
+        <div id="carousel">
+            <div class="clip">
+                <ul class="items">
+                    <li class="item">Item 1</li>
+                    <li class="item">Item 2</li>
+                    <li class="item">Item 3</li>
+                </ul>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.Carousel.js"></script>
+        <script>
+            var carousel = new kitty.Carousel($("#carousel"));
+        </script>
+    </body>
+</html>
