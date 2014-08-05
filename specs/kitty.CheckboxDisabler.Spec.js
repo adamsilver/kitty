@@ -1,40 +1,46 @@
-describe("CheckboxDisabler", function() {
+describe("Checkbox Disabler", function() {
 
-	var fixture;
-	var originalHtml;
-	var checkboxes;
 	var checkboxDisabler;
+    var mockCheckboxes;
+    var mock$Checkboxes;
+    var mockLimit;
+    var mockProxy;
 
 	beforeEach(function() {
-		fixture = $("#fixture3");
-		originalHtml = fixture.html();
-		checkboxes = fixture.find("input[type=checkbox]");
-		checkboxDisabler = new kitty.CheckboxDisabler(checkboxes, 2);
-	});
-	afterEach(function() {
-		fixture.html(originalHtml);
-	});
-	describe("marking the max amount of checkboxes as checked", function() {
-		it("disables the remaining checkboxes", function() {
-			$(checkboxes[0]).trigger("click");
-			$(checkboxes[1]).trigger("click");
-			expect(checkboxes[2].disabled).toBe(true);
-		});
-		describe("and then unmarking a checkbox", function() {
-			it("enables the remaining checkboxes", function() {
-				$(checkboxes[0]).trigger("click");
-				$(checkboxes[1]).trigger("click");
-				$(checkboxes[1]).trigger("click");
-				expect(checkboxes[2].disabled).toBe(false);
-			});
-		});
-	});
-	describe("Destroy", function() {
-		it("removes the event handlers", function() {
-			spyOn($.fn, "unbind");
-			checkboxDisabler.destroy();
-			expect($.fn.unbind).toHaveBeenCalled();
-		})
+        mockCheckboxes = {};
+        mock$Checkboxes = jasmine.createSpyObj('mock$Checkboxes', ['on'])
+        mockLimit = 2;
+        mockProxy = {};
+        spyOn(window, "$").and.callFake(function (selector) {
+            if(selector === mockCheckboxes) {
+                return mock$Checkboxes;
+            }
+        });
+        spyOn($, "proxy").and.returnValue(mockProxy);
+        spyOn(kitty.CheckboxDisabler.prototype, "checkState");
+        checkboxDisabler = new kitty.CheckboxDisabler(mockCheckboxes, mockLimit);
 	});
 
+    describe('Creating a checkbox disabler', function () {
+        it('Creates a checkboxes property', function () {
+            expect(checkboxDisabler.checkboxes).toBe(mockCheckboxes);
+        });
+        it('Creates a limit property', function () {
+            expect(checkboxDisabler.limit).toBe(mockLimit);
+        });
+        it('Listens to the checkbox change event', function () {
+            expect($).toHaveBeenCalledWith(mockCheckboxes);
+            expect($.proxy).toHaveBeenCalledWith(jasmine.any(Object), "checkboxChanged");
+        });
+        it('Checks the state of the checkboxes', function () {
+            expect(kitty.CheckboxDisabler.prototype.checkState).toHaveBeenCalled();
+        });
+    });
+
+    describe('Checkbox change event fires', function () {
+        it('Checks the state of the checkboxes', function () {
+            expect(kitty.CheckboxDisabler.prototype.checkState).toHaveBeenCalled();
+        });
+    });
+    
 });

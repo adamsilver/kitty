@@ -1,11 +1,11 @@
 kitty.CheckboxDisabler = function(checkboxes, limit) {
 	this.checkboxes = checkboxes;
 	this.limit = limit;
-	$(this.checkboxes).bind("change", $.proxy(this.handleCheckbox_onChange, this));
+	$(this.checkboxes).on("change", $.proxy(this, "checkboxChanged"));
 	this.checkState();
 };
 
-kitty.CheckboxDisabler.prototype.handleCheckbox_onChange = function(e) {
+kitty.CheckboxDisabler.prototype.checkboxChanged = function(e) {
 	this.checkState();
 };
 
