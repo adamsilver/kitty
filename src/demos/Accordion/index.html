@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Carousel Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <h1>Accordion</h1>
+
+        <div id="accordion">
+            <div>
+                <a href="#panel1" class="activator">Panel 1</a>
+                <div id="panel1" class="panel">Stuff</div>
+            </div>
+            <div>
+                <a href="#panel2" class="activator">Panel 2</a>
+                <div id="panel2" class="panel">Stuff</div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.Accordion.js"></script>
+        <script>
+            var accordion = new kitty.Accordion($("#accordion"), {
+                startCollapsed: true
+            });
+        </script>
+    </body>
+</html>
