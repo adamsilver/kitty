@@ -2,8 +2,7 @@ kitty.Accordion = function(container, options) {
 	this.options = this.getOptions(options);
 	this.container = container;
 	this.panels = container.find(".panel");
-	this.links = container.find("a.activator");
-	this.currentlyOpenPanelIndex = null;
+	this.currentlyOpenPanelIndex = -1;
 	if(this.options.startCollapsed) {
 		this.panels.css("display", "none");
 	} else {
@@ -11,7 +10,7 @@ kitty.Accordion = function(container, options) {
 		this.currentlyOpenPanelIndex = 0;
 	}
 
-	this.links.on("click", $.proxy(this.onActivatorClicked, this));	
+	this.container.on("click", ".activator", $.proxy(this.onActivatorClicked, this));	
 };
 
 kitty.Accordion.prototype.getOptions = function(options) {
@@ -48,11 +47,4 @@ kitty.Accordion.prototype.hideCurrentlyOpenPanel = function() {
 	}, {
 		duration: 300
 	});
-};
-
-kitty.Accordion.prototype.destroy = function() {
-	for(var i = 0; i < this.panels.length; i++) {
-		this.panels[i].removeAttribute("style");
-	}
-	this.links.unbind("click", this.onActivatorClicked);
 };
