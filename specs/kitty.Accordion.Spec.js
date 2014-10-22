@@ -15,7 +15,8 @@ describe("Accordion", function() {
 		mockPanels = jasmine.createSpyObj('mockPanels', [
 			'filter',
 			'removeAttr',
-			'css'
+			'css',
+			'index'
 		]);
 		mockFirstPanel = jasmine.createSpyObj('mockFirstPanel', [
 			'css'
@@ -90,6 +91,44 @@ describe("Accordion", function() {
 	});
 
 	describe("Panel activated", function() {
+
+		describe("Generally", function() {
+
+			var mockEvent;
+			var mockPanel;
+
+			beforeEach(function() {
+				mockEvent = {
+					target: {
+						href: "blah#yo"
+					},
+					preventDefault: jasmine.createSpy()
+				};
+
+				mockPanel = jasmine.createSpyObj("mockPanel", ["css", "animate"]);
+
+				accordion = new kitty.Accordion(mockContainer);
+				spyOn(window, "$").and.callFake(function(selector){
+					if(selector === "#yo") {
+						return mockPanel;
+					}
+				});
+				spyOn(accordion, "isPanelHidden");
+				spyOn(accordion, "hideCurrentlyOpenPanel");
+				spyOn(accordion, "hidePanel");
+				spyOn(accordion, "showPanel");
+				accordion.onActivatorClicked(mockEvent);
+			});
+
+			it("Preents the default action", function() {
+				expect(mockEvent.preventDefault).toHaveBeenCalled();
+			});
+
+			it("Retrieves the associated panel", function() {
+				expect($).toHaveBeenCalledWith("#yo");
+			});
+
+		});
 
 		xdescribe("Panel is currently closed");
 		xdescribe("Panel is currently open");

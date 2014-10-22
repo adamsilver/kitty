@@ -5,6 +5,20 @@
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            .activator {
+                display: block;
+                padding: 10px;
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+            }
+
+            .stuffInsidePanel {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+        </style>
     </head>
     <body>
         <h1>Accordion</h1>
@@ -12,11 +26,15 @@
         <div id="accordion">
             <div>
                 <a href="#panel1" class="activator">Panel 1</a>
-                <div id="panel1" class="panel">Stuff</div>
+                <div id="panel1" class="panel">
+                    <div class="stuffInsidePanel">Stuff 1</div>
+                </div>
             </div>
             <div>
                 <a href="#panel2" class="activator">Panel 2</a>
-                <div id="panel2" class="panel">Stuff</div>
+                <div id="panel2" class="panel">
+                    <div class="stuffInsidePanel">Stuff 1</div>
+                </div>
             </div>
         </div>
 
