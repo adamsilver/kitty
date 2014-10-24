@@ -6,45 +6,59 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
+
             .activator {
                 display: block;
                 padding: 10px;
-                border: 1px solid #ccc;
+                background-color: #f5f5f5;
                 margin-bottom: 10px;
             }
 
             .stuffInsidePanel {
-                border: 1px solid #ccc;
+                background-color: #ff0;
                 padding: 10px;
                 margin-bottom: 10px;
             }
+
+            .expanded {
+                background-color: #444;
+                color: #fff;
+            }
+
         </style>
     </head>
     <body>
         <h1>Accordion</h1>
 
         <div id="accordion">
-            <div>
-                <a href="#panel1" class="activator">Panel 1</a>
+            <div class="panelContainer" data-id="1">
+                <a href="#panel1" class="activator" data-id="1">Panel 1</a>
                 <div id="panel1" class="panel">
                     <div class="stuffInsidePanel">Stuff 1</div>
                 </div>
             </div>
-            <div>
-                <a href="#panel2" class="activator">Panel 2</a>
+            <div class="panelContainer" data-id="2">
+                <a href="#panel2" class="activator" data-id="2">Panel 2</a>
                 <div id="panel2" class="panel">
-                    <div class="stuffInsidePanel">Stuff 1</div>
+                    <div class="stuffInsidePanel">Stuff 2</div>
+                </div>
+            </div>
+            <div class="panelContainer" data-id="3">
+                <a href="#panel3" class="activator" data-id="3">Panel 3</a>
+                <div id="panel3" class="panel">
+                    <div class="stuffInsidePanel">Stuff 2</div>
                 </div>
             </div>
         </div>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.clone.js"></script>
+        <script src="../../kitty/kitty.inherit.js"></script>
+        <script src="../../kitty/kitty.CustomEvent.js"></script>
         <script src="../../kitty/kitty.Accordion.js"></script>
         <script>
-            var accordion = new kitty.Accordion($("#accordion"), {
-                startCollapsed: true
-            });
+            var accordion = new kitty.Accordion($("#accordion"));
         </script>
     </body>
 </html>

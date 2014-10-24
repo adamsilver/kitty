@@ -1,66 +1,102 @@
-kitty.Accordion = function(container, options) {
-	this.animationDuration = 100;
-	this.options = this.getOptions(options);
+kitty.Accordion = function(container) {
 	this.container = container;
-	this.panels = container.find(".panel");
-	this.currentlyOpenPanelIndex = -1;
-	if(this.options.startCollapsed) {
-		this.panels.css("display", "none");
-	} else {
-		this.panels.filter(":gt(0)").css("display", "none");
-		this.currentlyOpenPanelIndex = 0;
-	}
+	this.links = container.find('.activator');
+	this.panels = container.find('.panelContainer');
+	this.activeSectionIndex = -1;
+	this.sections = {};
+	this.container.on('click', '.activator', $.proxy(this, 'onActivatorClicked'));	
+	this.setupAccordionSections();
+}
 
-	this.container.on("click", ".activator", $.proxy(this.onActivatorClicked, this));	
+kitty.Accordion.prototype.setupAccordionSections = function() {
+	var panelContainer;
+	var section;
+
+	for(var i = 0; i < this.panels.length; i++) {
+		//link = $(this.links[i]);
+		panelContainer = $(this.panels[i]);
+		section = new kitty.Accordion.AccordionSection(panelContainer);
+		section.index = i;
+		this.sections[panelContainer.attr('data-id')] = section;
+		section.events.opened.subscribe($.proxy(this, 'onOpened'));
+		section.events.closed.subscribe($.proxy(this, 'onClosed'));
+	}
 };
 
-kitty.Accordion.prototype.getOptions = function(options) {
-	var options = options || {};
-	options.startCollapsed = options.startCollapsed || false;
-	return options;
+kitty.Accordion.prototype.onOpened = function(section) {
+	this.activeSectionIndex = section.index;
+};
+
+kitty.Accordion.prototype.onClosed = function(section) {
+	this.activeSectionIndex = -1;
 };
 
 kitty.Accordion.prototype.onActivatorClicked = function(e) {
 	e.preventDefault();
-	var link = e.target;
-	this.activatePanel(link);
+	var id = $(e.target).attr('data-id');
+	var section = this.sections[id];	
+	var activeSection = this.getActiveSection();	
+	if(activeSection) {
+		activeSection.slideShut();
+	}
+	section.toggle();
 };
 
-kitty.Accordion.prototype.activatePanel = function(link) {
-	var href = link.href;
-	var panel;
-	href = href.substr(href.indexOf("#"), href.length);
-	panel = $(href);
+kitty.Accordion.prototype.getActiveSection = function() {
+	var activeSection = null;
+	if(this.activeSectionIndex >= 0) {
+		for(var section in this.sections) {
+			if (this.sections.hasOwnProperty(section)) {
+				if(this.sections[section].showing) {
+					activeSection = this.sections[section];
+				}
+			}
+		}
+	}
+	return activeSection;
+};
 
-	if(this.isPanelHidden(panel)) {
-		this.hideCurrentlyOpenPanel();
-		this.showPanel(panel);
+kitty.Accordion.AccordionSection = function(panelContainer) {
+	this.showing = true;
+	this.animationDuration = 100;
+	this.link = panelContainer.find('.activator');
+	this.panel = panelContainer.find('.panel');;
+	this.events = {
+		opened: new kitty.CustomEvent(),
+		closed: new kitty.CustomEvent()
+	};
+	this.hide();
+}
+
+kitty.Accordion.AccordionSection.prototype.toggle = function() {
+	if(this.showing) {
+		this.slideShut();
 	} else {
-		this.hidePanel(panel);
+		this.slideOpen();
 	}
 };
 
-kitty.Accordion.prototype.showPanel = function(panel) {
-	panel.animate({	"height": "show" }, { duration: this.animationDuration, complete: $.proxy(this, "onShowAnimationComplete", panel)});
+kitty.Accordion.AccordionSection.prototype.slideOpen = function() {
+	this.panel.animate({ 'height': 'show' }, { duration: this.animationDuration, complete: $.proxy(this, 'onSlideOpenCompleted', this.panel)});
 };
 
-kitty.Accordion.prototype.onShowAnimationComplete = function(panel) {
-	this.currentlyOpenPanelIndex = this.panels.index(panel);
+kitty.Accordion.AccordionSection.prototype.onSlideOpenCompleted = function() {
+	this.showing = true;
+	this.events.opened.publish(this);
+	this.link.addClass('expanded');
 };
 
-kitty.Accordion.prototype.hidePanel = function(panel) {
-	panel.animate({ "height": "hide" }, { duration: this.animationDuration, complete: $.proxy(this, "onHideAnimationComplete") });
+kitty.Accordion.AccordionSection.prototype.slideShut = function() {
+	this.panel.animate({ 'height': 'hide' }, { duration: this.animationDuration, complete: $.proxy(this, 'onSlideShutCompleted', this.panel)});
 };
 
-kitty.Accordion.prototype.onHideAnimationComplete = function(panel) {
-	this.currentlyOpenPanelIndex = -1;
+kitty.Accordion.AccordionSection.prototype.onSlideShutCompleted = function() {
+	this.showing = false;
+	this.events.closed.publish(this);
+	this.link.removeClass('expanded');
 };
 
-kitty.Accordion.prototype.isPanelHidden = function(panel) {
-	return this.panels.index(panel) != this.currentlyOpenPanelIndex;
-};
-
-kitty.Accordion.prototype.hideCurrentlyOpenPanel = function() {
-	var currentlyOpenPanel = this.panels.filter(":eq(" + this.currentlyOpenPanelIndex + ")")
-	this.hidePanel(currentlyOpenPanel);
+kitty.Accordion.AccordionSection.prototype.hide = function() {
+	this.showing = false;
+	this.panel.css('display', 'none');
 };
