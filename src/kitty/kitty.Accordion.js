@@ -13,7 +13,6 @@ kitty.Accordion.prototype.setupAccordionSections = function() {
 	var section;
 
 	for(var i = 0; i < this.panels.length; i++) {
-		//link = $(this.links[i]);
 		panelContainer = $(this.panels[i]);
 		section = new kitty.Accordion.AccordionSection(panelContainer);
 		section.index = i;
@@ -59,7 +58,7 @@ kitty.Accordion.prototype.getActiveSection = function() {
 kitty.Accordion.AccordionSection = function(panelContainer) {
 	this.showing = true;
 	this.animationDuration = 100;
-	this.link = panelContainer.find('.activator');
+	this.panelContainer = panelContainer;
 	this.panel = panelContainer.find('.panel');;
 	this.events = {
 		opened: new kitty.CustomEvent(),
@@ -83,7 +82,7 @@ kitty.Accordion.AccordionSection.prototype.slideOpen = function() {
 kitty.Accordion.AccordionSection.prototype.onSlideOpenCompleted = function() {
 	this.showing = true;
 	this.events.opened.publish(this);
-	this.link.addClass('expanded');
+	this.panelContainer.addClass('expanded');
 };
 
 kitty.Accordion.AccordionSection.prototype.slideShut = function() {
@@ -93,7 +92,7 @@ kitty.Accordion.AccordionSection.prototype.slideShut = function() {
 kitty.Accordion.AccordionSection.prototype.onSlideShutCompleted = function() {
 	this.showing = false;
 	this.events.closed.publish(this);
-	this.link.removeClass('expanded');
+	this.panelContainer.removeClass('expanded');
 };
 
 kitty.Accordion.AccordionSection.prototype.hide = function() {
