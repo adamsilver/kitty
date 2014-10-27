@@ -4,6 +4,10 @@ kitty.Accordion = function(container) {
 	this.panels = container.find('.panelContainer');
 	this.activeSectionIndex = 0;
 	this.sections = {};
+	this.events = {
+		panelClosed: new kitty.CustomEvent(),
+		panelOpened: new kitty.CustomEvent()
+	};
 	this.container.on('click', '.activator', $.proxy(this, 'onActivatorClicked'));	
 	this.setupAccordionSections();
 }
@@ -27,10 +31,12 @@ kitty.Accordion.prototype.setupAccordionSections = function() {
 
 kitty.Accordion.prototype.onOpened = function(section) {
 	this.activeSectionIndex = section.index;
+	this.events.panelOpened.publish(section);
 };
 
 kitty.Accordion.prototype.onClosed = function(section) {
 	this.activeSectionIndex = -1;
+	this.events.panelClosed.publish(section);
 };
 
 kitty.Accordion.prototype.onActivatorClicked = function(e) {
@@ -67,6 +73,7 @@ kitty.Accordion.AccordionSection = function(panelContainer) {
 		opened: new kitty.CustomEvent(),
 		closed: new kitty.CustomEvent()
 	};
+	this.panelContainer.addClass('expanded');
 }
 
 kitty.Accordion.AccordionSection.prototype.toggle = function() {
@@ -100,4 +107,5 @@ kitty.Accordion.AccordionSection.prototype.onSlideShutCompleted = function() {
 kitty.Accordion.AccordionSection.prototype.hide = function() {
 	this.showing = false;
 	this.panel.css('display', 'none');
+	this.panelContainer.removeClass('expanded');
 };
