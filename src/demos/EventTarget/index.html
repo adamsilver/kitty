@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EventTarget Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    </head>
+    <body>
+        <h1>EventTarget</h1>
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.clone.js"></script>
+        <script src="../../kitty/kitty.inherit.js"></script>
+        <script src="../../kitty/kitty.EventTarget.js"></script>
+        <script>
+
+            var Adam = function() {
+                Adam.superConstructor.apply(this, arguments);
+            };
+
+            kitty.inherit(Adam, kitty.EventTarget);
+
+            Adam.prototype.yeah = function() {
+                this.fire("adam", "was", "here");
+            };
+
+            var eventTarget = new kitty.EventTarget();
+            eventTarget.on("blah", function(a, b) {
+                console.log(this, a, b);
+            }, {adam: 1});
+            eventTarget.fire("blah", "a", "b");
+
+        </script>
+    </body>
+</html>
