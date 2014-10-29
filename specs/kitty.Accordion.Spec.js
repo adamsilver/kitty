@@ -28,7 +28,7 @@ describe("Accordion", function() {
 		});
 		
 		mockContainer.find.and.callFake(function(selector) {
-			if (selector === ".panel") {
+			if (selector === ".panelContainer") {
 				return mockPanels;
 			}
 		});
@@ -41,98 +41,25 @@ describe("Accordion", function() {
 	});
 
 	describe("Creating an accordion", function() {
-
-		describe("Default settings (starts with first open)", function() {
-			beforeEach(function() {			
-				accordion = new kitty.Accordion(mockContainer);
-			});
-			it("Sets the startsCollapsed option to false", function() {
-				expect(accordion.options.startCollapsed).toBe(false);
-			});
-			it("Stores the container on the instance", function() {
-				expect(accordion.container).toBe(mockContainer);
-			});
-			it("Stores the panels on the instance", function() {
-				expect(accordion.panels).toBe(mockPanels);
-			});
-			it("Finds the panels", function() {
-				expect(mockContainer.find).toHaveBeenCalledWith('.panel');
-			});
-			it("Hides all panels but the first panel", function() {
-				expect(mockPanels.filter).toHaveBeenCalledWith(":gt(0)");
-				expect(mockFirstPanel.css).toHaveBeenCalledWith("display", "none");
-			});
-			it("Listens for a click event on the activators", function() {
-				expect($.proxy).toHaveBeenCalledWith(accordion.onActivatorClicked, accordion);
-				expect(mockContainer.on).toHaveBeenCalledWith("click", ".activator", mockProxyHandleActivatorClick);
-			});
-			it("Stores the currentlyOpenPanelIndex on the instance", function() {
-				expect(accordion.currentlyOpenPanelIndex).toBe(0);
-			});
+		
+		beforeEach(function() {			
+			accordion = new kitty.Accordion(mockContainer);
 		});
-
-		describe("Starts collapsed", function() {
-			beforeEach(function() {
-				accordion = new kitty.Accordion(mockContainer, {
-					startCollapsed: true
-				});
-			});
-			it("Sets the startsCollapsed option to true", function() {
-				expect(accordion.options.startCollapsed).toBe(true);
-			});
-			it("Hides all panels", function() {
-				expect(mockPanels.css).toHaveBeenCalledWith("display", "none");
-			});
-			it("Stores the currentlyOpenPanelIndex on the instance", function() {
-				expect(accordion.currentlyOpenPanelIndex).toBe(-1);
-			});
+		
+		it("Stores the container on the instance", function() {
+			expect(accordion.container).toBe(mockContainer);
 		});
-
-	});
-
-	describe("Panel activated", function() {
-
-		describe("Generally", function() {
-
-			var mockEvent;
-			var mockPanel;
-
-			beforeEach(function() {
-				mockEvent = {
-					target: {
-						href: "blah#yo"
-					},
-					preventDefault: jasmine.createSpy()
-				};
-
-				mockPanel = jasmine.createSpyObj("mockPanel", ["css", "animate"]);
-
-				accordion = new kitty.Accordion(mockContainer);
-				spyOn(window, "$").and.callFake(function(selector){
-					if(selector === "#yo") {
-						return mockPanel;
-					}
-				});
-				spyOn(accordion, "isPanelHidden");
-				spyOn(accordion, "hideCurrentlyOpenPanel");
-				spyOn(accordion, "hidePanel");
-				spyOn(accordion, "showPanel");
-				accordion.onActivatorClicked(mockEvent);
-			});
-
-			it("Preents the default action", function() {
-				expect(mockEvent.preventDefault).toHaveBeenCalled();
-			});
-
-			it("Retrieves the associated panel", function() {
-				expect($).toHaveBeenCalledWith("#yo");
-			});
-
+		it("Stores the panels on the instance", function() {
+			expect(accordion.panels).toBe(mockPanels);
 		});
+		it("Finds the panels", function() {
+			expect(mockContainer.find).toHaveBeenCalledWith('.panelContainer');
+		});
+		
 
-		xdescribe("Panel is currently closed");
-		xdescribe("Panel is currently open");
-
+		it("Stores the activeSectionIndex on the instance", function() {
+			expect(accordion.activeSectionIndex).toBe(0);
+		});
 	});
 
 });
