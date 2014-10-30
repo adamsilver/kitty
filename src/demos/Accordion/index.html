@@ -25,6 +25,13 @@
                 color: #fff;
             }
 
+            .activator span {
+                float: right;
+                height: 10px;
+                width: 10px;
+                background-color: red;
+            }
+
         </style>
     </head>
     <body>
@@ -32,7 +39,7 @@
 
         <div id="accordion">
             <div class="panelContainer" data-id="1">
-                <a href="#panel1" class="activator" data-id="1">Panel 1</a>
+                <a href="#panel1" class="activator" data-id="1">Panel 1 <span></span></a>
                 <div id="panel1" class="panel">
                     <div class="stuffInsidePanel">Stuff 1</div>
                 </div>

@@ -39,9 +39,9 @@ kitty.Accordion.prototype.onClosed = function(section) {
 	this.events.panelClosed.publish(section);
 };
 
-kitty.Accordion.prototype.onActivatorClicked = function(e) {
+kitty.Accordion.prototype.onActivatorClicked = function(e) {	
 	e.preventDefault();
-	var id = $(e.target).attr('data-id');
+	var id = $(e.currentTarget).attr('data-id');
 	var section = this.sections[id];	
 	var activeSection = this.getActiveSection();	
 	if(activeSection) {
