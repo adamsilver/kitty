@@ -1,8 +1,8 @@
-kitty.EventTarget = function() {
+kitty.EventEmitter = function() {
 	this.events = {};
 };
 
-kitty.EventTarget.prototype.on = function(eventName, fn, context) {
+kitty.EventEmitter.prototype.on = function(eventName, fn, context) {
 	if(!this.events[eventName]) {
 		this.events[eventName] = {
 			subscribers: []
@@ -14,7 +14,7 @@ kitty.EventTarget.prototype.on = function(eventName, fn, context) {
 	});
 };
 
-kitty.EventTarget.prototype.fire = function(eventName) {
+kitty.EventEmitter.prototype.fire = function(eventName) {
 	var subscribers;
 	if(!this.events[eventName]) {
 		return;
@@ -25,7 +25,7 @@ kitty.EventTarget.prototype.fire = function(eventName) {
 
 	for (var i = subscribers.length - 1; i >= 0; i--) {
 		try {
-			subscribers[i].fn.apply(subscribers[i].context || null, argumentsExceptFirst);
+			subscribers[i].fn.apply(subscribers[i].context, argumentsExceptFirst);
 		} catch (e) {}
 	}
 };

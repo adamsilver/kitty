@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>EventTarget Demo</title>
+        <title>EventEmitter Demo</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     </head>
     <body>
-        <h1>EventTarget</h1>
+        <h1>EventEmitter</h1>
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
         <script src="../../kitty/kitty.clone.js"></script>
         <script src="../../kitty/kitty.inherit.js"></script>
-        <script src="../../kitty/kitty.EventTarget.js"></script>
+        <script src="../../kitty/kitty.EventEmitter.js"></script>
         <script>
 
             var Adam = function() {
                 Adam.superConstructor.apply(this, arguments);
             };
 
-            kitty.inherit(Adam, kitty.EventTarget);
+            kitty.inherit(Adam, kitty.EventEmitter);
 
             Adam.prototype.yeah = function() {
                 this.fire("adam", "was", "here");
             };
 
-            var eventTarget = new kitty.EventTarget();
-            eventTarget.on("blah", function(a, b) {
+            Adam.prototype.woo = function() {
+                this.fire("wood", {me: "1"});
+            };
+
+            var eventEmitter = new kitty.EventEmitter();
+            eventEmitter.on("blah", function(a, b) {
                 console.log(this, a, b);
             }, {adam: 1});
-            eventTarget.fire("blah", "a", "b");
+            eventEmitter.fire("blah", "a", "b");
+
+            var adam = new Adam();
+            adam.on("wood", function(someObject) {
+                console.log(someObject, this);
+            });
+
+            adam.woo();
 
         </script>
     </body>

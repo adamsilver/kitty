@@ -8,7 +8,7 @@ kitty.Accordion = function(container) {
 		panelClosed: new kitty.CustomEvent(),
 		panelOpened: new kitty.CustomEvent()
 	};
-	this.container.on('click', '.activator', $.proxy(this, 'onActivatorClicked'));	
+	this.container.on('click', '.activator', $.proxy(this, 'onActivatorClicked'));
 	this.setupAccordionSections();
 }
 
@@ -39,11 +39,11 @@ kitty.Accordion.prototype.onClosed = function(section) {
 	this.events.panelClosed.publish(section);
 };
 
-kitty.Accordion.prototype.onActivatorClicked = function(e) {	
+kitty.Accordion.prototype.onActivatorClicked = function(e) {
 	e.preventDefault();
 	var id = $(e.currentTarget).attr('data-id');
-	var section = this.sections[id];	
-	var activeSection = this.getActiveSection();	
+	var section = this.sections[id];
+	var activeSection = this.getActiveSection();
 	if(activeSection) {
 		activeSection.slideShut();
 	}
