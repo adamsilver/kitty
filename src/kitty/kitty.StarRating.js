@@ -10,33 +10,29 @@ kitty.StarRating = function(container) {
 	this.addEvents();
 };
 
-kitty.StarRating.prototype.getCurrentRating = function() {
-	return this.currentRating;
-};
-
 kitty.StarRating.prototype.addEvents = function() {
-	this.labels.on("mouseover", $.proxy(this, "onLabelMouseover"));
-	this.labels.on("mouseout", $.proxy(this, "onLabelMouseout"));
+	this.labels.on("mouseenter", $.proxy(this, "onLabelMouseEntered"));
+	this.labels.on("mouseleave", $.proxy(this, "onLabelMouseLeft"));
 	this.radios.on("focus", $.proxy(this, "onRadioFocussed"));
 	this.radios.on("blur", $.proxy(this, "onRadioBlurred"));
 	this.radios.on("change", $.proxy(this, "onRadioChanged"));
 };
 
 kitty.StarRating.prototype.removeEvents = function() {
-	this.labels.off("mouseover", this.onLabelMouseover);
-	this.labels.off("mouseout", this.onLabelMouseout);
+	this.labels.off("mouseenter", this.onLabelMouseEntered);
+	this.labels.off("mouseleave", this.onLabelMouseLeft);
 	this.radios.off("focus", this.onRadioFocussed);
 	this.radios.off("blur", this.onRadioBlurred);
 	this.radios.off("change", this.onRadioChanged);
 };
 
-kitty.StarRating.prototype.onLabelMouseover = function(e) {
+kitty.StarRating.prototype.onLabelMouseEntered = function(e) {
 	var relatedRadio = $(e.target).parents(".radio").find("input[type=radio]");
 	var rating = relatedRadio.val();
 	this.highlightStars(rating);
 };
 
-kitty.StarRating.prototype.onLabelMouseout = function(e) {
+kitty.StarRating.prototype.onLabelMouseLeft = function(e) {
 	this.highlightStars(this.currentRating);
 };
 
@@ -56,7 +52,7 @@ kitty.StarRating.prototype.onRadioFocussed = function(e) {
 };
 
 kitty.StarRating.prototype.onRadioBlurred = function(e) {
-	this.highlightStars(0);
+	this.highlightStars(this.currentRating);
 };
 
 kitty.StarRating.prototype.onRadioChanged = function(e) {

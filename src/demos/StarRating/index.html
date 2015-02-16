@@ -6,24 +6,31 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
-        .enhanced .radio input {
-            position: absolute;
-            left: -999em;
-        }
+            .enhanced .radio input {
+                position: absolute;
+                left: -999em;
+            }
 
-        #example {
-            overflow: hidden;
-        }
+            #example {
+                overflow: hidden;
+            }
 
-        #example .radio {
-            float: left;
-            margin-right: 10px;
-        }
+            #example .radio {
+                float: left;
+            }
 
-        .highlight {
-            background-color: red;
-        }
+            #example .radio label {
+                text-indent: -999em;
+                width: 27px;
+                height: 24px;
+                padding-right: 10px;
+                display: block;
+                background: url(star_rating_sprite.png) no-repeat;
+            }
 
+            .highlight {
+                background-position: 0px -24px !important;
+            }
         </style>
     </head>
     <body>
@@ -33,7 +40,7 @@
             <div class="radio">
                 <input type="radio" name="starRating" id="starRating1" value="1">
                 <label for="starRating1">
-                        <span>1/5</span>
+                    <span>1/5</span>
                 </label>
             </div>
             <div class="radio">
@@ -43,7 +50,7 @@
                 </label>
             </div>
             <div class="radio">
-                <input type="radio" name="starRating" id="starRating3" value="3" checked>
+                <input type="radio" name="starRating" id="starRating3" value="3">
                 <label for="starRating3">
                         <span>3/5</span>
                 </label>
