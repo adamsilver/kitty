@@ -1,35 +1,35 @@
 kitty.StarRating = function(container) {
 	this.container = container;
-	this.radios = this.container.find(".radio input");
+	this.radios = this.container.find(".radioControl");
 	this.container.addClass("enhanced");
 	this.labels = this.container.find("label");
-	this.currentRating = this.radios.filter(":checked").val() || null;
+	this.currentRating = this.getInitialRating();
 	if (this.currentRating) {
 		this.highlightStars(this.currentRating);
 	}
 	this.addEvents();
 };
 
-kitty.StarRating.prototype.addEvents = function() {
-	this.labels.on("mouseenter", $.proxy(this, "onLabelMouseEntered"));
-	this.labels.on("mouseleave", $.proxy(this, "onLabelMouseLeft"));
-	this.radios.on("focus", $.proxy(this, "onRadioFocussed"));
-	this.radios.on("blur", $.proxy(this, "onRadioBlurred"));
-	this.radios.on("change", $.proxy(this, "onRadioChanged"));
+kitty.StarRating.prototype.getInitialRating = function() {
+	return this.radios.filter(":checked").val() || null;
 };
 
-kitty.StarRating.prototype.removeEvents = function() {
-	this.labels.off("mouseenter", this.onLabelMouseEntered);
-	this.labels.off("mouseleave", this.onLabelMouseLeft);
-	this.radios.off("focus", this.onRadioFocussed);
-	this.radios.off("blur", this.onRadioBlurred);
-	this.radios.off("change", this.onRadioChanged);
+kitty.StarRating.prototype.addEvents = function() {
+	this.container.on("mouseenter", "label", $.proxy(this, "onLabelMouseEntered"));
+	this.container.on("mouseleave", "label", $.proxy(this, "onLabelMouseLeft"));
+	this.container.on("focus", "", $.proxy(this, "onRadioFocussed"));
+	this.container.on("blur", "", $.proxy(this, "onRadioBlurred"));
+	this.container.on("change", "", $.proxy(this, "onRadioChanged"));
 };
 
 kitty.StarRating.prototype.onLabelMouseEntered = function(e) {
-	var relatedRadio = $(e.target).parents(".radio").find("input[type=radio]");
-	var rating = relatedRadio.val();
-	this.highlightStars(rating);
+	var radio = this.getRelatedRadioByLabel(e.currentTarget);
+	this.highlightStars(radio.value);
+};
+
+kitty.StarRating.prototype.getRelatedRadioByLabel = function(label) {
+	var radioId = label.htmlFor;
+	return document.getElementById(radioId);
 };
 
 kitty.StarRating.prototype.onLabelMouseLeft = function(e) {
@@ -58,9 +58,4 @@ kitty.StarRating.prototype.onRadioBlurred = function(e) {
 kitty.StarRating.prototype.onRadioChanged = function(e) {
 	this.currentRating = $(e.target).val();
 	this.highlightStars(this.currentRating);
-};
-
-kitty.StarRating.prototype.destroy = function() {
-	this.container.removeClass("enhanced");
-	this.removeEvents();
 };

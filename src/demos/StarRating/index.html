@@ -6,7 +6,7 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
-            .enhanced .radio input {
+            .enhanced .control input {
                 position: absolute;
                 left: -999em;
             }
@@ -15,11 +15,11 @@
                 overflow: hidden;
             }
 
-            #example .radio {
+            #example .control {
                 float: left;
             }
 
-            #example .radio label {
+            #example .control label {
                 text-indent: -999em;
                 width: 27px;
                 height: 24px;
@@ -36,39 +36,23 @@
     <body>
         <h1>Star rating</h1>
 
-        <div id="example">
-            <div class="radio">
-                <input type="radio" name="starRating" id="starRating1" value="1">
-                <label for="starRating1">
-                    <span>1/5</span>
-                </label>
-            </div>
-            <div class="radio">
-                <input type="radio" name="starRating" id="starRating2" value="2">
-                <label for="starRating2">
-                        <span>2/5</span>
-                </label>
-            </div>
-            <div class="radio">
-                <input type="radio" name="starRating" id="starRating3" value="3">
-                <label for="starRating3">
-                        <span>3/5</span>
-                </label>
-            </div>
-            <div class="radio">
-                <input type="radio" name="starRating" id="starRating4" value="4">
-                <label for="starRating4">
-                        <span>4/5</span>
-                </label>
-            </div>
-            <div class="radio">
-                <input type="radio" name="starRating" id="starRating5" value="5">
-                <label for="starRating5">
-                        <span>5/5</span>
-                </label>
-            </div>
+        <div id="example" class="groupControl">
+            <fieldset>
+                <legend>Food quality rating</legend>
+                <div class="control">
+                    <input class="radioControl" type="radio" name="starRating" id="starRating1" value="1">
+                    <label for="starRating1">1/5</label>
+                </div>
+                <div class="control">
+                    <input class="radioControl" type="radio" name="starRating" id="starRating2" value="2">
+                    <label for="starRating2">2/5</label>
+                </div>
+                <div class="control">
+                    <input class="radioControl" type="radio" name="starRating" id="starRating3" value="3">
+                    <label for="starRating3">3/5</label>
+                </div>
+            </fieldset>
         </div>
-
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
