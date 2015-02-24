@@ -35,30 +35,39 @@
     </head>
     <body>
         <h1>Star rating</h1>
-
-        <div id="example" class="groupControl">
-            <fieldset>
-                <legend>Food quality rating</legend>
-                <div class="control">
-                    <input class="radioControl" type="radio" name="starRating" id="starRating1" value="1">
-                    <label for="starRating1">1/5</label>
-                </div>
-                <div class="control">
-                    <input class="radioControl" type="radio" name="starRating" id="starRating2" value="2">
-                    <label for="starRating2">2/5</label>
-                </div>
-                <div class="control">
-                    <input class="radioControl" type="radio" name="starRating" id="starRating3" value="3">
-                    <label for="starRating3">3/5</label>
-                </div>
-            </fieldset>
-        </div>
+        <form action="google.com">
+            <div id="example" class="groupControl">
+                <fieldset>
+                    <legend>Food quality rating</legend>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating1" value="1">
+                        <label for="starRating1">1/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating2" value="2">
+                        <label for="starRating2">2/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating3" value="3">
+                        <label for="starRating3">3/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating4" value="4">
+                        <label for="starRating4">4/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating5" value="5">
+                        <label for="starRating5">5/5</label>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
         <script src="../../kitty/kitty.StarRating.js"></script>
         <script>
-            var starRating = new kitty.StarRating($("#example"));
+            var starRating = new kitty.StarRatingControl($("#example"));
         </script>
     </body>
 </html>

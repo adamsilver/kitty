@@ -1,6 +1,6 @@
-kitty.StarRating = function(container) {
+kitty.StarRatingControl = function(container) {
 	this.container = container;
-	this.radios = this.container.find(".radioControl");
+	this.radioControls = this.container.find(".radioControl");
 	this.container.addClass("enhanced");
 	this.labels = this.container.find("label");
 	this.currentRating = this.getInitialRating();
@@ -10,11 +10,11 @@ kitty.StarRating = function(container) {
 	this.addEvents();
 };
 
-kitty.StarRating.prototype.getInitialRating = function() {
-	return this.radios.filter(":checked").val() || null;
+kitty.StarRatingControl.prototype.getInitialRating = function() {
+	return this.radioControls.filter(":checked").val() || null;
 };
 
-kitty.StarRating.prototype.addEvents = function() {
+kitty.StarRatingControl.prototype.addEvents = function() {
 	this.container.on("mouseenter", "label", $.proxy(this, "onLabelMouseEntered"));
 	this.container.on("mouseleave", "label", $.proxy(this, "onLabelMouseLeft"));
 	this.container.on("focus", "", $.proxy(this, "onRadioFocussed"));
@@ -22,21 +22,21 @@ kitty.StarRating.prototype.addEvents = function() {
 	this.container.on("change", "", $.proxy(this, "onRadioChanged"));
 };
 
-kitty.StarRating.prototype.onLabelMouseEntered = function(e) {
+kitty.StarRatingControl.prototype.onLabelMouseEntered = function(e) {
 	var radio = this.getRelatedRadioByLabel(e.currentTarget);
 	this.highlightStars(radio.value);
 };
 
-kitty.StarRating.prototype.getRelatedRadioByLabel = function(label) {
+kitty.StarRatingControl.prototype.getRelatedRadioByLabel = function(label) {
 	var radioId = label.htmlFor;
 	return document.getElementById(radioId);
 };
 
-kitty.StarRating.prototype.onLabelMouseLeft = function(e) {
+kitty.StarRatingControl.prototype.onLabelMouseLeft = function(e) {
 	this.highlightStars(this.currentRating);
 };
 
-kitty.StarRating.prototype.highlightStars = function(rating) {
+kitty.StarRatingControl.prototype.highlightStars = function(rating) {
 	rating = parseInt(rating, 10) - 1;
 	for (var i = 0; i < this.labels.length; i++) {
 		if (rating >= i) {
@@ -47,15 +47,15 @@ kitty.StarRating.prototype.highlightStars = function(rating) {
 	}
 };
 
-kitty.StarRating.prototype.onRadioFocussed = function(e) {
+kitty.StarRatingControl.prototype.onRadioFocussed = function(e) {
 	this.highlightStars($(e.target).val());
 };
 
-kitty.StarRating.prototype.onRadioBlurred = function(e) {
+kitty.StarRatingControl.prototype.onRadioBlurred = function(e) {
 	this.highlightStars(this.currentRating);
 };
 
-kitty.StarRating.prototype.onRadioChanged = function(e) {
+kitty.StarRatingControl.prototype.onRadioChanged = function(e) {
 	this.currentRating = $(e.target).val();
 	this.highlightStars(this.currentRating);
 };
