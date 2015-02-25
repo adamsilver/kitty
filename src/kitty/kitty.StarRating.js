@@ -17,9 +17,9 @@ kitty.StarRatingControl.prototype.getInitialRating = function() {
 kitty.StarRatingControl.prototype.addEvents = function() {
 	this.container.on("mouseenter", "label", $.proxy(this, "onLabelMouseEntered"));
 	this.container.on("mouseleave", "label", $.proxy(this, "onLabelMouseLeft"));
-	this.container.on("focus", "", $.proxy(this, "onRadioFocussed"));
-	this.container.on("blur", "", $.proxy(this, "onRadioBlurred"));
-	this.container.on("change", "", $.proxy(this, "onRadioChanged"));
+	this.container.on("focus", ".radioControl", $.proxy(this, "onRadioFocussed"));
+	this.container.on("blur", ".radioControl", $.proxy(this, "onRadioBlurred"));
+	this.container.on("change", ".radioControl", $.proxy(this, "onRadioChanged"));
 };
 
 kitty.StarRatingControl.prototype.onLabelMouseEntered = function(e) {
