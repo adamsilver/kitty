@@ -43,7 +43,9 @@ kitty.Model.prototype.setAttribute = function(name, value) {
 };
 
 kitty.Model.prototype.setAttributes = function(attributes) {
-
+	// loop through all attributes
+		// modify the existing attribute if it exists
+		// if not add the attribute
 };
 
 kitty.Model.prototype.save = function() {
