@@ -1,8 +1,3 @@
-/*
-todo:
-work out how to save() a model with regards to state of attributes
-*/
-
 kitty.Model = function(attributes) {
 	kitty.Model.superConstructor.call(this, attributes);
 	this.createAttributesObject(attributes);
@@ -46,4 +41,16 @@ kitty.Model.prototype.setAttribute = function(name, value) {
 	eventDetails.changed[name] = attributeChanges;
 	this.fire("changed", eventDetails);
 	this.fire(name+"Changed", attributeChanges);
+};
+
+kitty.Model.prototype.setAttributes = function(attributes) {
+
+};
+
+kitty.Model.prototype.save = function() {
+	// work out how to save() a model with regards to state of attributes
+};
+
+kitty.Model.prototype.isModified = function() {
+	// checks if there are changes since being saved
 };
