@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Model demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+           
+        </style>
+    </head>
+    <body>
+        <h1>Model demo</h1>
+        
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.clone.js"></script>
+        <script src="../../kitty/kitty.inherit.js"></script>
+        <script src="../../kitty/kitty.EventEmitter.js"></script>
+        <script src="../../kitty/kitty.Model.js"></script>
+        <script>
+            var appliePie = new kitty.Model({
+                slices: 6,
+                type: "apple"
+            });
+            appliePie.on("changed", function(e) {
+                console.log(e);
+            });
+            appliePie.on("slicesChanged", function(e) {
+                console.log(e);
+            });
+            appliePie.getAttribute("slices");
+
+            appliePie.setAttribute("slices", 5);
+
+
+        </script>
+    </body>
+</html>
