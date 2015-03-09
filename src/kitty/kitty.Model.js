@@ -10,7 +10,7 @@ kitty.Model.prototype.createAttributesObject = function(attributes) {
 	for(var attribute in attributes) {
 		if(attributes.hasOwnProperty(attribute)) {
 			massagedAttributes[attribute] = {
-				previousValue: null,
+				previousValue: attributes[attribute],
 				currentValue: attributes[attribute]
 			};
 		}
@@ -40,7 +40,6 @@ kitty.Model.prototype.setAttribute = function(name, value) {
 
 	eventDetails.changed[name] = attributeChanges;
 	this.fire("changed", eventDetails);
-	this.fire(name+"Changed", attributeChanges);
 };
 
 kitty.Model.prototype.setAttributes = function(attributes) {
@@ -48,9 +47,29 @@ kitty.Model.prototype.setAttributes = function(attributes) {
 };
 
 kitty.Model.prototype.save = function() {
-	// work out how to save() a model with regards to state of attributes
+	// loop through all attributes and make previousValue same as currentValue
+	var attributes = this.attributes;
+	for(var attribute in attributes) {
+		if(attributes.hasOwnProperty(attribute)) {
+			attributes[attribute].previousValue = attributes[attribute].currentValue;
+		}
+	}
 };
 
 kitty.Model.prototype.isModified = function() {
-	// checks if there are changes since being saved
+	var modified = false;
+	var attributes = this.attributes;
+	for(var attribute in attributes) {
+		if(attributes.hasOwnProperty(attribute)) {
+			if(attributes[attribute].previousValue != attributes[attribute].currentValue) {
+				modified = true;
+				break;
+			}
+		}
+	}
+	return modified;
+};
+
+kitty.Model.prototype.reset = function() {
+	// undos changes that havent been saved
 };
