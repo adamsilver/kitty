@@ -17,6 +17,7 @@
         <script src="../../kitty/kitty.inherit.js"></script>
         <script src="../../kitty/kitty.EventEmitter.js"></script>
         <script src="../../kitty/kitty.Model.js"></script>
+        <script src="../../kitty/kitty.Collection.js"></script>
         <script>
             var appliePie = new kitty.Model({
                 slices: 6,
@@ -35,6 +36,17 @@
             appliePie.setAttribute("slices", 5);
 
             console.log(appliePie.isModified());
+
+            var pieCollection = new kitty.Collection();
+            pieCollection.createModelsFromAttributes([{
+                id: 1,
+                slices: 2,
+                type: "apple"
+            }, {
+                id: 2,
+                slices: 6,
+                type: "mince"
+            }]);
 
         </script>
     </body>
