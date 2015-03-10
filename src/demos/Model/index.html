@@ -20,6 +20,7 @@
         <script src="../../kitty/kitty.Collection.js"></script>
         <script>
             var appliePie = new kitty.Model({
+                id: 1,
                 slices: 6,
                 type: "apple"
             });
@@ -39,17 +40,19 @@
 
             var pieCollection = new kitty.Collection();
             pieCollection.addModels([
-                new kitty.Model({
-                    id: 1,
-                    slices: 2,
-                    type: "apple"
-                }), 
+                appliePie, 
                 new kitty.Model({
                     id: 2,
                     slices: 5,
                     type: "mince"
                 })
             ]);
+
+            console.log(pieCollection.models);
+
+            var modelWithId2 = pieCollection.getModelById(2);
+
+            console.log(modelWithId2);
 
         </script>
     </body>

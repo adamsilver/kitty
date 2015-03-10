@@ -14,3 +14,14 @@ kitty.Collection.prototype.addModels = function(models) {
 		this.models.push(models[i]);
 	}
 };
+
+kitty.Collection.prototype.getModelById = function(id) {
+	var model;
+	for(var i = 0; i < this.models.length; i++) {
+		if(this.models[i].getAttribute("id") == id) {
+			model = this.models[i];
+			break;
+		}
+	}
+	return model;
+};
