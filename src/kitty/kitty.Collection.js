@@ -11,6 +11,6 @@ kitty.Collection.prototype.addModel = function(model) {
 
 kitty.Collection.prototype.addModels = function(models) {
 	for(var i = 0; i < models.length; i++) {
-		this.model.push(models[i]);
+		this.models.push(models[i]);
 	}
 };

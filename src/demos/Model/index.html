@@ -38,15 +38,18 @@
             console.log(appliePie.isModified());
 
             var pieCollection = new kitty.Collection();
-            pieCollection.createModelsFromAttributes([{
-                id: 1,
-                slices: 2,
-                type: "apple"
-            }, {
-                id: 2,
-                slices: 6,
-                type: "mince"
-            }]);
+            pieCollection.addModels([
+                new kitty.Model({
+                    id: 1,
+                    slices: 2,
+                    type: "apple"
+                }), 
+                new kitty.Model({
+                    id: 2,
+                    slices: 5,
+                    type: "mince"
+                })
+            ]);
 
         </script>
     </body>
