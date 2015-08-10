@@ -31,5 +31,5 @@ DemoFormValidator.prototype.setupValidators = function() {
 				return valid;
 			}
 		}
-	])
+	]);
 };

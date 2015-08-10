@@ -15,10 +15,6 @@ DemoFormValidator.prototype.onFormSubmit = function (e) {
 	}
 };
 
-DemoFormValidator.prototype.showErrorSummary = function () {
-	this.errorSummaryContainer.innerHTML = this.getErrorSummaryHtml();
-};
-
 DemoFormValidator.prototype.showFieldErrors = function() {
 	var errors = this.getErrors();
 	for (var i = 0, j = errors.length; i < j; i++) {
