@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Star rating Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            .enhanced .control input {
+                position: absolute;
+                left: -999em;
+            }
+
+            #example {
+                overflow: hidden;
+            }
+
+            #example .control {
+                float: left;
+            }
+
+            #example .control label {
+                text-indent: -999em;
+                width: 27px;
+                height: 24px;
+                padding-right: 10px;
+                display: block;
+                background: url(star_rating_sprite.png) no-repeat;
+            }
+
+            .highlight {
+                background-position: 0px -24px !important;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Star rating</h1>
+        <form action="google.com">
+            <div id="example" class="groupControl">
+                <fieldset>
+                    <legend>Food quality rating</legend>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating1" value="1">
+                        <label for="starRating1">1/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating2" value="2">
+                        <label for="starRating2">2/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating3" value="3">
+                        <label for="starRating3">3/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating4" value="4">
+                        <label for="starRating4">4/5</label>
+                    </div>
+                    <div class="control">
+                        <input class="radioControl" type="radio" name="starRating" id="starRating5" value="5">
+                        <label for="starRating5">5/5</label>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.StarRating.js"></script>
+        <script>
+            var starRating = new kitty.StarRatingControl($("#example"));
+        </script>
+    </body>
+</html>

@@ -1,189 +1,248 @@
 describe("Star Rating", function() {
 
-	jasmine.getFixtures().fixturesPath = '.';
+	var starRatingControl;
+	var mockContainer;
+	var mockRadioControls;
+	var mockCheckedRadio;
+	var mockLabels;
+	var mockCheckedRadioValue;
+	var mockProxy;
 
-	var starRating = null;
-	var radioContainers = null;
-	var radios = null;
-	var labels = null;
-	var cssHighlightedClass = "highlight";
-
-	// has checked radio
-	function setupFixture1() {
-		jasmine.getFixtures().load('Spec.kitty.StarRating.Fixture1.html');
-		commonSetup();
-	}
-
-	// doesn't have checked radio
-	function setupFixture2() {
-		jasmine.getFixtures().load('Spec.kitty.StarRating.Fixture2.html');
-		commonSetup();
-	}
-
-	function commonSetup() {
-		radioContainers = $(".radio");
-		radios = $(".radio input");
-		labels = $(".radio label");
-		starRating = new kitty.StarRating(radioContainers);
-	}
-
-	describe("Creating a new Star Rating control", function() {
-
-		beforeEach(setupFixture1);
-
-		it("Hides the radio inputs", function(){
-			for(var i = 0; i < radios.length; i++) {
-				expect(radios.filter(":eq("+i+")")).toHaveClass("offScreen");
+	beforeEach(function() {
+		mockContainer = jasmine.createSpyObj("mockContainer", ["find", "addClass", "on"]);
+		mockRadioControls = jasmine.createSpyObj("mockRadioControls", ["filter"]);
+		mockCheckedRadio = jasmine.createSpyObj("mockCheckedRadio", ["val"]);
+		mockRadioControls.filter.and.callFake(function(arg) {
+			if(arg === ":checked") {
+				return mockCheckedRadio;
 			}
 		});
+		mockLabels = jasmine.createSpyObj("mockLabels", ["filter"]);
+		mockContainer.find.and.callFake(function(selector) {
+			if(selector === ".radioControl") {
+				return mockRadioControls;
+			}
+			if(selector === "label") {
+				return mockLabels;
+			}
+		});
+		mockProxy = {};
+		spyOn($, "proxy").and.returnValue(mockProxy);
+	});
 
-		describe("That has a checked radio", function() {
-			it("Stores the current rating from the currently selected radio", function() {
-				expect(starRating.currentRating).toBe(radios.filter(":checked").val());
+	describe("Creating a Star Rating control", function() {
+		describe("Always", function() {
+			beforeEach(function() {
+				starRatingControl = new kitty.StarRatingControl(mockContainer);
 			});
-			it("Highlights the labels up until that rating", function() {
-				expect(labels.filter(":eq(0)")).toHaveClass(cssHighlightedClass)
-				expect(labels.filter(":eq(1)")).toHaveClass(cssHighlightedClass)
+			it("Stores the container", function() {
+				expect(starRatingControl.container).toBe(mockContainer);
+			});
+			it("Retrieves the radio controls", function() {
+				expect(mockContainer.find).toHaveBeenCalledWith(".radioControl");
+				expect(starRatingControl.radioControls).toBe(mockRadioControls);
+			});
+			it("Adds a class of enhanced to the container", function() {
+				expect(mockContainer.addClass).toHaveBeenCalledWith("enhanced");
+			});
+			it("Retrieves the labels", function() {
+				expect(mockContainer.find).toHaveBeenCalledWith("label");
+				expect(starRatingControl.labels).toBe(mockLabels);
+			});
+			it("Delegates the mouse enter event on the labels", function() {
+				expect($.proxy).toHaveBeenCalledWith(starRatingControl, "onLabelMouseEntered");
+				expect(mockContainer.on).toHaveBeenCalledWith("mouseenter", "label", mockProxy);
+			});
+			it("Delegates the mouse leave event on the labels", function() {
+				expect($.proxy).toHaveBeenCalledWith(starRatingControl, "onLabelMouseLeft");
+				expect(mockContainer.on).toHaveBeenCalledWith("mouseleave", "label", mockProxy);
+			});
+			it("Delegates the focus event on the radio controls", function() {
+				expect($.proxy).toHaveBeenCalledWith(starRatingControl, "onRadioFocussed");
+				expect(mockContainer.on).toHaveBeenCalledWith("focus", ".radioControl", mockProxy);
+			});
+			it("Delegates the blur event on the radio controls", function() {
+				expect($.proxy).toHaveBeenCalledWith(starRatingControl, "onRadioBlurred");
+				expect(mockContainer.on).toHaveBeenCalledWith("blur", ".radioControl", mockProxy);
+			});
+			it("Delegates the change event on the radio controls", function() {
+				expect($.proxy).toHaveBeenCalledWith(starRatingControl, "onRadioChanged");
+				expect(mockContainer.on).toHaveBeenCalledWith("change", ".radioControl", mockProxy);
 			});
 		});
-
-		describe("That doesn't have a checked radio", function() {
-			beforeEach(setupFixture2);
-			it("Stores the current rating from the currently selected radio", function() {
-				expect(starRating.currentRating).toBe(null);
+		describe("One of the radios is already marked as checked", function() {
+			beforeEach(function() {
+				mockCheckedRadioValue = "1";
+				mockCheckedRadio.val.and.returnValue(mockCheckedRadioValue);
+				spyOn(kitty.StarRatingControl.prototype, "highlightStars");
+				starRatingControl = new kitty.StarRatingControl(mockContainer);
+			});
+			it("Sets the currentRating as the value from the checked radio", function() {
+				expect(starRatingControl.currentRating).toBe(mockCheckedRadioValue);
+			});
+			it("Highlights the stars for the checked radio", function() {
+				expect(starRatingControl.highlightStars).toHaveBeenCalledWith(mockCheckedRadioValue);
+			});
+		});
+		describe("None of the radios are checked yet", function() {
+			beforeEach(function() {
+				mockCheckedRadio.val.and.returnValue(undefined);
+				spyOn(kitty.StarRatingControl.prototype, "highlightStars");
+				starRatingControl = new kitty.StarRatingControl(mockContainer);
+			});
+			it("Sets the currentRating to null", function() {
+				expect(starRatingControl.currentRating).toBe(null);
+			});
+			it("Doesn't highlight the stars", function() {
+				expect(starRatingControl.highlightStars).not.toHaveBeenCalled();
 			});
 		});
 	});
 
-
-
-
-	describe("Mouse over a rating label (of 3)", function() {
-
-		beforeEach(setupFixture1);
-
-		it("Highlights the first 3 stars", function() {
-			labels.filter(":eq(2)").trigger("mouseover");
-			for(var i = 0; i < 2; i++) {
-				expect(labels.filter(":eq("+i+")")).toHaveClass(cssHighlightedClass);
-			}
+	describe("Mouse entered a label", function() {
+		var mockEvent;
+		var el;
+		beforeEach(function() {
+			mockEvent = {
+				currentTarget: {
+					htmlFor: "blah"
+				}
+			};
+			el = document.createElement("input");
+			el.value = "mockValue";
+			el.id = "blah";
+			document.body.appendChild(el);
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			spyOn(starRatingControl, "highlightStars");
+			starRatingControl.onLabelMouseEntered(mockEvent);
 		});
-
-		describe("And then mouseover a rating label (of 2)", function() {
-			it("Unhighlights the stars after the first 2 stars", function() {
-				labels.filter(":eq(2)").trigger("mouseover");
-				labels.filter(":eq(1)").trigger("mouseover");
-				expect(labels.filter(":eq(2)")).not.toHaveClass(cssHighlightedClass);
-			});
+		afterEach(function() {
+			document.body.removeChild(el);
 		});
-	});
-
-	describe("Mouse over an element inside of rating label (of 3)", function() {
-		beforeEach(setupFixture1);
-		it("Highlights the first 3 stars", function() {
-			labels.filter(":eq(2)").find("span").trigger("mouseover");
-			for(var i = 0; i < 2; i++) {
-				expect(labels.filter(":eq("+i+")")).toHaveClass(cssHighlightedClass);
-			}
+		it("Highlights the stars based on the value of the related radio control", function() {
+			expect(starRatingControl.highlightStars).toHaveBeenCalledWith("mockValue");
 		});
 	});
 
-	describe("Focus on a rating label (of 3)", function() {
-		beforeEach(setupFixture1);
-		it("Highlights the first 3 stars", function() {
-			radios.filter(":eq(2)").trigger("focus");
-			for(var i = 0; i < 2; i++) {
-				expect(labels.filter(":eq("+i+")")).toHaveClass(cssHighlightedClass);
-			}
+	describe("Mouse left a label", function() {
+		beforeEach(function() {
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			spyOn(starRatingControl, "highlightStars");
+			starRatingControl.onLabelMouseLeft();
 		});
-
-		describe("And then mouseover a rating label (of 2)", function() {
-			it("Unhighlights the stars after the first 2 stars", function() {
-				radios.filter(":eq(2)").trigger("focus");
-				radios.filter(":eq(1)").trigger("focus");
-				expect(labels.filter(":eq(2)")).not.toHaveClass(cssHighlightedClass);
-			});
+		it("Highlights the stars based on the currentRating", function() {
+			expect(starRatingControl.highlightStars).toHaveBeenCalledWith(starRatingControl.currentRating);
 		});
 	});
-	describe("Mouse leaving a rating label", function() {
-		beforeEach(setupFixture2);
-		describe("No selected rating", function() {
-			it("Unhighlights the stars", function() {
-				labels.filter(":eq(2)").trigger("mouseover"); // setup state
-				labels.filter(":eq(2)").trigger("mouseout");
-				for(var i = 0; i < 3; i++) {
-					expect(labels.filter(":eq("+i+")")).not.toHaveClass(cssHighlightedClass);
+
+	describe("Radio focussed", function() {
+		var mockEvent;
+		var mockRadio;
+		beforeEach(function() {
+			mockEvent = {
+				target: {}
+			};
+			mockRadio = jasmine.createSpyObj("mockRadio", ["val"]);
+			mockRadio.val.and.returnValue("mockValue");
+			spyOn(window, "$").and.callFake(function(arg) {
+				if(arg == mockEvent.target) {
+					return mockRadio;
 				}
 			});
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			spyOn(starRatingControl, "highlightStars");
+			starRatingControl.onRadioFocussed(mockEvent);
 		});
+		it("Highlights the stars based on the value of the focussed radio", function() {
+			expect(starRatingControl.highlightStars).toHaveBeenCalledWith("mockValue");
+		});
+	});
 
-		describe("And it has a selected rating of 2", function() {
-			beforeEach(setupFixture1);
-			it("Highlights the 2 stars", function() {
-				labels.filter(":eq(2)").trigger("mouseover");
-				labels.filter(":eq(2)").trigger("mouseout");
-				
-				expect(labels.filter(":eq(0)")).toHaveClass(cssHighlightedClass);
-				expect(labels.filter(":eq(1)")).toHaveClass(cssHighlightedClass);
-				expect(labels.filter(":eq(2)")).not.toHaveClass(cssHighlightedClass);
-
-			});
-		});
-		
-	});
-	describe("Blurring the rating input", function() {
-		beforeEach(setupFixture1);
-		it("Unhighlights the first 3 stars", function() {
-			radios.filter(":eq(2)").trigger("focus"); // setup state
-			radios.filter(":eq(2)").trigger("blur");
-			for(var i = 0; i < 2; i++) {
-				expect(labels.filter(":eq("+i+")")).not.toHaveClass(cssHighlightedClass);
-			}
-		});
-	});
-	describe("Selecting a rating (rating 3)", function() {
-		beforeEach(setupFixture2);
-		it("Persists the chosen rating by highlighting the stars", function() {					
-			radios.filter(":eq(2)").click();
-			labels.filter(":eq(2)").mouseout();
-			for(var i = 0; i < 3; i++) {
-				expect(labels.filter(":eq("+i+")")).toHaveClass(cssHighlightedClass);
-			}
-		});
-		it("Marks the radio as selected", function() {
-			labels.filter(":eq(2)").click();
-			for(var i = 0; i < 3; i++) {
-				expect(labels.filter(":eq("+i+")")).toHaveClass(cssHighlightedClass);
-			}
-		});
-	});
-	describe("Destroying the Star Rating control", function() {
+	describe("Radio blurred", function() {
 		beforeEach(function() {
-			setupFixture1();
-			spyOn($.fn, "off");
-			starRating.destroy();
-		})
-		it("Reveals the radio inputs", function(){
-			for(var i = 0; i < radios.length; i++) {
-				expect(radios.filter(":eq("+i+")")).not.toHaveClass("offScreen");
-			}
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			spyOn(starRatingControl, "highlightStars");
+			starRatingControl.onRadioBlurred();
 		});
-		it("Removes event handlers for labels", function() {
-			expect($.fn.off.calls[0].object).toBe(starRating.labels);
-			expect($.fn.off).toHaveBeenCalledWith("mouseover", starRating.handleLabel_onMouseover);
-			
-			expect($.fn.off.calls[1].object).toBe(starRating.labels);
-			expect($.fn.off).toHaveBeenCalledWith("mouseout", starRating.handleLabel_onMouseout);
-		});
-		it("Removes event handlers for radios", function() {
-			expect($.fn.off.calls[2].object).toBe(starRating.radios);
-			expect($.fn.off).toHaveBeenCalledWith("focus", starRating.handleRadio_onFocus);
-
-			expect($.fn.off.calls[2].object).toBe(starRating.radios);
-			expect($.fn.off).toHaveBeenCalledWith("blur", starRating.handleRadio_onBlur);
-			
-			expect($.fn.off.calls[2].object).toBe(starRating.radios);
-			expect($.fn.off).toHaveBeenCalledWith("change", starRating.handleRadio_onChange);
+		it("Highlights the stars based on the currentRating", function() {
+			expect(starRatingControl.highlightStars).toHaveBeenCalledWith(starRatingControl.currentRating);
 		});
 	});
+
+	describe("Radio changed", function() {
+		var mockEvent;
+		var mockRadio;
+		beforeEach(function() {
+			mockEvent = {
+				target: {}
+			};
+			mockRadio = jasmine.createSpyObj("mockRadio", ["val"]);
+			mockRadio.val.and.returnValue("mockValue");
+			spyOn(window, "$").and.callFake(function(arg) {
+				if(arg === mockEvent.target) {
+					return mockRadio;
+				}
+			});
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			spyOn(starRatingControl, "highlightStars");
+			starRatingControl.onRadioChanged(mockEvent);
+		});
+		it("Sets the currentRating to the value of the radio", function() {
+			expect(starRatingControl.currentRating).toBe("mockValue");
+		});
+		it("Highlights the stars using the currentRating", function() {
+			expect(starRatingControl.highlightStars).toHaveBeenCalledWith(starRatingControl.currentRating);
+		});
+	});
+
+	describe("Highlighting stars", function() {
+
+
+		function createLabel() {
+			return jasmine.createSpyObj("mockLabelToHighlight", ["addClass", "removeClass"]);
+		}
+
+		var mockLabel1;
+		var mockLabel2;
+		var mockLabel3;
+		var mockLabel4;
+		var mockLabel5;
+
+		beforeEach(function() {
+			mockLabels.filter.and.callFake(function(arg) {
+				var label;
+				switch(arg) {
+					case ':eq(0)':
+						label = mockLabel1 = createLabel();
+						break;
+					case ':eq(1)':
+						label = mockLabel2 = createLabel();
+						break;
+					case ':eq(2)':
+						label = mockLabel3 = createLabel();
+						break;
+					case ':eq(3)':
+						label = mockLabel4 = createLabel();
+						break;
+					case ':eq(4)':
+						label = mockLabel5 = createLabel();
+						break;
+				}
+				return label;
+			});
+			mockLabels.length = 5;
+			starRatingControl = new kitty.StarRatingControl(mockContainer);
+			starRatingControl.highlightStars("3");
+		});
+		it("Adds a class of highlight to all labels that are equal to or below the value", function() {
+			expect(mockLabel1.addClass).toHaveBeenCalledWith("highlight");
+			expect(mockLabel2.addClass).toHaveBeenCalledWith("highlight");
+			expect(mockLabel3.addClass).toHaveBeenCalledWith("highlight");
+		});
+		it("Removes a class of highlight to all the labels that are above the rating value", function() {
+			expect(mockLabel4.removeClass).toHaveBeenCalledWith("highlight");
+			expect(mockLabel5.removeClass).toHaveBeenCalledWith("highlight");
+		});
+	});
+
 });

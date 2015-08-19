@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Model demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+           
+        </style>
+    </head>
+    <body>
+        <h1>Model demo</h1>
+        
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.clone.js"></script>
+        <script src="../../kitty/kitty.inherit.js"></script>
+        <script src="../../kitty/kitty.EventEmitter.js"></script>
+        <script src="../../kitty/kitty.Model.js"></script>
+        <script src="../../kitty/kitty.Collection.js"></script>
+        <script>
+            var appliePie = new kitty.Model({
+                id: 1,
+                slices: 6,
+                type: "apple"
+            });
+            appliePie.on("changed", function(e) {
+                console.log(e);
+            });
+            appliePie.on("slicesChanged", function(e) {
+                console.log(e);
+            });
+            appliePie.getAttribute("slices");
+
+            console.log(appliePie.isModified());
+
+            appliePie.setAttribute("slices", 5);
+
+            console.log(appliePie.isModified());
+
+            var pieCollection = new kitty.Collection();
+            pieCollection.addModels([
+                appliePie, 
+                new kitty.Model({
+                    id: 2,
+                    slices: 5,
+                    type: "mince"
+                })
+            ]);
+
+            console.log(pieCollection.models);
+
+            var modelWithId2 = pieCollection.getModelById(2);
+
+            console.log(modelWithId2);
+
+        </script>
+    </body>
+</html>
