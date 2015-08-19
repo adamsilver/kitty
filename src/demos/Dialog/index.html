@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dialog Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+			.off {
+				position: absolute;
+				left: -9999em !important;
+			}
+
+			.hide {
+				display: none;
+			}
+
+			.overlay {
+				position: fixed;
+				background: #000;
+				opacity: 0.5;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+			}
+
+			.dialog {
+				position: absolute;
+				z-index: 10;
+			}
+
+			.dialog .wrapper {
+				background-color: #fff;
+				border: 1px solid #ccc;
+				width: 300px;
+				height: 300px;
+			}
+        </style>
+    </head>
+    <body>
+        <h1>Dialog</h1>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.Dialog.js"></script>
+        <script>
+           var dialog = new kitty.Dialog();
+           dialog.show();
+        </script>
+    </body>
+</html>

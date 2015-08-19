@@ -1,46 +1,81 @@
-kitty.Dialog = function(options) {
-	this.options = options || {};
-	this.overlay = this.options.overlay || null;
-	this.body = $("body");
-	this.container = $("<div class='dialog off'/>");
-	this.body.append(this.container);
+kitty.Dialog = function() {
+    this.overlayContainer = $('<div class="overlay hide" />');
+    this.body = $("body");
+    this.container = $("<div class='dialog off'/>");
+    this.wrapper = $('<div class="wrapper">');
+    this.content = $('<div class="content">');
+    this.container.append(this.wrapper);
+    this.wrapper.append(this.content);
+    this.body.append(this.overlayContainer);
+    this.body.append(this.container);
+    this.createCloseButton();
+};
+
+kitty.Dialog.prototype.createCloseButton = function() {
+    this.closeButton = $('<a href="#" class="close">Close</a>');
+    this.wrapper.on('click', '.close', $.proxy(this, 'onCloseButtonClicked'));
+    this.wrapper.append(this.closeButton);
+};
+
+kitty.Dialog.prototype.onCloseButtonClicked = function(e) {
+    e.preventDefault();
+    this.hide();
 };
 
 kitty.Dialog.prototype.setHtml = function(html) {
-	this.container.html(html);
+    this.container.html(html);
+};
+
+kitty.Dialog.prototype.setContent = function(html) {
+    this.content.html(html);
 };
 
 kitty.Dialog.prototype.show = function(coordinates) {
-	if (this.overlay) {
-		this.overlay.show();
-	}
-	this.container.removeClass("off");
-	coordinates = coordinates || {};
-	this.container.css({
-		top: coordinates.y || this.getCenterPositionY(),
-		left: coordinates.x || this.getCenterPositionX()
-	})
+    this.showOverlay();
+    this.container.removeClass("off");
+    coordinates = coordinates || {};
+    this.container.css({ top: coordinates.y || this.getTopPosition(), left: coordinates.x || this.getLeftPosition() });
 };
 
-kitty.Dialog.prototype.getCenterPositionY = function() {
-	var y = (($(window).height() + -this.container.height()) / 2) + $(window).scrollTop();
-	if (y < 0) y = 0;
-	return y;
+kitty.Dialog.prototype.getTopPosition = function() {
+    var windowHeight = $(window).height();
+    var windowScrollTop = $(window).scrollTop();
+    var dialogHeight = this.container.height();
+    var y;
+    if(windowHeight < dialogHeight) {
+        y = windowScrollTop;
+    } else {
+        y = ((windowHeight+ - dialogHeight) / 2) + windowScrollTop;
+    }
+    return y;
 };
 
-kitty.Dialog.prototype.getCenterPositionX = function() {
-	var y = (($(window).width() + -this.container.width()) / 2) + $(window).scrollLeft();
-	if (y < 0) y = 0;
-	return y;
+kitty.Dialog.prototype.getLeftPosition = function() {
+    var windowWidth = $(window).width();
+    var windowScrollLeft = $(window).scrollLeft();
+    var dialogWidth = this.container.width();
+    var x;
+    if(windowWidth < dialogWidth) {
+        x = windowScrollLeft;
+    } else {
+        x = ((windowWidth+ - dialogWidth) / 2) + windowScrollLeft;
+    }
+    return x;
 };
 
 kitty.Dialog.prototype.hide = function() {
-	this.container.addClass("off");
-	if (this.overlay) {
-		this.overlay.hide();
-	}
+    this.container.addClass("off");
+    this.hideOverlay();
 };
 
 kitty.Dialog.prototype.destroy = function() {
-	this.container.remove();
+    this.container.remove();
+    this.overlayContainer.remove();
+};
+
+kitty.Dialog.prototype.showOverlay = function() {
+	this.overlayContainer.removeClass('hide');
+};
+kitty.Dialog.prototype.hideOverlay = function() {
+	this.overlayContainer.addClass('hide');
 };
