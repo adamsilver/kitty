@@ -10,7 +10,7 @@ kitty.Accordion = function(container) {
 	};
 	this.container.on('click', '.activator', $.proxy(this, 'onActivatorClicked'));
 	this.setupAccordionSections();
-}
+};
 
 kitty.Accordion.prototype.setupAccordionSections = function() {
 	var panelContainer;
@@ -68,13 +68,13 @@ kitty.Accordion.AccordionSection = function(panelContainer) {
 	this.showing = true;
 	this.animationDuration = 100;
 	this.panelContainer = panelContainer;
-	this.panel = panelContainer.find('.panel');;
+	this.panel = panelContainer.find('.panel');
 	this.events = {
 		opened: new kitty.CustomEvent(),
 		closed: new kitty.CustomEvent()
 	};
 	this.panelContainer.addClass('expanded');
-}
+};
 
 kitty.Accordion.AccordionSection.prototype.toggle = function() {
 	if(this.showing) {

@@ -1,11 +1,23 @@
 # kitty
 
-Useful JavaScript components test driven with Jasmine.
+UI Components i've built and used over the years. Some are in better condition than others.
 
-## Demos
+## Components
 
-http://adamsilver.github.io/kitty/src/demos/Accordion/
-http://adamsilver.github.io/kitty/src/demos/Carousel/
-http://adamsilver.github.io/kitty/src/demos/EventEmitter/
-http://adamsilver.github.io/kitty/src/demos/Dialog/
-http://adamsilver.github.io/kitty/src/demos/FormValidator/
+Number indicates quality (1 bad, 5 excellent).
+
+[Accordion (3)](http://adamsilver.github.io/kitty/src/demos/Accordion/)
+
+[Carousel (2)](http://adamsilver.github.io/kitty/src/demos/Accordion/)
+
+[EventEmitter (5)](http://adamsilver.github.io/kitty/src/demos/EventEmitter/)
+
+[Dialog (4)](http://adamsilver.github.io/kitty/src/demos/Dialog/)
+
+[FormValidator (5)](http://adamsilver.github.io/kitty/src/demos/FormValidator/)
+
+[Calendar (1)](http://adamsilver.github.io/kitty/src/demos/Calendar/)
+
+[Models and Collection (2)](http://adamsilver.github.io/kitty/src/demos/Model/)
+
+[Star rating (3)](http://adamsilver.github.io/kitty/src/demos/Model/)
