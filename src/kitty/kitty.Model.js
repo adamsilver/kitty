@@ -39,6 +39,7 @@ kitty.Model.prototype.setAttribute = function(name, value) {
 	};
 
 	eventDetails.changed[name] = attributeChanges;
+	this.fire(name+"Changed", attributeChanges);
 	this.fire("changed", eventDetails);
 };
 

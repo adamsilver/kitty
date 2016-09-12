@@ -25,10 +25,10 @@
                 type: "apple"
             });
             appliePie.on("changed", function(e) {
-                console.log(e);
+                console.log('changed', e);
             });
             appliePie.on("slicesChanged", function(e) {
-                console.log(e);
+                console.log('slicesChanged' ,e);
             });
             appliePie.getAttribute("slices");
 
