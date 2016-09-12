@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calendar Month View Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+
+			body {
+				font-family: arial;
+			}
+
+			.calendarMonthView {
+				padding: 10px;
+			}
+
+			.calendarMonthView table {
+				width: 100%;
+				table-layout: fixed;
+				border: 1px solid #ccc;
+				border-collapse: collapse;
+			}
+
+			.calendarMonthView caption {
+				border: 1px solid #444;
+				border-bottom: none;
+				padding: 10px;
+				background-color: #444;
+				color: #fff;
+			}
+
+			.calendarMonthView th,
+			.calendarMonthView td {
+				border: 1px solid #ccc;
+				font-weight: normal;
+			}
+
+			.calendarMonthView th {
+				padding: 10px;
+			}
+
+			.calendarMonthView td {
+				vertical-align: top;
+				height: 65px;
+			}
+
+			.calendarMonthView-day {
+				font-size: 12px;
+				margin-bottom: 6px;
+			}
+
+			.calendarMonthView-entry {
+				background-color: #eee;
+				border-radius: 5px;
+				margin-bottom: 1px;
+			}
+        </style>
+    </head>
+    <body>
+        <h1>Calendar Month View</h1>
+
+        <div class="calendarMonthView">
+        	<table>
+        		<caption>January 2016</caption>
+        		<thead>
+        			<tr>
+	        			<th scope="col" abbr="Monday">Mon</th>
+	        			<th scope="col" abbr="Tuesday">Tue</th>
+	        			<th scope="col" abbr="Wednesday">Wed</th>
+	        			<th scope="col" abbr="Thursday">Thu</th>
+	        			<th scope="col" abbr="Friday">Fri</th>
+	        			<th scope="col" abbr="Saturday">Sat</th>
+	        			<th scope="col" abbr="Sunday">Sun</th>
+	        		</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<td>
+        					<div class="calendarMonthView-day">1</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">2</div>
+        					<div class="calendarMonthView-entries">
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">3</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">4</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">5</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">6</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">7</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>
+        					<div class="calendarMonthView-day">8</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">9</div>
+        					<div class="calendarMonthView-entries">
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">10</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">11</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">12</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">13</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">14</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>
+        					<div class="calendarMonthView-day">15</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">16</div>
+        					<div class="calendarMonthView-entries">
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">17</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        						<div class="calendarMonthView-entry">Entry 3</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">18</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">19</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">20</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">21</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>
+        					<div class="calendarMonthView-day">22</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">23</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">24</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">25</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">26</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">27</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">28</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>
+        					<div class="calendarMonthView-day">29</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">30</div>
+        					<div class="calendarMonthView-entries">
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day">30</div>
+        					<div class="calendarMonthView-entries">
+        						<div class="calendarMonthView-entry">Entry 1</div>
+        						<div class="calendarMonthView-entry">Entry 2</div>
+        					</div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day"></div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day"></div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day"></div>
+        				</td>
+        				<td>
+        					<div class="calendarMonthView-day"></div>
+        				</td>
+        			</tr>
+        		</tbody>
+        	</table>
+        </div>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+    </body>
+</html>
