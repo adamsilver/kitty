@@ -7,23 +7,176 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
 
-			body {
-				font-family: arial;
-			}
+            table, td, th {
+                margin: 0;
+                padding: 0;
+            }
 
-			.calendarWeekView {
-				padding: 10px;
-			}
+            body {
+                font-family: arial;
+            }
 
+            .calendarWeekView {
+                padding: 10px;
+            }
+
+            .calendarWeekView table {
+                width: 100%;
+                table-layout: fixed;
+                border: 1px solid #ccc;
+                border-collapse: collapse;
+            }
+
+            .calendarWeekView caption {
+                border: 1px solid #444;
+                border-bottom: none;
+                padding: 10px;
+                background-color: #444;
+                color: #fff;
+            }
+
+            .calendarWeekView thead th {
+                padding: 10px;
+            }
+
+            .calendarWeekView th,
+            .calendarWeekView td {
+                border: 1px solid #ccc;
+                font-weight: normal;
+                vertical-align: top;
+            }
+
+            .calendarWeekView-times {
+                text-align: right;
+                position: relative;
+            }
+
+            .calendarWeekView-time {
+                height: 50px;
+                padding-right: 3px;
+                padding-top: 3px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .calendarWeekView-entries {
+                position: relative;
+            }
+
+            .calendarWeekView-entry {
+                background-color: #ff0;
+                position: absolute;
+                width: 100%;
+            }
         </style>
     </head>
     <body>
         <h1>Calendar Week View</h1>
+        <ul>
+            <li><a href="month-view.html">Month View</a></li>
+            <li><a href="week-view.html">Week View</a></li>
+        </ul>
 
         <div class="calendarWeekView">
+            <table>
+                <caption>January 9-15, 2016</caption>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col" abbr="Monday">Mon 9</th>
+                        <th scope="col" abbr="Tuesday">Tue 10</th>
+                        <th scope="col" abbr="Wednesday">Wed 11</th>
+                        <th scope="col" abbr="Thursday">Thu 12</th>
+                        <th scope="col" abbr="Friday">Fri 13</th>
+                        <th scope="col" abbr="Saturday">Sat 14</th>
+                        <th scope="col" abbr="Sunday">Sun 15</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="calendarWeekView-times">
+                            <div class="calendarWeekView-time" data-time="09:00">09:00</div>
+                            <div class="calendarWeekView-time" data-time="10:00">10:00</div>
+                            <div class="calendarWeekView-time" data-time="11:00">11:00</div>
+                            <div class="calendarWeekView-time" data-time="12:00">12:00</div>
+                            <div class="calendarWeekView-time" data-time="13:00">13:00</div>
+                            <div class="calendarWeekView-time" data-time="14:00">14:00</div>
+                            <div class="calendarWeekView-time" data-time="15:00">15:00</div>
+                            <div class="calendarWeekView-time" data-time="16:00">16:00</div>
+                            <div class="calendarWeekView-time" data-time="17:00">17:00</div>
+                        </th>
+                        <td>
+                            <div class="calendarWeekView-entries">
+                                <div 
+                                    class="calendarWeekView-entry" 
+                                    data-start-time="10:00" data-end-time="10:30">
+                                    Event #1 (10:00-10:30)
+                                </div>
+                                <div 
+                                    class="calendarWeekView-entry" 
+                                    data-start-time="14:00" data-end-time="14:30">
+                                    Event #2 (14:00-14:30)
+                                </div>
+                            </div>
+                        </td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
-        <script src="../../kitty/kitty.js"></script>
+        <script>
+
+            // work out where to place the entry
+            // we know start time and end time
+            // we know the height of each time slot
+            // work out at which time slot it begins
+
+            function getContainerHeight() {
+                var h = 0;
+                var times = $('.calendarWeekView-time');
+                times.each(function(index, el) {
+                    h += $(el).outerHeight();
+                });
+                return h;
+            }
+
+            function getTimeSlotCount() {
+                return $('.calendarWeekView-time').length;
+            }
+
+            function getTimeSlotIndexPosition(index) {
+
+            }
+
+            function positionEntries() {
+                var entries = $('.calendarWeekView-entry');
+                entries.each(function(i, el) {
+                    positionEntry($(el));
+                });
+            }
+
+            function positionEntry(entry) {
+                var slot = getTimeSlotByTimeAttribute(entry.attr('data-start-time'));
+                var position = slot.position();
+                entry.css('top', position.top+'px');
+            }
+
+            function getTimeSlotByTimeAttribute(time) {
+                var $el;
+                $('.calendarWeekView-time').each(function(i, el) {
+                    if($(el).attr('data-time') === time) {
+                        $el = $(el);
+                    }
+                });
+                return $el;
+            }
+
+            positionEntries();
+        </script>
     </body>
 </html>
