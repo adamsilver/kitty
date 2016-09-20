@@ -6,16 +6,12 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
-			.off {
-				position: absolute;
-				left: -9999em !important;
-			}
-
-			.hide {
+			
+			.dialogOverlay-isHidden {
 				display: none;
 			}
 
-			.overlay {
+			.dialogOverlay {
 				position: fixed;
 				background: #000;
 				opacity: 0.5;
@@ -30,7 +26,12 @@
 				z-index: 10;
 			}
 
-			.dialog .wrapper {
+			.dialog-isOffScreen {
+				position: absolute;
+				left: -9999em !important;
+			}
+
+			.dialog-wrapper {
 				background-color: #fff;
 				border: 1px solid #ccc;
 				width: 300px;
@@ -40,6 +41,7 @@
     </head>
     <body>
         <h1>Dialog</h1>
+        <p><a href="docs.md">Dialog docs</a></p>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>

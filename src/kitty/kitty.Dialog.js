@@ -1,9 +1,9 @@
 kitty.Dialog = function() {
-    this.overlayContainer = $('<div class="overlay hide" />');
+    this.overlayContainer = $('<div class="dialogOverlay dialogOverlay-isHidden" />');
     this.body = $("body");
-    this.container = $("<div class='dialog off'/>");
-    this.wrapper = $('<div class="wrapper">');
-    this.content = $('<div class="content">');
+    this.container = $("<div class='dialog dialog-isOffScreen'/>");
+    this.wrapper = $('<div class="dialog-wrapper">');
+    this.content = $('<div class="dialog-content">');
     this.container.append(this.wrapper);
     this.wrapper.append(this.content);
     this.body.append(this.overlayContainer);
@@ -12,8 +12,8 @@ kitty.Dialog = function() {
 };
 
 kitty.Dialog.prototype.createCloseButton = function() {
-    this.closeButton = $('<a href="#" class="close">Close</a>');
-    this.wrapper.on('click', '.close', $.proxy(this, 'onCloseButtonClicked'));
+    this.closeButton = $('<a href="#" class="dialog-close">Close</a>');
+    this.wrapper.on('click', '.dialog-close', $.proxy(this, 'onCloseButtonClicked'));
     this.wrapper.append(this.closeButton);
 };
 
@@ -32,7 +32,7 @@ kitty.Dialog.prototype.setContent = function(html) {
 
 kitty.Dialog.prototype.show = function(coordinates) {
     this.showOverlay();
-    this.container.removeClass("off");
+    this.container.removeClass("dialog-isOffScreen");
     coordinates = coordinates || {};
     this.container.css({ top: coordinates.y || this.getTopPosition(), left: coordinates.x || this.getLeftPosition() });
 };
@@ -64,7 +64,7 @@ kitty.Dialog.prototype.getLeftPosition = function() {
 };
 
 kitty.Dialog.prototype.hide = function() {
-    this.container.addClass("off");
+    this.container.addClass("dialog-isOffScreen");
     this.hideOverlay();
 };
 
@@ -74,8 +74,8 @@ kitty.Dialog.prototype.destroy = function() {
 };
 
 kitty.Dialog.prototype.showOverlay = function() {
-	this.overlayContainer.removeClass('hide');
+	this.overlayContainer.removeClass('dialogWrapper-isHidden');
 };
 kitty.Dialog.prototype.hideOverlay = function() {
-	this.overlayContainer.addClass('hide');
+	this.overlayContainer.addClass('dialogWrapper-isHidden');
 };
