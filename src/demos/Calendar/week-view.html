@@ -44,6 +44,7 @@
                 border: 1px solid #ccc;
                 font-weight: normal;
                 vertical-align: top;
+                position: relative;
             }
 
             .calendarWeekView-times {
@@ -59,22 +60,17 @@
             }
 
             .calendarWeekView-entries {
-                position: relative;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-color: #eee;
             }
 
             .calendarWeekView-entry {
                 background-color: #ff0;
                 position: absolute;
                 width: 100%;
-            }
-
-            .ui-resizable-s {
-                height: 6px;
-                background-color: #eee;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
+                z-index: 100;
             }
         </style>
     </head>
@@ -126,12 +122,12 @@
                                 </div>
                             </div>
                         </td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
+                        <td><div class="calendarWeekView-entries">2</div></td>
+                        <td><div class="calendarWeekView-entries">3</div></td>
+                        <td><div class="calendarWeekView-entries">4</div></td>
+                        <td><div class="calendarWeekView-entries">5</div></td>
+                        <td><div class="calendarWeekView-entries">6</div></td>
+                        <td><div class="calendarWeekView-entries">7</div></td>
                     </tr>
                 </tbody>
             </table>
@@ -144,10 +140,11 @@
             function WeekView(container) {
                 this.container = container;
                 this.timeSlots = container.find('.calendarWeekView-time')
+                this.entriesContainer = container.find('.calendarWeekView-entries');
                 this.entries = container.find('.calendarWeekView-entry');
                 this.positionEntries();
                 this.createDraggables();
-                this.createResizables();
+                this.createDroppables();
             }
 
             WeekView.prototype.positionEntries = function() {
@@ -175,21 +172,30 @@
             WeekView.prototype.createDraggables = function() {
                 this.entries.draggable({
                     containment: this.container,
-                    revert: 'invalid'
+                    revert: 'invalid',
+                    snap: '.calendarWeekView-entries',
+                    grid: [176, 27]
+                });
+                this.entries.droppable({
+                    greedy: true,
+                    tolerance: 'touch',
+                    drop: function(event,ui){
+                        ui.draggable.draggable('option','revert',true);
+                    }
                 });
             };
 
-            WeekView.prototype.createResizables = function() {
-                this.entries.resizable({
-                    handle: 's',
-                    resize: function(e, ui) {
-
+            WeekView.prototype.createDroppables = function() {
+                this.entriesContainer.droppable({
+                    accept: '.calendarWeekView-entry',
+                    drop: function(e, ui) {
+                        // console.log('container droppable', e, ui);
                     }
                 });
             };
 
             new WeekView($('.calendarWeekView'));
-            
+
         </script>
     </body>
 </html>
