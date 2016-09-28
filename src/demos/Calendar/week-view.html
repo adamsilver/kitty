@@ -67,6 +67,15 @@
                 position: absolute;
                 width: 100%;
             }
+
+            .ui-resizable-s {
+                height: 6px;
+                background-color: #eee;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
         </style>
     </head>
     <body>
@@ -129,54 +138,58 @@
         </div>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script type="text/javascript" src="../../vendor/jQueryUI/jquery-ui.js"></script>
         <script>
 
-            // work out where to place the entry
-            // we know start time and end time
-            // we know the height of each time slot
-            // work out at which time slot it begins
-
-            function getContainerHeight() {
-                var h = 0;
-                var times = $('.calendarWeekView-time');
-                times.each(function(index, el) {
-                    h += $(el).outerHeight();
-                });
-                return h;
+            function WeekView(container) {
+                this.container = container;
+                this.timeSlots = container.find('.calendarWeekView-time')
+                this.entries = container.find('.calendarWeekView-entry');
+                this.positionEntries();
+                this.createDraggables();
+                this.createResizables();
             }
 
-            function getTimeSlotCount() {
-                return $('.calendarWeekView-time').length;
-            }
+            WeekView.prototype.positionEntries = function() {
+                this.entries.each(function(i, el) {
+                    this.positionEntry($(el));
+                }.bind(this));
+            };
 
-            function getTimeSlotIndexPosition(index) {
-
-            }
-
-            function positionEntries() {
-                var entries = $('.calendarWeekView-entry');
-                entries.each(function(i, el) {
-                    positionEntry($(el));
-                });
-            }
-
-            function positionEntry(entry) {
-                var slot = getTimeSlotByTimeAttribute(entry.attr('data-start-time'));
+            WeekView.prototype.positionEntry = function(entry) {
+                var slot = this.getTimeSlotByTimeAttribute(entry.attr('data-start-time'));
                 var position = slot.position();
                 entry.css('top', position.top+'px');
-            }
+            };
 
-            function getTimeSlotByTimeAttribute(time) {
+            WeekView.prototype.getTimeSlotByTimeAttribute = function(time) {
                 var $el;
-                $('.calendarWeekView-time').each(function(i, el) {
+                this.timeSlots.each(function(i, el) {
                     if($(el).attr('data-time') === time) {
                         $el = $(el);
                     }
                 });
                 return $el;
-            }
+            };
 
-            positionEntries();
+            WeekView.prototype.createDraggables = function() {
+                this.entries.draggable({
+                    containment: this.container,
+                    revert: 'invalid'
+                });
+            };
+
+            WeekView.prototype.createResizables = function() {
+                this.entries.resizable({
+                    handle: 's',
+                    resize: function(e, ui) {
+
+                    }
+                });
+            };
+
+            new WeekView($('.calendarWeekView'));
+            
         </script>
     </body>
 </html>
