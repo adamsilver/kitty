@@ -53,7 +53,7 @@
             }
 
             .calendarWeekView-time {
-                height: 50px;
+                height: 56px;
                 padding-right: 3px;
                 padding-top: 3px;
                 border-bottom: 1px solid #ccc;
@@ -98,27 +98,27 @@
                 <tbody>
                     <tr>
                         <th class="calendarWeekView-times">
-                            <div class="calendarWeekView-time" data-time="09:00">09:00</div>
-                            <div class="calendarWeekView-time" data-time="10:00">10:00</div>
-                            <div class="calendarWeekView-time" data-time="11:00">11:00</div>
-                            <div class="calendarWeekView-time" data-time="12:00">12:00</div>
-                            <div class="calendarWeekView-time" data-time="13:00">13:00</div>
-                            <div class="calendarWeekView-time" data-time="14:00">14:00</div>
-                            <div class="calendarWeekView-time" data-time="15:00">15:00</div>
-                            <div class="calendarWeekView-time" data-time="16:00">16:00</div>
-                            <div class="calendarWeekView-time" data-time="17:00">17:00</div>
+                            <div class="calendarWeekView-time" data-time="0900">09:00</div>
+                            <div class="calendarWeekView-time" data-time="1000">10:00</div>
+                            <div class="calendarWeekView-time" data-time="1100">11:00</div>
+                            <div class="calendarWeekView-time" data-time="1200">12:00</div>
+                            <div class="calendarWeekView-time" data-time="1300">13:00</div>
+                            <div class="calendarWeekView-time" data-time="1400">14:00</div>
+                            <div class="calendarWeekView-time" data-time="1500">15:00</div>
+                            <div class="calendarWeekView-time" data-time="1600">16:00</div>
+                            <div class="calendarWeekView-time" data-time="1700">17:00</div>
                         </th>
                         <td>
                             <div class="calendarWeekView-entries">
                                 <div 
                                     class="calendarWeekView-entry" 
-                                    data-start-time="10:00" data-end-time="10:30">
+                                    data-start-time="1000" data-end-time="1030" data-duration="30">
                                     Event #1 (10:00-10:30)
                                 </div>
                                 <div 
                                     class="calendarWeekView-entry" 
-                                    data-start-time="14:00" data-end-time="14:30">
-                                    Event #2 (14:00-14:30)
+                                    data-start-time="1400" data-end-time="1530" data-duration="90">
+                                    Event #2 (14:00-15:30)
                                 </div>
                             </div>
                         </td>
@@ -143,6 +143,7 @@
                 this.entriesContainer = container.find('.calendarWeekView-entries');
                 this.entries = container.find('.calendarWeekView-entry');
                 this.positionEntries();
+                this.sizeEntries();
                 this.createDraggables();
                 this.createDroppables();
             }
@@ -157,6 +158,26 @@
                 var slot = this.getTimeSlotByTimeAttribute(entry.attr('data-start-time'));
                 var position = slot.position();
                 entry.css('top', position.top+'px');
+            };
+
+            WeekView.prototype.sizeEntries = function() {
+                this.entries.each(function(i, el) {
+                    this.sizeEntry($(el));
+                }.bind(this));
+            };
+
+
+
+            WeekView.prototype.sizeEntry = function(entry) {
+                var timeSlotHeight = 56;
+                var duration = this.getDurationInMinsOfEntry(entry);
+                var hours = duration / 60;
+                var height = hours * timeSlotHeight;
+                entry.css('height', height);
+            };
+
+            WeekView.prototype.getDurationInMinsOfEntry = function(entry) {
+                return parseInt(entry.attr('data-duration'), 10);
             };
 
             WeekView.prototype.getTimeSlotByTimeAttribute = function(time) {
@@ -174,23 +195,38 @@
                     containment: this.container,
                     revert: 'invalid',
                     snap: '.calendarWeekView-entries',
-                    grid: [176, 27]
+                    snapMode: 'inner',
+                    grid: [176, 10],
+                    stop: $.proxy(this, 'onEntryFinishedDragging')
                 });
                 this.entries.droppable({
                     greedy: true,
                     tolerance: 'touch',
-                    drop: function(event,ui){
+                    drop: function(e, ui){
+                        // after dropping making sure the revert is set to true
+                        // so that it never allows dragging on to the droppable
                         ui.draggable.draggable('option','revert',true);
                     }
                 });
             };
 
+            WeekView.prototype.onEntryFinishedDragging = function(e, ui) {
+                $(e.target).draggable('option','revert','invalid');
+
+                // TODO
+                // work out where the new entry is and set the times.
+
+                console.log(ui);
+                this.getStartTimeFromOffsetTop(ui.position.top);
+            };
+
+            WeekView.prototype.getStartTimeFromOffsetTop = function(top) {
+                console.log(9+top/60);
+            };
+
             WeekView.prototype.createDroppables = function() {
                 this.entriesContainer.droppable({
-                    accept: '.calendarWeekView-entry',
-                    drop: function(e, ui) {
-                        // console.log('container droppable', e, ui);
-                    }
+                    accept: '.calendarWeekView-entry'
                 });
             };
 
