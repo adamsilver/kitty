@@ -21,7 +21,6 @@
             }
 
             .calendarWeekView table {
-                width: 100%;
                 table-layout: fixed;
                 border: 1px solid #ccc;
                 border-collapse: collapse;
@@ -36,7 +35,7 @@
             }
 
             .calendarWeekView thead th {
-                padding: 10px;
+                
             }
 
             .calendarWeekView th,
@@ -50,20 +49,32 @@
             .calendarWeekView-times {
                 text-align: right;
                 position: relative;
+                background-color: #eee;
+                background-image: linear-gradient(transparent 50%, rgba(255,255,255,.9) 50%);
+                background-size: 60px 60px;
             }
 
             .calendarWeekView-time {
-                height: 56px;
+                height: 57px;
                 padding-right: 3px;
                 padding-top: 3px;
-                border-bottom: 1px solid #ccc;
+            }
+
+            .calendarWeekView-day,
+            .calendarWeekView-timeHeading {
+                width: 160px;
             }
 
             .calendarWeekView-entries {
                 position: absolute;
                 height: 100%;
-                width: 100%;
+                width: 160px;
                 background-color: #eee;
+                /*outline: 1px solid #000;*/
+
+                background-color: #eee;
+                background-image: linear-gradient(transparent 50%, rgba(255,255,255,.9) 50%);
+                background-size: 60px 60px;
             }
 
             .calendarWeekView-entry {
@@ -71,6 +82,7 @@
                 position: absolute;
                 width: 100%;
                 z-index: 100;
+                font-size: 11px;
             }
         </style>
     </head>
@@ -86,14 +98,16 @@
                 <caption>January 9-15, 2016</caption>
                 <thead>
                     <tr>
-                        <th></th>
-                        <th scope="col" abbr="Monday">Mon 9</th>
-                        <th scope="col" abbr="Tuesday">Tue 10</th>
-                        <th scope="col" abbr="Wednesday">Wed 11</th>
-                        <th scope="col" abbr="Thursday">Thu 12</th>
-                        <th scope="col" abbr="Friday">Fri 13</th>
-                        <th scope="col" abbr="Saturday">Sat 14</th>
-                        <th scope="col" abbr="Sunday">Sun 15</th>
+                        <th><div class="calendarWeekView-timeHeading"></div></th>
+                        <th scope="col" abbr="Monday">
+                            <div class="calendarWeekView-day">Mon 9</div>
+                        </th>
+                        <th scope="col" abbr="Tuesday"><div class="calendarWeekView-day">Tue 10</div></th>
+                        <th scope="col" abbr="Wednesday"><div class="calendarWeekView-day">Wed 11</div></th>
+                        <th scope="col" abbr="Thursday"><div class="calendarWeekView-day">Thu 12</div></th>
+                        <th scope="col" abbr="Friday"><div class="calendarWeekView-day">Fri 13</div></th>
+                        <th scope="col" abbr="Saturday"><div class="calendarWeekView-day">Sat 14</div></th>
+                        <th scope="col" abbr="Sunday"><div class="calendarWeekView-day">Sun 15</div></th>
                 </thead>
                 <tbody>
                     <tr>
@@ -111,21 +125,25 @@
                         <td>
                             <div class="calendarWeekView-entries">
                                 <div 
+                                    class="calendarWeekView-entry" data-entry-id="0">
+                                    Event #1 (09:00-09:30)
+                                </div>
+                                <div 
                                     class="calendarWeekView-entry" data-entry-id="1">
-                                    Event #1 (10:00-10:30)
+                                    Event #2 (10:00-10:30)
                                 </div>
                                 <div 
                                     class="calendarWeekView-entry" data-entry-id="2">
-                                    Event #2 (14:00-15:30)
+                                    Event #3 (14:00-15:30)
                                 </div>
                             </div>
                         </td>
-                        <td><div class="calendarWeekView-entries">2</div></td>
-                        <td><div class="calendarWeekView-entries">3</div></td>
-                        <td><div class="calendarWeekView-entries">4</div></td>
-                        <td><div class="calendarWeekView-entries">5</div></td>
-                        <td><div class="calendarWeekView-entries">6</div></td>
-                        <td><div class="calendarWeekView-entries">7</div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
+                        <td><div class="calendarWeekView-entries"></div></td>
                     </tr>
                 </tbody>
             </table>
@@ -147,15 +165,21 @@
             var entriesCollection = new kitty.Collection();
             entriesCollection.addModels([
                 new EntryModel({
+                    id: 0,
+                    startTime: '0900',
+                    endTime: '0930',
+                    duration: 15
+                }),
+                new EntryModel({
                     id: 1,
-                    startTime: 1000,
-                    endTime: 1030,
+                    startTime: '1000',
+                    endTime: '1030',
                     duration: 30
                 }),
                 new EntryModel({
                     id: 2,
-                    startTime: 1400,
-                    endTime: 1530,
+                    startTime: '1400',
+                    endTime: '1530',
                     duration: 90
                 })
             ]);

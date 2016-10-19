@@ -17,7 +17,6 @@ WeekView.prototype.positionEntries = function() {
 
 WeekView.prototype.positionEntry = function(entry) {
     var entryModel = entriesCollection.getModelById(entry.attr('data-entry-id'));
-
     var slot = this.getTimeSlot(entryModel.getAttribute('startTime'));
     var position = slot.position();
     entry.css('top', position.top+'px');
@@ -31,17 +30,17 @@ WeekView.prototype.sizeEntries = function() {
 
 WeekView.prototype.sizeEntry = function(entry) {
     var entryModel = entriesCollection.getModelById(entry.attr('data-entry-id'));
-    var timeSlotHeight = 56;
+    var timeSlotHeight = 60;
     var duration = entryModel.getDuration();
     var hours = duration / 60;
-    var height = hours * timeSlotHeight;
+    var height = hours * timeSlotHeight - 1; // -1 so that the drags dont collide (shouldnt need this really)
     entry.css('height', height);
 };
 
 WeekView.prototype.getTimeSlot = function(time) {
     var $el;
     this.timeSlots.each(function(i, el) {
-        if(parseInt($(el).attr('data-time'), 10) === time) {
+        if($(el).attr('data-time') === time) {
             $el = $(el);
         }
     });
@@ -53,8 +52,9 @@ WeekView.prototype.createDraggables = function() {
         containment: this.container,
         revert: 'invalid',
         snap: '.calendarWeekView-entries',
+        snapTolerance: 0,
         snapMode: 'inner',
-        grid: [176, 15],
+        grid: [161, 15], // width of column plus one for the border, height of 15 mins,
         stop: $.proxy(this, 'onEntryFinishedDragging')
     });
     this.entries.droppable({
@@ -73,9 +73,15 @@ WeekView.prototype.onEntryFinishedDragging = function(e, ui) {
 };
 
 WeekView.prototype.getStartTimeFromOffsetTop = function(top) {
-    var startTime = 9;
-    console.log(startTime+top/60);
+    var timeBeginsAt = 9;
+    var timeAsADecimal = timeBeginsAt+top/60;
+    var time = parse(timeAsADecimal);
+    console.log(time);
 };
+
+function parse(num) {
+    return ('0' + Math.floor(num) % 24).slice(-2) + ':' + ((num % 1)*60 + '0').slice(0, 2);
+}
 
 WeekView.prototype.createDroppables = function() {
     this.entriesContainer.droppable({
@@ -85,6 +91,5 @@ WeekView.prototype.createDroppables = function() {
 };
 
 WeekView.prototype.onEntryDropped = function(e, ui) {
-    console.log('dropped', ui);
     this.getStartTimeFromOffsetTop(ui.position.top);
 };
