@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Date picker Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+			.calendarControl {
+				position: relative;
+				display: inline-block;
+			}
+
+			.dateselector {
+
+			}
+
+			.calendar {
+				position: absolute;
+				background-color: #fff;
+				border: 1px solid #ccc;
+			}
+        </style>
+    </head>
+    <body>
+        <h1>Date selector</h1>
+
+		<div class="dateselector">
+			<select name="day">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+			<select name="month">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+			<select name="year">
+				<option>2016</option>
+				<option>2017</option>
+			</select>
+		</div>
+
+		<p>Stuff under</p>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.DateSelector.js"></script>
+        <script>
+            var date = new kitty.DateSelector({
+				appendTo: $('.dateselector')[0],
+				calendarCssClass: 'calendar',
+				selectDay: $('.dateselector select')[0],
+				selectMonth: $('.dateselector select')[1],
+				selectYear: $('.dateselector select')[2],
+				appendCalendarTo: $('.dateselector')[0]
+			});
+        </script>
+    </body>
+</html>

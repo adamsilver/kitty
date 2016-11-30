@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Date picker Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script>document.documentElement.className = "enhanced";</script>
+        <style>
+
+			.dates {
+				width: 400px;
+			}
+
+			.heading {
+				padding: 10px;
+				text-align: center;
+				border: 1px solid #eee;
+				border-bottom: none;
+			}
+
+			.weeks a {
+				text-decoration: none;
+			}
+
+			.weeks a:hover .week-row {
+				background-color: #eee;
+			}
+
+			.week-table {
+				display: table;
+				table-layout: fixed;
+				width: 100%;
+				border-collapse: collapse;
+				border: 1px solid #eee;
+			}
+
+			.week-row {
+				display: table-row;
+			}
+
+			.day {
+				display: table-cell;
+				padding: 10px 7px;
+			}
+
+			.footer {
+				padding: 10px;
+				text-align: center;
+				border: 1px solid #eee;
+				border-top: none;
+			}
+
+			.dateWrapper {
+				position: relative;
+			}
+
+			.enhanced .dates {
+				display: none;
+				position: absolute;
+				background-color: #fff;
+			}
+        </style>
+    </head>
+    <body>
+        <h1>Date picker</h1>
+
+		<div class="dateWrapper">
+        	<a class="chooseDate" href="#chooseDate">Choose date</a>
+
+	        <div class="dates" id="chooseDate">
+	        	<div class="month month-current" id="jan">
+	         		<div class="heading">January</div>
+	        		<div class="weeks">
+	        			<div class="week-table">
+	        				<div class="week-row">
+								<div class="day">Mon</div>
+								<div class="day">Tue</div>
+								<div class="day">Wed</div>
+								<div class="day">Thu</div>
+								<div class="day">Fri</div>
+								<div class="day">Sat</div>
+								<div class="day">Sun</div>
+							</div>
+						</div>
+
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">1</div>
+									<div class="day">2</div>
+									<div class="day">3</div>
+									<div class="day">4</div>
+									<div class="day">5</div>
+									<div class="day">6</div>
+									<div class="day">7</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">8</div>
+									<div class="day">9</div>
+									<div class="day">10</div>
+									<div class="day">11</div>
+									<div class="day">12</div>
+									<div class="day">13</div>
+									<div class="day">14</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">15</div>
+									<div class="day">16</div>
+									<div class="day">17</div>
+									<div class="day">18</div>
+									<div class="day">19</div>
+									<div class="day">20</div>
+									<div class="day">21</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">22</div>
+									<div class="day">23</div>
+									<div class="day">24</div>
+									<div class="day">25</div>
+									<div class="day">26</div>
+									<div class="day">27</div>
+									<div class="day">28</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">29</div>
+									<div class="day">30</div>
+									<div class="day">31</div>
+									<div class="day">1</div>
+									<div class="day">2</div>
+									<div class="day">3</div>
+									<div class="day">4</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        		</div>
+					<div class="footer">
+						<a href="#feb" class="next">Next month</a>
+					</div>
+	        	</div>
+	        	<div class="month" id="feb">
+	         		<div class="heading">February</div>
+	        		<div class="weeks">
+	        			<div class="week-table">
+	        				<div class="week-row">
+								<div class="day">Mon</div>
+								<div class="day">Tue</div>
+								<div class="day">Wed</div>
+								<div class="day">Thu</div>
+								<div class="day">Fri</div>
+								<div class="day">Sat</div>
+								<div class="day">Sun</div>
+							</div>
+						</div>
+
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">1</div>
+									<div class="day">2</div>
+									<div class="day">3</div>
+									<div class="day">4</div>
+									<div class="day">5</div>
+									<div class="day">6</div>
+									<div class="day">7</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">8</div>
+									<div class="day">9</div>
+									<div class="day">10</div>
+									<div class="day">11</div>
+									<div class="day">12</div>
+									<div class="day">13</div>
+									<div class="day">14</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">15</div>
+									<div class="day">16</div>
+									<div class="day">17</div>
+									<div class="day">18</div>
+									<div class="day">19</div>
+									<div class="day">20</div>
+									<div class="day">21</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">22</div>
+									<div class="day">23</div>
+									<div class="day">24</div>
+									<div class="day">25</div>
+									<div class="day">26</div>
+									<div class="day">27</div>
+									<div class="day">28</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        			<a href="">
+	        				<div class="week-table">
+		        				<div class="week-row">
+									<div class="day">29</div>
+									<div class="day">30</div>
+									<div class="day">31</div>
+									<div class="day">1</div>
+									<div class="day">2</div>
+									<div class="day">3</div>
+									<div class="day">4</div>
+		        				</div>
+		        			</div>
+	        			</a>
+	        		</div>
+					<div class="footer">
+						<a href="#jan" class="prev">Previous month</a>
+						<a href="#mar" class="next">Next month</a>
+					</div>
+	        	</div>
+	        </div>
+	    </div>
+
+	    <p>Stuff under</p>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.DatePicker.js"></script>
+        <script>
+            var datepicker = new kitty.DatePicker($(".dateWrapper"));
+        </script>
+    </body>
+</html>
