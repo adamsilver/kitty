@@ -16,45 +16,45 @@
                 padding: 30px;
             }
 
-            h1,p {
-                margin-bottom: 20px;
+            p {
+                margin-bottom: 60px;
             }
 
             fieldset {
                 border: none;
             }
 
-            .hide {
+            .field {
+                margin-bottom: 50px;
+            }
+
+            .errorSummary {
+                border: 5px solid red;
+                margin-bottom: 20px;
+                padding: 20px;
+            }
+
+            .errorSummary h2 {
+                margin-bottom: 10px;
+            }
+
+            .errorSummary ul {
+                padding-left: 20px;
+            }
+
+            .errorSummary-hide {
                 display: none;
             }
 
-            .field {
-                margin-bottom: 20px;
-            }
-
-            #errorSummary {
-                color: red;
-                margin-bottom: 40px;
-            }
-
             .error {
+                display: block;
                 color: red;
             }
 
-            /*span.error,*/ #errorSummaryLink {
+            .error span {
                 position: absolute;
                 left: -9999em;
             }
-
-            #errorSummary p {
-                color: red;
-            }
-
-            #errorSummary a {
-                color: red;
-            }
-
-
 
         </style>
     </head>
@@ -63,8 +63,7 @@
 
         <p>Note: error text is injected into labels or legends to aid accessibility. Hidden visually using CSS.</p>
 
-        <a id="errorSummaryLink" href="#">Error Summary</a>
-        <div id="errorSummary"></div>
+        <div class="errorSummary errorSummary-hide"></div>
 
         <form method="get" action="http://google.co.uk">
             <div class="field">

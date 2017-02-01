@@ -23,7 +23,7 @@ DemoFormValidator.prototype.showFieldErrors = function() {
 };
 
 DemoFormValidator.prototype.showFieldError = function (error) {
-	var errorSpan = '<span class="error">Error: '+error.message+'</span>';
+	var errorSpan = '<span class="error"><span>Error:</span> '+error.message+'</span>';
 	var fieldContainer = $("#" + error.fieldName).parents(".field");
 	var label = fieldContainer.find('label');
 	var legend = fieldContainer.find("legend");

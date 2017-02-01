@@ -1,5 +1,5 @@
 function ErrorSummary() {
-    this.container = $("#errorSummary");
+    this.container = $(".errorSummary");
     this.container.on('click', 'a.error', $.proxy(this, 'onErrorClicked'));
 }
 
@@ -12,17 +12,17 @@ ErrorSummary.prototype.onErrorClicked = function(e) {
 
 ErrorSummary.prototype.showErrors = function (errors) {
     this.container.html(this.getErrorHtml(errors));
-    this.container.removeClass('hide');
+    this.container.removeClass('errorSummary-hide');
     document.getElementById('errorSummaryLink').focus();
 };
 
 ErrorSummary.prototype.getErrorHtml = function(errors) {
-    var html = '<p>You have ' + errors.length + ' errors</p>';
+    var html = '<h2 id="errorSummaryLink" tabindex="-1">You have ' + errors.length + ' errors</h2>';
     html += '<ul>';
     for (var i = 0, j = errors.length; i < j; i++) {
         var error = errors[i];
         html += '<li>';
-        html +=		'<a class="error" href="#' + error.fieldName +	'">';
+        html +=		'<a class="errorLink" href="#' + error.fieldName +	'">';
         html +=			error.message;
         html +=		'</a>';
         html +=	'</li>';
@@ -32,5 +32,5 @@ ErrorSummary.prototype.getErrorHtml = function(errors) {
 };
 
 ErrorSummary.prototype.hideErrors = function() {
-    this.container.addClass('hide');
+    this.container.addClass('errorSummary-hide');
 };
