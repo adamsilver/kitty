@@ -68,7 +68,10 @@
 
         <form method="get" action="http://google.co.uk">
             <div class="field">
-                <label for="username">Username</label>
+                <label for="username">
+                    Username
+                    <span class="error">the error</span>
+                </label>
                 <input type="text" name="username" id="username">
             </div>
             <div class="field">
@@ -77,7 +80,10 @@
             </div>
             <div class="field">
                 <fieldset>
-                    <legend>Favourite colour</legend>
+                    <legend>
+                        Favourite colour
+                        <span class="error">the error</span>
+                    </legend>
                     <div class="choice">
                         <input type="radio" name="colour" id="colour">
                         <label for="colour">Red</label>
