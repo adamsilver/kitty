@@ -14,12 +14,12 @@ DemoFormValidator.prototype.setupValidators = function() {
 			message: "Password cannot be empty", method: kitty.validators.notEmpty
 		},
 		{
-			message: "Password must contain 8 characters", method: kitty.validators.minLength, params: { minLength: 8 }
+			message: "Password must contain at least 8 characters", method: kitty.validators.minLength, params: { minLength: 8 }
 		}
 	]);
 	this.addValidator("colour", [
 		{
-			message: "Must choose a colour",
+			message: "You must pick a colour",
 			method: function(controls) {
 				var valid = false;
 				for(var i = 0; i < controls.length; i++) {

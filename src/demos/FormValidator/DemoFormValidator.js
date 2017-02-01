@@ -23,13 +23,12 @@ DemoFormValidator.prototype.showFieldErrors = function() {
 };
 
 DemoFormValidator.prototype.showFieldError = function (error) {
-	var errorSpan = '<span class="error"> Error</span>';
+	var errorSpan = '<div class="error">Error: '+error.message+'</div>';
 	var fieldContainer = $("#" + error.fieldName).parents(".field");
 	var label = fieldContainer.find('label');
 	var legend = fieldContainer.find("legend");
 	var errorContainer = fieldContainer.find(".error");
 	errorContainer.remove();
-	fieldContainer.append('<div class="error">'+error.message+'</div>');
 	if(legend.length) {
 		legend.append(errorSpan);
 	} else {

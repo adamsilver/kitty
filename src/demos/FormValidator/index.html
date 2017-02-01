@@ -7,6 +7,23 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
 
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 30px;
+            }
+
+            h1,p {
+                margin-bottom: 20px;
+            }
+
+            fieldset {
+                border: none;
+            }
+
             .hide {
                 display: none;
             }
@@ -15,15 +32,16 @@
                 margin-bottom: 20px;
             }
 
-            .errorSummary {
+            #errorSummary {
                 color: red;
+                margin-bottom: 40px;
             }
 
             .error {
                 color: red;
             }
 
-            span.error, #errorSummaryLink {
+            /*span.error,*/ #errorSummaryLink {
                 position: absolute;
                 left: -9999em;
             }
