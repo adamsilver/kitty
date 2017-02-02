@@ -6,18 +6,41 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
-
             * {
                 margin: 0;
                 padding: 0;
             }
 
             body {
-                padding: 30px;
+                font-family: arial;
             }
 
-            p {
-                margin-bottom: 60px;
+            header,
+            footer {
+                padding: 30px 20px;
+                background-color: #f5f5f5;
+            }
+
+            header h2 {
+                margin-bottom: 20px;
+            }
+
+            header p {
+                max-width: 600px;
+                margin-bottom: 40px;
+            }
+
+            header ul {
+                margin-left: 20px;
+                max-width: 600px;
+            }
+
+            header li {
+                margin-bottom: 10px;
+            }
+
+            main {
+                padding: 30px 20px;
             }
 
             fieldset {
@@ -25,12 +48,19 @@
             }
 
             .field {
-                margin-bottom: 50px;
+                max-width: 600px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .field-simple label {
+                display: block;
             }
 
             .errorSummary {
                 border: 5px solid red;
-                margin-bottom: 20px;
+                margin-bottom: 40px;
                 padding: 20px;
             }
 
@@ -56,74 +86,90 @@
                 left: -9999em;
             }
 
+            .actions {
+                padding: 25px 0;
+            }
+
         </style>
     </head>
     <body>
-        <h1>Form Validator</h1>
+        <header>
+            <h1>Form Validator</h1>
+            <p>Fully accessible and flexible form validation pattern and script.</p>
+            <h2>Notes</h2>
+            <ul>
+                <li>An error summary appears at the top with links to the fields</li>
+                <li>Validation occurs on submit and moves focus to the summary</li>
+                <li>Errors are injected into labels for assistive devices and visual users alike</li>
+                <li>Fields that use a fieldset (radios or checkboxes) inject errors into the legend, for assistive devices and visual users alike</li>
+            <ul>
+        </header>
+        <main>
+            <div class="errorSummary errorSummary-hide"></div>
 
-        <p>Note: error text is injected into labels or legends to aid accessibility. Hidden visually using CSS.</p>
-
-        <div class="errorSummary errorSummary-hide"></div>
-
-        <form method="get" action="http://google.co.uk">
-            <div class="field">
-                <label for="username">
-                    Username
-                </label>
-                <input type="text" name="username" id="username">
-            </div>
-            <div class="field">
-                <label for="password">Password</label>
-                <input type="text" name="password" id="password">
-            </div>
-            <div class="field">
-                <fieldset>
-                    <legend>
-                        Favourite colour
-                    </legend>
-                    <div class="choice">
-                        <input type="radio" name="colour" id="colour">
-                        <label for="colour">Red</label>
-                    </div>
-                    <div class="choice">
-                        <input type="radio" name="colour" id="colour2">
-                        <label for="colour2">Blue</label>
-                    </div>
-                    <div class="choice">
-                        <input type="radio" name="colour" id="colour3">
-                        <label for="colour3">Yellow</label>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="field">
-                <fieldset>
-                    <legend>Things you love</legend>
-                    <div class="choice">
-                        <input type="checkbox" name="things" id="things" value="chocolate">
-                        <label for="things">Chocolate</label>
-                    </div>
-                    <div class="choice">
-                        <input type="checkbox" name="things" id="things2" value="sweets">
-                        <label for="things2">Sweets</label>
-                    </div>
-                    <div class="choice">
-                        <input type="checkbox" name="things" id="things3" value="fries">
-                        <label for="things3">Fries</label>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="field">
-                <label for="whatever">Whatever</label>
-                <select name="whatever" id="whatever">
-                    <option value="">Select</option>
-                    <option value="1">Yahoo</option>
-                    <option value="2">Google</option>
-                </select>
-            </div>
-            <div>
-                <input type="submit" value="Submit">
-            </div>
-        </form>
+            <form method="get" action="http://google.co.uk">
+                <div class="field field-simple">
+                    <label for="emailaddress">
+                        Email address
+                    </label>
+                    <input type="email" name="emailaddress" id="emailaddress">
+                </div>
+                <div class="field field-simple">
+                    <label for="password">Password</label>
+                    <input type="text" name="password" id="password">
+                </div>
+                <div class="field">
+                    <fieldset>
+                        <legend>
+                            Favourite colour
+                        </legend>
+                        <div class="choice">
+                            <input type="radio" name="colour" id="colour">
+                            <label for="colour">Red</label>
+                        </div>
+                        <div class="choice">
+                            <input type="radio" name="colour" id="colour2">
+                            <label for="colour2">Blue</label>
+                        </div>
+                        <div class="choice">
+                            <input type="radio" name="colour" id="colour3">
+                            <label for="colour3">Yellow</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="field">
+                    <fieldset>
+                        <legend>Things you love</legend>
+                        <div class="choice">
+                            <input type="checkbox" name="things" id="things" value="chocolate">
+                            <label for="things">Chocolate</label>
+                        </div>
+                        <div class="choice">
+                            <input type="checkbox" name="things" id="things2" value="sweets">
+                            <label for="things2">Sweets</label>
+                        </div>
+                        <div class="choice">
+                            <input type="checkbox" name="things" id="things3" value="fries">
+                            <label for="things3">Fries</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="field field-simple">
+                    <label for="whatever">Whatever</label>
+                    <select name="whatever" id="whatever">
+                        <option value="">Select</option>
+                        <option value="1">Yahoo</option>
+                        <option value="2">Google</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </main>
+        <footer>
+            Fin.
+        </footer>
 
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>

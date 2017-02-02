@@ -6,8 +6,8 @@ function LoginFormValidator(form, options) {
 kitty.inherit(LoginFormValidator, DemoFormValidator);
 
 DemoFormValidator.prototype.setupValidators = function() {
-	this.addValidator("username", [
-		{ message: "Username cannot be empty", method: kitty.validators.notEmpty }
+	this.addValidator("emailaddress", [
+		{ message: "Email address cannot be empty", method: kitty.validators.notEmpty }
 	]);
 	this.addValidator("password", [
 		{
@@ -31,5 +31,8 @@ DemoFormValidator.prototype.setupValidators = function() {
 				return valid;
 			}
 		}
+	]);
+	this.addValidator("whatever", [
+		{ message: "You must select a whatever", method: kitty.validators.notEmpty }
 	]);
 };
