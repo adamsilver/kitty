@@ -58,21 +58,40 @@
                 display: block;
             }
 
+            .field-label {
+                display: block;
+            }
+
+            .field-hint {
+                color: #666;
+                display: block;
+            }
+
             .errorSummary {
-                border: 5px solid red;
+                border: 5px solid #FF4136;
                 margin-bottom: 40px;
                 padding: 20px;
             }
 
             .errorSummary h2 {
+                color: #FF4136;
                 margin-bottom: 10px;
             }
 
             .errorSummary ul {
-                padding-left: 20px;
+                padding-left: 0px;
             }
 
-            .errorSummary-hide {
+            .errorSummary ul li {
+                list-style: none;
+                margin-bottom: 6px;
+            }
+
+            .errorSummary a {
+                color: #FF4136;
+            }
+
+            .errorSummary-isHidden {
                 display: none;
             }
 
@@ -105,7 +124,7 @@
             <ul>
         </header>
         <main>
-            <div class="errorSummary errorSummary-hide"></div>
+            <div class="errorSummary errorSummary-isHidden"></div>
 
             <form method="get" action="http://google.co.uk">
                 <div class="field field-simple">
@@ -115,7 +134,14 @@
                     <input type="email" name="emailaddress" id="emailaddress">
                 </div>
                 <div class="field field-simple">
-                    <label for="password">Password</label>
+                    <label for="password">
+                        <span class="field-label">
+                            Password
+                        </span>
+                        <span class="field-hint">
+                            Must contain 8 characters etc.
+                        </span>
+                    </label>
                     <input type="text" name="password" id="password">
                 </div>
                 <div class="field">

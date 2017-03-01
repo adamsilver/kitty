@@ -41,14 +41,16 @@
 				<option>5</option>
 			</select>
 			<select name="year">
-				<option>2016</option>
 				<option>2017</option>
+				<option>2018</option>
 			</select>
 		</div>
 
 		<p>Stuff under</p>
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script type="text/javascript" src="../../vendor/Moment/moment-with-locales.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.2/moment-range.js"></script>
         <script src="../../kitty/kitty.js"></script>
         <script src="../../kitty/kitty.DateSelector.js"></script>
         <script>
@@ -60,6 +62,43 @@
 				selectYear: $('.dateselector select')[2],
 				appendCalendarTo: $('.dateselector')[0]
 			});
+        </script>
+        <script>
+  //       moment.locale('en', {
+		//   week : {
+		//     dow : 1
+		//   }
+		// });
+        console.log(moment().format("dddd Do MMMM YYYY"));
+        console.log('start day of month', moment().startOf('month').format("dddd Do MMMM YYYY"));
+        console.log('start day of month', moment().startOf('month').day());
+
+        // returns say 2 days in past month
+  //       var howManyPreviousDays = moment().startOf('month').day();
+  //       var i = 0;
+  //       while (i < howManyPreviousDays) {
+  //       	console.log(moment().startOf('month').subtract(i, "day").format("dddd Do MMMM YYYY"));
+		// 	i++;
+		// }
+
+		var firstDay = moment().startOf('month').day()-1;
+		var i = 0;
+		while (i < firstDay) {
+			var daystoSubtract = firstDay-i;
+			console.log(daystoSubtract, moment().startOf('month').day(-daystoSubtract));
+			i++;
+		}
+
+        // for(var i = 0; i < howManyPreviousDays-1; i++) {
+        // 	console.log(moment().startOf('month').subtract(i, "day").format("dddd Do MMMM YYYY"))
+        // }
+
+
+        // console.log('start day of month', moment().startOf('month').subtract(2, "day").format("dddd Do MMMM YYYY"));
+
+        // // console.log('day number', moment('2017-02-01').startOf('month'));
+        // console.log('day number', moment(moment('2017-02-01').startOf('month').day()).format("dddd Do MMMM YYYY"));
+
         </script>
     </body>
 </html>
