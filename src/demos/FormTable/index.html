@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Form Validator Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: arial;
+            }
+
+            header,
+            footer {
+                padding: 30px 20px;
+                background-color: #f5f5f5;
+            }
+
+            header p {
+                max-width: 600px;
+                margin-bottom: 40px;
+            }
+
+            main {
+                padding: 30px 20px;
+            }
+
+            h1 {
+            	font-size: 3em;
+            	margin-bottom: 30px;
+            }
+
+            fieldset {
+				border: none;
+            }
+
+            legend {
+            	font-size: 2em;
+            	font-weight: bold;
+			    margin-bottom: 30px;
+            }
+
+            th, td {
+            	text-align: left;
+            	padding: 10px;
+			    border-bottom: 1px solid #bfc1c3;
+			    vertical-align: top;
+            }
+
+			td label {
+				display: inline-block;
+				margin-right: 15px;
+				margin-bottom: 5px;
+			}
+
+			table {
+				border-collapse: collapse;
+			    border-spacing: 0;
+			    width: 100%;
+				margin-bottom: 40px;
+			}
+
+			input[type=submit] {
+				background-color: #00823b;
+			    display: inline-block;
+			    padding: 10px 20px;
+			    border: none;
+			    -webkit-appearance: none;
+			    box-shadow: 0 2px 0 #003518;
+			    font-size: 1.2em;
+			    text-decoration: none;
+			    -webkit-font-smoothing: antialiased;
+			    color: #fff;
+			    margin: 0 15px 15px 0;
+			}
+
+			input[type=submit]:hover {
+				background-color: #024a23;
+			}
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>Demo: Form inside table. The table represents one fieldset, which contains many radio buttons. Each radio button represents a time for the user to book. The table, at least visually, chunks up the options by day of the week (down the left hand side) and morning and afternoon (along the top) of the table.</p>
+        </header>
+        <main>
+            <h1>Book an appointment</h1>
+
+            <form method="post" action="/the-end-point-etc/">
+
+				<fieldset>
+					<legend>Date and time</legend>
+
+					<div class="slots">
+						<table class="form-group">
+							<thead>
+								<tr>
+									<th scope="col" width="20%">This week</th>
+									<th scope="col" width="40%">Morning</th>
+									<th scope="col" width="40%">Afternoon</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Monday 27 February</th>
+									<td>
+										<span>No available times</span>
+									</td>
+									<td>
+										<span>No available times</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Tuesday 28 February</th>
+									<td>
+										<span>No available times</span>
+									</td>
+									<td>
+										<span>No available times</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Wednesday 1 March</th>
+									<td>
+										<span>No available times</span>
+									</td>
+									<td>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Wednesday 1 March at 3.55pm"
+											>
+											<span class="visuallyhidden">Wednesday 1 March</span> 3.55pm
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Wednesday 1 March at 4.30pm"
+											>
+											<span class="visuallyhidden">Wednesday 1 March</span> 4.30pm
+										</label>
+ 									</td>
+								</tr>
+
+								<tr>
+									<th>Thursday 2 March</th>
+									<td>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Thursday 2 March at 9am"
+											>
+											<span class="visuallyhidden">Thursday 2 March</span> 9am
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Thursday 2 March at 9.25am"
+											>
+											<span class="visuallyhidden">Thursday 2 March</span> 9.25am
+										</label>
+									</td>
+									<td>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Thursday 2 March at 1pm"
+											>
+											<span class="visuallyhidden">Thursday 2 March</span> 1pm
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Friday 3 March</th>
+									<td>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 9am"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 9am
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 9.25am"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 9.25am
+										</label>
+									</td>
+									<td>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 12.30pm"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 12.30pm
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 12.55pm"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 12.55pm
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 1.20pm"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 1.20pm
+										</label>
+										<label>
+											<input
+											type="radio"
+											name="slot"
+											value="Friday 3 March at 1.45pm"
+											>
+											<span class="visuallyhidden">Friday 3 March</span> 1.45pm
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+                <input type="submit" value="Book appointment">
+            </form>
+        </main>
+        <footer>
+            Footer.
+        </footer>
+    </body>
+</html>
