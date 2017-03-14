@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nested</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    </head>
+    <body>
+        <header>
+            <p>This page has a nested fieldset</p>
+        </header>
+        <main>
+            <h1>Book an appointment</h1>
+
+            <form method="post" action="/the-end-point-etc/">
+
+				<fieldset>
+					<legend>Date and time</legend>
+
+					<fieldset>
+						<legend>Monday 21 October</legend>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value="Wednesday 1 March at 3.55pm"
+							>
+							3:55pm
+						</label>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value="Wednesday 1 March at 4.30pm"
+							>
+							4:30pm
+						</label>
+					</fieldset>
+
+					<fieldset>
+						<legend>Monday 22 October</legend>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value="Wednesday 1 March at 3.55pm"
+							>
+							9:55am
+						</label>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value="Wednesday 1 March at 4.30pm"
+							>
+							10:30pm
+						</label>
+					</fieldset>
+				</fieldset>
+                <input type="submit" value="Book appointment">
+            </form>
+        </main>
+        <footer>
+            Footer.
+        </footer>
+    </body>
+</html>
