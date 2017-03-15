@@ -5,10 +5,32 @@
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+        	table {
+        		border-collapse: collapse;
+        	}
+
+        	th, td {
+        		padding: 10px;
+        		text-align: left;
+        		vertical-align: top;
+        		border: 1px solid #ccc;
+        	}
+        </style>
     </head>
     <body>
         <header>
-            <p>This page has a nested fieldset</p>
+            <p>This page tests the following:</p>
+            <ul>
+            	<li>Nested fieldsets without fields after the nested ones. Question pending on GDS accessibility blog <a href="https://accessibility.blog.gov.uk/2016/07/22/using-the-fieldset-and-legend-elements/"></a></li>
+            	<li>Testing how times are read out for screen readers which includes a few concerns:
+            		<ol>
+            			<li>Does using <time> add value or cause problems generally speaking?<li>
+            			<li>Is it okay when used within a label as per this demo?</li>
+            			<li>Should the "AM" and "PM" be inside or outside the element?</li>
+            		</ol>
+            	</li>
+            </ul>
         </header>
         <main>
             <h1>Book an appointment</h1>
@@ -24,17 +46,17 @@
 							<input
 							type="radio"
 							name="slot"
-							value="Wednesday 1 March at 3.55pm"
+							value=""
 							>
-							3:55pm
+							<time>3:55pm</time>
 						</label>
 						<label>
 							<input
 							type="radio"
 							name="slot"
-							value="Wednesday 1 March at 4.30pm"
+							value=""
 							>
-							4:30pm
+							<time>4:30pm</time>
 						</label>
 					</fieldset>
 
@@ -44,7 +66,26 @@
 							<input
 							type="radio"
 							name="slot"
-							value="Wednesday 1 March at 3.55pm"
+							value=""
+							>
+							<time>9:55</time>am
+						</label>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value=""
+							>
+							<time>10:30</time>pm
+						</label>
+					</fieldset>
+					<fieldset>
+						<legend>Wednesday 23 October</legend>
+						<label>
+							<input
+							type="radio"
+							name="slot"
+							value=""
 							>
 							9:55am
 						</label>
@@ -52,14 +93,90 @@
 							<input
 							type="radio"
 							name="slot"
-							value="Wednesday 1 March at 4.30pm"
+							value=""
 							>
-							10:30pm
+							11:30pm
 						</label>
 					</fieldset>
 				</fieldset>
                 <input type="submit" value="Book appointment">
             </form>
+
+            <h2>Leonie's notes</h2>
+
+            <table>
+			<caption>Screen reader support for nested fieldsets</caption>
+
+			<tbody><tr>
+			<th></th>
+			<th>Chrome</th>
+			<th>Notes</th>
+			<th>Edge</th>
+			<th>Notes</th>
+			<th>Firefox</th>
+			<th>Notes</th>
+			<th>IE</th>
+			<th>Notes</th>
+			<th>Safari</th>
+			<th>Notes</th>
+			</tr>
+
+			<tr>
+			<th>Jaws</th>
+			<td>Yes</td>
+			<td>"About you" announced when "Phone" field receives focus</td>
+			<td>N/A</td><td></td>
+			<td>No</td>
+			<td>"About you" not announced when "Phone" field receives focus</td>
+			<td>Yes</td>
+			<td>"About you" is announced when "Phone" field receives focus</td>
+			<td>N/A</td>
+			<td></td>
+			</tr>
+
+			<tr>
+			<th>Narrator</th>
+			 <td>N/A</td>
+			 <td></td>
+			<td>No</td>
+			<td>No legends announced</td>
+			<td>N/A</td>
+			<td></td>
+			<td>No</td>
+			<td>No legends announced</td>
+			<td>N/A</td>
+			<td></td>
+			</tr>
+
+			<tr>
+			<th>NVDA</th>
+			<td>No</td>
+			<td>"About you" not announced when "Phone" field receives focus</td>
+			<td>N/A</td>
+			<td></td>
+			<td>No</td>
+			<td>"About you" not announced when "Phone" field receives focus</td>
+			<td>No</td>
+			<td>"About you" not announced when "Phone" field receives focus</td>
+			<td>N/A</td>
+			<td></td>
+			</tr>
+
+			<tr>
+			<th>VoiceOver (OSX)</th>
+			<td>N/A</td>
+			<td></td>
+			<td>N/A</td>
+			<td></td>
+			<td>N/A</td>
+			<td></td>
+			<td>N/A</td>
+			<td></td>
+			<td>Yes</td>
+			<td>"About you" announced when "Phone" field receives focus</td>
+			</tr>
+			</tbody></table>
+
         </main>
         <footer>
             Footer.
