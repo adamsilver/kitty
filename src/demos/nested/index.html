@@ -16,6 +16,17 @@
         		vertical-align: top;
         		border: 1px solid #ccc;
         	}
+
+        	/*fieldset fieldset {
+        		border: none;
+        		border-bottom: 1px solid #ccc;
+        	}
+
+        	fieldset fieldset legend {
+        		float: left;
+        		width: 200px;
+        	}*/
+
         </style>
     </head>
     <body>
@@ -42,22 +53,44 @@
 
 					<fieldset>
 						<legend>Monday 21 October</legend>
-						<label>
-							<input
-							type="radio"
-							name="slot"
-							value=""
-							>
-							<time>3:55pm</time>
-						</label>
-						<label>
-							<input
-							type="radio"
-							name="slot"
-							value=""
-							>
-							<time>4:30pm</time>
-						</label>
+						<fieldset>
+							<legend>Morning</legend>
+							<label>
+								<input
+								type="radio"
+								name="slot"
+								value=""
+								>
+								3:55am
+							</label>
+							<label>
+								<input
+								type="radio"
+								name="slot"
+								value=""
+								>
+								4:30am
+							</label>
+						</fieldset>
+						<fieldset>
+							<legend>Afternoon</legend>
+							<label>
+								<input
+								type="radio"
+								name="slot"
+								value=""
+								>
+								3:55pm
+							</label>
+							<label>
+								<input
+								type="radio"
+								name="slot"
+								value=""
+								>
+								4:30pm
+							</label>
+						</fieldset>
 					</fieldset>
 
 					<fieldset>
@@ -68,7 +101,7 @@
 							name="slot"
 							value=""
 							>
-							<time>9:55</time>am
+							9:55am
 						</label>
 						<label>
 							<input
@@ -76,7 +109,7 @@
 							name="slot"
 							value=""
 							>
-							<time>10:30</time>pm
+							10:30pm
 						</label>
 					</fieldset>
 					<fieldset>
