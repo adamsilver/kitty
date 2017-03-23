@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Nested fieldset for grouping times by day.</title>
+        <title>Double-nested fieldset for grouping times by morning or afternoon and day of the week.</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <style>
-
-        </style>
     </head>
     <body>
         <header>
             <p>Questions:</p>
             <ul>
-            	<li>Does a nested fieldset like this work well in screen readers?</li>
+            	<li>Does a double-nested fieldset like this work well in screen readers?</li>
             </ul>
         </header>
         <main>
@@ -26,8 +23,8 @@
 
 					<fieldset>
 						<legend>Monday 21 October</legend>
-						
-						<div>
+						<fieldset>
+							<legend>Morning</legend>
 							<label for="slot_1">
 								<input
 								type="radio"
@@ -46,15 +43,17 @@
 								>
 								10am
 							</label>
-						</div>
-						<div>
-							No afternoon slots available
-						</div>
+						</fieldset>
+						<fieldset>
+							<legend>Afternoon</legend>
+							No slots
+						</fieldset>
 					</fieldset>
 
 					<fieldset>
 						<legend>Tuesday 22 October</legend>
-						<div>
+						<fieldset>
+							<legend>Morning</legend>
 							<label for="slot_5">
 								<input
 								type="radio"
@@ -73,8 +72,9 @@
 								>
 								10am
 							</label>
-						</div>
-						<div>					
+						</fieldset>
+						<fieldset>
+							<legend>Afternoon</legend>
 							<label for="slot_7">
 								<input
 								type="radio"
@@ -93,12 +93,12 @@
 								>
 								3:15pm
 							</label>
-						</div>
+						</fieldset>
 					</fieldset>
 					<fieldset>
 						<legend>Wednesday 23 October</legend>
-						
-						<div>
+						<fieldset>
+							<legend>Morning</legend>
 							<label for="slot_9">
 								<input
 								type="radio"
@@ -108,8 +108,9 @@
 								>
 								9:55am
 							</label>
-						</div>
-						<div>
+						</fieldset>
+						<fieldset>
+							<legend>Afternoon</legend>
 							<label for="slot_10">
 								<input
 								type="radio"
@@ -119,7 +120,7 @@
 								>
 								11:30pm
 							</label>
-						</div>
+						</fieldset>
 					</fieldset>
 				</fieldset>
                 <input type="submit" value="Book appointment">
