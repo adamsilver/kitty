@@ -48,8 +48,6 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 			this.onTextBoxDownPressed(e);
 			break;
 		default:
-			console.log('typed');
-			
 			if(this.textBox.val().length > 0) {
 				this.clearSuggestions();
 				this.buildFilteredSuggestions();
