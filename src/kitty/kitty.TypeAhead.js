@@ -25,13 +25,14 @@ kitty.TypeAhead.prototype.createSuggestionsPanel = function() {
 
 kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
-		case 38: //UP
-			break;
 		case 40: //DOWN
 			this.onTextBoxDownPressed(e);
 			break;
 		default:
-			this.displayMenu();
+			// don't show items on enter
+			if(this.textBox.val().length > 0) {
+				this.showMenu();
+			}
 	}
 };
 
@@ -42,49 +43,93 @@ kitty.TypeAhead.prototype.onSuggestionsKeyUp = function(e) {
 		case 16: // SHIFT
 			return false;
 		case 13: // ENTER
+			this.onSuggestionEnterPressed(e);
+			break;
 		case 32: // SPACE
-
+			this.onSuggestionSpacePressed(e);
 			break;
 		case 27: // ESCAPE
 			break;
 		case 38: //UP
-
+			this.onSuggestionUpPressed(e);
 			break;
 		case 40: //DOWN
-			this.onTextBoxDownPressed(e);
+			this.onSuggestionDownPressed(e);
 			break;
 		default:
-			// this.textBox.focus();
 	}
 };
 
+kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
+	this.textBox.val($(this.activeSuggestion).text());
+	this.hideMenu();
+	this.textBox.focus();
+};
+
+kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
+	this.textBox.val($(this.activeSuggestion).text());
+	this.hideMenu();
+	this.textBox.focus();
+};
+
 kitty.TypeAhead.prototype.onTextBoxDownPressed = function(e) {
-	var nextSuggestion = this.suggestionsPanel.find('li')[0];
-	this.selectItem(nextSuggestion);
+	this.showMenu();
+	var firstSuggestion = this.suggestionsPanel.find('li')[0];
+	this.selectItem(firstSuggestion);
 };
 
-kitty.TypeAhead.prototype.selectItem = function(nextSuggestion) {
+kitty.TypeAhead.prototype.onSuggestionDownPressed = function(e) {
+	if(this.activeSuggestion) {
+		var nextSuggestion = $(this.activeSuggestion).next();
+		if(nextSuggestion[0]) {
+			this.selectItem(nextSuggestion[0]);
+		}
+	}
+};
+
+kitty.TypeAhead.prototype.onSuggestionUpPressed = function(e) {	
+	var previousSuggestion = $(this.activeSuggestion).prev();
+	if(previousSuggestion[0]) {
+		this.selectItem(previousSuggestion[0]);
+	} else {
+		this.textBox.focus();
+		this.clearActiveSuggestion();
+	}
+};
+
+kitty.TypeAhead.prototype.clearActiveSuggestion = function() {
+	$(this.activeSuggestion).removeClass('active-suggestion');
+	this.activeSuggestion = null;
+};
+
+kitty.TypeAhead.prototype.selectItem = function(suggestion) {
 	/*
-		1. Unhighlight previous if any
-		2. Add highlight state using a class
-		3. focus on the suggestion
-		4. update active-descendant on the textbox
-		5. Update the textbox
+		1. Unhighlight previous if any DONE
+		2. Add highlight state using a class DONE
+		3. focus on the suggestion DONE
+		4. update active-descendant on the textbox TODO
 	*/
-	this.textBox.val($(nextSuggestion).text());
-	nextSuggestion.focus();
+	if(this.activeSuggestion) {
+		$(this.activeSuggestion).removeClass('active-suggestion');
+	}
+	$(suggestion).addClass('active-suggestion');
+	suggestion.focus();
+	this.activeSuggestion = suggestion;
 };
 
-
-kitty.TypeAhead.prototype.displayMenu = function() {
+kitty.TypeAhead.prototype.showMenu = function() {
 	this.suggestionsPanel.empty();
-	var value = this.textBox.val(); 
+	var value = this.textBox.val();
 	var options = this.control.options;
 	var optionText;
 	for(var i = 0; i < options.length; i++) {
 		optionText = $(options[i]).text();
 		if(optionText.toLowerCase().indexOf(value) > -1) {
-			this.suggestionsPanel.append('<li tabindex="-1" role="option" id="search' + i + '">' + optionText + '</li>')
+			this.suggestionsPanel.append('<li tabindex="-1" role="option" id="search--' + i + '">' + optionText + '</li>')
 		}
 	}
+};
+
+kitty.TypeAhead.prototype.hideMenu = function() {
+	this.suggestionsPanel.empty();
 };
