@@ -2,12 +2,18 @@ kitty.TypeAhead = function(control, options) {
 	this.controlId = control.id;
 	this.control = control;
 	this.changeSelectId();
+	this.hideSelect();
 	this.createTextBox();
+	this.createShowSuggestionsButton();
 	this.createSuggestionsPanel();
 };
 
 kitty.TypeAhead.prototype.changeSelectId = function() {
 	this.control.id = this.controlId + '-select';
+};
+
+kitty.TypeAhead.prototype.hideSelect = function() {
+	$(this.control).hide();
 };
 
 kitty.TypeAhead.prototype.createTextBox = function() {
@@ -17,10 +23,23 @@ kitty.TypeAhead.prototype.createTextBox = function() {
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 };
 
+kitty.TypeAhead.prototype.createShowSuggestionsButton = function() {
+	this.toggleButton = $('<button>Show suggestions</button>');
+	$(this.control).parents('div').append(this.toggleButton);
+	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
+};
+
+kitty.TypeAhead.prototype.onToggleButtonClick = function(e) {
+	this.clearSuggestions();
+	this.buildAllSuggestions();
+	this.showMenu();
+};
+
 kitty.TypeAhead.prototype.createSuggestionsPanel = function() {
 	this.suggestionsPanel = $('<ul id="suggestions" role="listbox"></ul>');
 	$(this.control).parents('div').append(this.suggestionsPanel);
 	this.suggestionsPanel.on('keyup', $.proxy(this, 'onSuggestionsKeyUp'));
+	this.suggestionsPanel.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
 };
 
 kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
@@ -29,9 +48,15 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 			this.onTextBoxDownPressed(e);
 			break;
 		default:
-			// don't show items on enter
+			console.log('typed');
+			
 			if(this.textBox.val().length > 0) {
+				this.clearSuggestions();
+				this.buildFilteredSuggestions();
 				this.showMenu();
+			} else {
+				this.clearSuggestions();
+				this.hideMenu();
 			}
 	}
 };
@@ -58,6 +83,12 @@ kitty.TypeAhead.prototype.onSuggestionsKeyUp = function(e) {
 			break;
 		default:
 	}
+};
+
+kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
+	this.textBox.val($(e.currentTarget).text());
+	this.hideMenu();
+	this.textBox.focus();
 };
 
 kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
@@ -118,8 +149,19 @@ kitty.TypeAhead.prototype.selectItem = function(suggestion) {
 };
 
 kitty.TypeAhead.prototype.showMenu = function() {
+	this.suggestionsPanel.show();
+};
+
+kitty.TypeAhead.prototype.hideMenu = function() {
+	this.suggestionsPanel.hide();
+};
+
+kitty.TypeAhead.prototype.clearSuggestions = function() {
 	this.suggestionsPanel.empty();
-	var value = this.textBox.val();
+};
+
+kitty.TypeAhead.prototype.buildFilteredSuggestions = function() {
+	var value = this.textBox.val().toLowerCase();
 	var options = this.control.options;
 	var optionText;
 	for(var i = 0; i < options.length; i++) {
@@ -130,6 +172,14 @@ kitty.TypeAhead.prototype.showMenu = function() {
 	}
 };
 
+kitty.TypeAhead.prototype.buildAllSuggestions = function() {
+	var options = this.control.options;
+	for(var i = 0; i < options.length; i++) {
+		optionText = $(options[i]).text();
+		this.suggestionsPanel.append('<li tabindex="-1" role="option" id="search--' + i + '">' + optionText + '</li>')
+	}
+};
+
 kitty.TypeAhead.prototype.hideMenu = function() {
-	this.suggestionsPanel.empty();
+	this.clearSuggestions();
 };
