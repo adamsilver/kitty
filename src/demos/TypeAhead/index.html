@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Type ahead demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+			label {
+				display: block;
+			}
+        </style>
+    </head>
+    <body>
+        <h1>Typeahead</h1>
+
+		<div>
+			<label for="country">
+				Choose country
+			</label>
+			<select name="country" id="country">
+				<option value="fr">France</option>
+				<option value="de">Germany</option>
+				<option value="gb">United Kingdom</option>
+			</select>
+		</div>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.TypeAhead.js"></script>
+        <script>
+        	var select = document.getElementById('country');
+			var typeahead = new kitty.TypeAhead(select);
+        </script>
+    </body>
+</html>
