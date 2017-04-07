@@ -21,6 +21,7 @@ kitty.TypeAhead.prototype.createTextBox = function() {
 	this.textBox.prop('id', this.controlId);
 	$(this.control).parents('div').append(this.textBox);
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
+	// this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 };
 
 kitty.TypeAhead.prototype.createShowSuggestionsButton = function() {
@@ -49,6 +50,18 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 			e.preventDefault();
 			break;
 		default:
+
+			// when a suggestion is selected and the text box is focussed
+			// it triggers this event listener to fire
+			// but we don't want this to run because it will
+			// reshow the menu because the length is more than 0
+			// perhaps instead of this state "hack" we could... 
+			// instead check that the value is an actual suggestion
+			// if it is don't show the box. Could serve double purpose.
+			if(this.suggestionSelected) {
+				this.suggestionSelected = false;
+				return;
+			}
 			if(this.textBox.val().length > 0) {
 				this.clearSuggestions();
 				this.buildFilteredSuggestions();
@@ -64,10 +77,6 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 
 kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
 	switch (e.keyCode) {
-		case 9: // TAB
-			break;
-		case 16: // SHIFT
-			return false;
 		case 13: // ENTER
 			this.onSuggestionEnterPressed(e);
 			break;
@@ -75,6 +84,7 @@ kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
 			this.onSuggestionSpacePressed(e);
 			break;
 		case 27: // ESCAPE
+			this.onSuggestionEscapePressed(e);
 			break;
 		case 38: //UP
 			this.onSuggestionUpPressed(e);
@@ -84,6 +94,12 @@ kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
 			break;
 		default:
 	}
+};
+
+kitty.TypeAhead.prototype.onSuggestionEscapePressed = function(e) {
+	e.preventDefault();
+	this.clearSuggestions();
+	this.hideMenu();
 };
 
 kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
@@ -101,9 +117,10 @@ kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
 };
 
 kitty.TypeAhead.prototype.selectSuggestion = function() {
+	this.suggestionSelected = true;
 	this.textBox.val($(this.activeSuggestion).text());
-	this.hideMenu();
 	this.textBox.focus();
+	this.hideMenu();
 };
 
 kitty.TypeAhead.prototype.onTextBoxDownPressed = function(e) {
