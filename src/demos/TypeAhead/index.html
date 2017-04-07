@@ -10,16 +10,42 @@
 				display: block;
 			}
 
+            .wrapper {
+                position: relative;
+            }
+
+            #suggestions {
+                position: absolute;
+                overflow: auto;
+                width: 200px;
+                list-style: none;
+
+                background-color: #fff;
+                border: 1px solid #0B0C0C;
+                max-height: 200px;
+                margin: 0;
+                padding: 0;
+            }
+
+            #suggestions li {
+                margin: 0;
+                padding: 3px;
+            }
+
             .active-suggestion {
-                border: 3px solid orange;
-                outline: none;
+                background-color: blue;
+                color: white;
+            }
+
+            .hide {
+                display: none;
             }
         </style>
     </head>
     <body>
         <h1>Typeahead</h1>
 
-		<div>
+		<div class="wrapper">
 			<label for="country">
 				Choose country
 			</label>

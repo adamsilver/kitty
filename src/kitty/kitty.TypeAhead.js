@@ -2,10 +2,10 @@ kitty.TypeAhead = function(control, options) {
 	this.controlId = control.id;
 	this.control = control;
 	this.changeSelectId();
-	this.hideSelect();
 	this.createTextBox();
 	this.createShowSuggestionsButton();
 	this.createSuggestionsPanel();
+	this.hideSelect();
 };
 
 kitty.TypeAhead.prototype.changeSelectId = function() {
@@ -13,18 +13,18 @@ kitty.TypeAhead.prototype.changeSelectId = function() {
 };
 
 kitty.TypeAhead.prototype.hideSelect = function() {
-	$(this.control).hide();
+	$(this.control).remove();
 };
 
 kitty.TypeAhead.prototype.createTextBox = function() {
-	this.textBox = $('<input type="text" />');
+	this.textBox = $('<input type="text" role="combobox" autocomplete="off" aria-owns="suggestions">');
 	this.textBox.prop('id', this.controlId);
 	$(this.control).parents('div').append(this.textBox);
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 };
 
 kitty.TypeAhead.prototype.createShowSuggestionsButton = function() {
-	this.toggleButton = $('<button>Show suggestions</button>');
+	this.toggleButton = $('<button>&darr;</button>');
 	$(this.control).parents('div').append(this.toggleButton);
 	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
 };
@@ -36,9 +36,9 @@ kitty.TypeAhead.prototype.onToggleButtonClick = function(e) {
 };
 
 kitty.TypeAhead.prototype.createSuggestionsPanel = function() {
-	this.suggestionsPanel = $('<ul id="suggestions" role="listbox"></ul>');
+	this.suggestionsPanel = $('<ul id="suggestions" role="listbox" class="hide"></ul>');
 	$(this.control).parents('div').append(this.suggestionsPanel);
-	this.suggestionsPanel.on('keyup', $.proxy(this, 'onSuggestionsKeyUp'));
+	this.suggestionsPanel.on('keydown', 'li', $.proxy(this, 'onSuggestionsKeyDown'));
 	this.suggestionsPanel.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
 };
 
@@ -46,12 +46,15 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
 		case 40: //DOWN
 			this.onTextBoxDownPressed(e);
+			e.preventDefault();
 			break;
 		default:
 			if(this.textBox.val().length > 0) {
 				this.clearSuggestions();
 				this.buildFilteredSuggestions();
-				this.showMenu();
+				if(this.suggestionsPanel.find('li').length) {
+					this.showMenu();
+				}
 			} else {
 				this.clearSuggestions();
 				this.hideMenu();
@@ -59,7 +62,7 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 	}
 };
 
-kitty.TypeAhead.prototype.onSuggestionsKeyUp = function(e) {
+kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
 	switch (e.keyCode) {
 		case 9: // TAB
 			break;
@@ -90,12 +93,14 @@ kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
 };
 
 kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
-	this.textBox.val($(this.activeSuggestion).text());
-	this.hideMenu();
-	this.textBox.focus();
+	this.selectSuggestion();
 };
 
 kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
+	this.selectSuggestion();
+};
+
+kitty.TypeAhead.prototype.selectSuggestion = function() {
 	this.textBox.val($(this.activeSuggestion).text());
 	this.hideMenu();
 	this.textBox.focus();
@@ -104,26 +109,28 @@ kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
 kitty.TypeAhead.prototype.onTextBoxDownPressed = function(e) {
 	this.showMenu();
 	var firstSuggestion = this.suggestionsPanel.find('li')[0];
-	this.selectItem(firstSuggestion);
+	this.highlightItem(firstSuggestion);
 };
 
 kitty.TypeAhead.prototype.onSuggestionDownPressed = function(e) {
 	if(this.activeSuggestion) {
 		var nextSuggestion = $(this.activeSuggestion).next();
 		if(nextSuggestion[0]) {
-			this.selectItem(nextSuggestion[0]);
+			this.highlightItem(nextSuggestion[0]);
 		}
 	}
+	e.preventDefault();
 };
 
 kitty.TypeAhead.prototype.onSuggestionUpPressed = function(e) {	
 	var previousSuggestion = $(this.activeSuggestion).prev();
 	if(previousSuggestion[0]) {
-		this.selectItem(previousSuggestion[0]);
+		this.highlightItem(previousSuggestion[0]);
 	} else {
 		this.textBox.focus();
 		this.clearActiveSuggestion();
 	}
+	e.preventDefault();
 };
 
 kitty.TypeAhead.prototype.clearActiveSuggestion = function() {
@@ -131,7 +138,7 @@ kitty.TypeAhead.prototype.clearActiveSuggestion = function() {
 	this.activeSuggestion = null;
 };
 
-kitty.TypeAhead.prototype.selectItem = function(suggestion) {
+kitty.TypeAhead.prototype.highlightItem = function(suggestion) {
 	/*
 		1. Unhighlight previous if any DONE
 		2. Add highlight state using a class DONE
@@ -147,11 +154,13 @@ kitty.TypeAhead.prototype.selectItem = function(suggestion) {
 };
 
 kitty.TypeAhead.prototype.showMenu = function() {
-	this.suggestionsPanel.show();
+	this.suggestionsPanel.removeClass('hide');
+	this.textBox.attr('aria-expanded', 'true');
 };
 
 kitty.TypeAhead.prototype.hideMenu = function() {
-	this.suggestionsPanel.hide();
+	this.suggestionsPanel.addClass('hide');
+	this.textBox.attr('aria-expanded', 'false');
 };
 
 kitty.TypeAhead.prototype.clearSuggestions = function() {
@@ -176,8 +185,4 @@ kitty.TypeAhead.prototype.buildAllSuggestions = function() {
 		optionText = $(options[i]).text();
 		this.suggestionsPanel.append('<li tabindex="-1" role="option" id="search--' + i + '">' + optionText + '</li>')
 	}
-};
-
-kitty.TypeAhead.prototype.hideMenu = function() {
-	this.clearSuggestions();
 };
