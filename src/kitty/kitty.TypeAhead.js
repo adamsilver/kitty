@@ -100,12 +100,17 @@ kitty.TypeAhead.prototype.onSuggestionEscapePressed = function(e) {
 	e.preventDefault();
 	this.clearSuggestions();
 	this.hideMenu();
+	this.focusTextBox();
+};
+
+kitty.TypeAhead.prototype.focusTextBox = function() {
+	this.textBox.focus();
 };
 
 kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
 	this.textBox.val($(e.currentTarget).text());
 	this.hideMenu();
-	this.textBox.focus();
+	this.focusTextBox();
 };
 
 kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
@@ -121,7 +126,7 @@ kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
 kitty.TypeAhead.prototype.selectSuggestion = function() {
 	this.suggestionSelected = true;
 	this.textBox.val($(this.activeSuggestion).text());
-	this.textBox.focus();
+	this.focusTextBox();
 	this.hideMenu();
 };
 
@@ -146,7 +151,7 @@ kitty.TypeAhead.prototype.onSuggestionUpPressed = function(e) {
 	if(previousSuggestion[0]) {
 		this.highlightItem(previousSuggestion[0]);
 	} else {
-		this.textBox.focus();
+		this.focusTextBox();
 		this.clearActiveSuggestion();
 	}
 	e.preventDefault();
