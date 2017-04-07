@@ -15,21 +15,28 @@
             }
 
             #suggestions {
-                position: absolute;
-                overflow: auto;
-                width: 200px;
-                list-style: none;
-
-                background-color: #fff;
-                border: 1px solid #0B0C0C;
-                max-height: 200px;
                 margin: 0;
+                max-height: 340px;
+                overflow-y: auto;
+                position: relative;
+                font-size: 16px;
                 padding: 0;
+                position: absolute;
+                top: 40px;
+                left: 0;
+                width: 200px;
+                background-color: #fff;
+                border: 1px solid #bfc1c3;
+                box-sizing: border-box;
+                z-index: 2;
             }
 
             #suggestions li {
-                margin: 0;
-                padding: 3px;
+                line-height: 22px;
+                padding: 6px 15px;
+                display: block;
+                width: auto;
+                position: relative;
             }
 
             .active-suggestion {
