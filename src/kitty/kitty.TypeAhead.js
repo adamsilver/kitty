@@ -110,10 +110,12 @@ kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
 
 kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
 	this.selectSuggestion();
+	e.preventDefault();
 };
 
 kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
 	this.selectSuggestion();
+	e.preventDefault();
 };
 
 kitty.TypeAhead.prototype.selectSuggestion = function() {
