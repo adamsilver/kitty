@@ -1,8 +1,5 @@
 
 /**
-*
-* @class Create a calendar control to help fill in form elements that require a date format
-* @constructor
 * @param {Object} options Optional properties for this calendar instance
 * @param {Date} options.dateStart The start date
 * @param {Date} options.dateEnd The end date
@@ -22,450 +19,120 @@
 * @param {String} options.hasLinkClass The class name for the associated link
 */
 kitty.CalendarControl = function(options) {
+	var defaults = {};
 
-	var config = {
-		dateStart: (function() {
-			var d = new Date();
-			d.setYear(d.getFullYear()-2);
-			return d;
-		}()),
-		dateEnd: (function() {
-			var d = new Date();
-			d.setYear(d.getFullYear()+2);
-			return d;
-		}()),
-		currentDate: (function() {
-			var d = new Date();
-			d.setHours(0,0,0,0);
-			return d;
-		}()),
-		dayInMs: 86400000,
-		monthsContainer: null,
-		title: "Calendar",
-		calendarClass: "calendarControl",
-		dayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-		monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],
-		closeOnDateSelection: false,
-		hasCloseButton: false,
-		hasLinkActivator: true,
-		hasLinkClass: "calendarHasLink",
-		linkActivatorClass: "activateCalendar",
-		linkActivatorText: "Show calendar",
-		startHidden: false,
-		selectDay: null,
-		selectMonth: null,
-		selectYear: null,
-		hasDropDowns: false,
-		appendCalendarTo: null,
-		calendarActivator: null
-	};
-
-	// set from values in object passed in as param to constructor.
-	if (typeof options == "object") {
-		config.dateStart = options.dateStart || config.dateStart;
-		config.dateEnd = options.dateEnd || config.dateEnd;
-		// todo: check if the currentDate is in range
-		config.currentDate = options.currentDate || config.currentDate;
-		config.title = options.title || config.title;
-		config.calendarClass = options.calendarClass || config.calendarClass;
-		config.closeOnDateSelection = (typeof options.closeOnDateSelection === "boolean") ? options.closeOnDateSelection : config.closeOnDateSelection;
-		config.hasCloseButton = (typeof options.hasCloseButton === "boolean") ? options.hasCloseButton : config.hasCloseButton;
-		config.hasLinkActivator = (typeof options.hasLinkActivator === "boolean") ? options.hasLinkActivator : config.hasLinkActivator;
-		config.linkActivatorClass = options.linkActivatorClass || config.linkActivatorClass;
-		config.linkActivatorText = options.linkActivatorText || config.linkActivatorText;
-		config.startHidden = (typeof options.startHidden === "boolean") ? options.startHidden : config.startHidden;
-		config.selectDay = options.selectDay || null;
-		config.selectMonth = options.selectMonth || null;
-		config.selectYear = options.selectYear || null;
-		config.hasDropDowns = (config.selectDay !== null || config.selectMonth !== null || config.selectYear !== null) || false;
-		config.appendCalendarTo = options.appendCalendarTo || null;
-		config.hasLinkClass = options.hasLinkClass || config.hasLinkClass;
-	}
-
-	/*
-	 * This handles the state of the calendar while in use.
-	 * For example we may change months (previous/next) but
-	 * not actually set a date. So we need to keep track of
-	 * what date we are showing without having to inspect DOM
-	 * for class/Id names etc
-	 */
-	var state = {
-		currentSelectedDate: config.currentDate
-	};
-
-	this.calendar = document.createElement("div"); // calendar so user can place whereever they want
-	this.calendar.className = config.calendarClass; // so the user can style with own class name
-	this.selectedDate = config.currentDate;	// so user can utilise the selected date in some other situation not handled by this class
-	var me = this;
-
-	buildCalendar();
-	function buildCalendar() {
-		createPrimaryStructure();
-
-		if (dateInRange(me.selectedDate, config.dateStart, config.dateEnd)) {
-			createMonth(me.selectedDate.getFullYear(),me.selectedDate.getMonth());
-		}
-
-		prepareCalendarControls();
-
-		if (config.startHidden) {
-			me.hideCalendar();
-		}
-		else {
-			me.showCalendar();
-		}
-
-		if(config.hasLinkActivator) {
-			$(me.calendar).addClass(config.hasLinkClass);
-			createCalendarActivator();
-		}
-
-		if(config.appendCalendarTo !== null) {
-			placeCalendar();
-		}
-
-		if(config.hasDropDowns) {
-			prepareDropDowns();
-			setCalendarDateFromDropDown();
-		}
-
-	}
-
-	function placeCalendar() {
-		config.appendCalendarTo.appendChild(me.calendar);
-	}
-
-	function createCalendarActivator() {
-		var a = document.createElement("a");
-		a.href = "#";
-		a.className = config.linkActivatorClass;
-		a.innerHTML = config.linkActivatorText;
-		$(a).on('click', $.proxy(me, 'calendarActivatorOnClick'));
-		config.calendarActivator = a;
-		$(me.calendar).prepend(a);
-	}
-
-	/*
-	 * This creates the calendar mark-up with action buttons
-	 * @param void
-	 * @return void
-	 */
-	function createPrimaryStructure() {
-		var html = '';
-		html +=		'<div class="calendar">';
-		html +=			'<div class="title">';
-		html +=				config.title;
-		html +=			'</div>';
-		html +=			'<div class="actions">';
-		html +=				'<ul>';
-		html +=					'<li class="backward"><a href="#" class="previous">Prev</a></li>';
-		html +=					'<li class="forward"><a href="#" class="next">Next</a></li>';
-		html +=				'</ul>';
-		html +=			'</div>';
-		html +=			'<div class="months">';
-		html +=			'</div>';
-		if (config.hasCloseButton) {
-			html += '<div class="actions2">';
-			html += '<a href="#" class="close">Close</a>';
-			html += '</div>';
-		}
-		html +=		'</div>'
-		me.calendar.innerHTML = html;
-		config.monthsContainer = $("div.months", me.calendar)[0];
-	}
-
-	/*
-	 * Gets the HTML for a month
-	 * @param month as number
-	 * @param year as number
-	 * @return html as HTML string
-	 */
-	function getCalendarTableRows( month, year ) {
-		var html = "<tr>";
+	defaults.dateStart = (function() {
 		var d = new Date();
-		//d.setMonth(month);
-		//d.setYear(year);
-		//d.setDate(1);
+		d.setYear(d.getFullYear()-2);
+		return d;
+	}());
 
-		d.setFullYear(year,month,1,0);
+	defaults.dateEnd = (function() {
+		var d = new Date();
+		d.setYear(d.getFullYear()+2);
+		return d;
+	}());
 
-		d.setHours(0,0,0,0);
-		var firstDay = d.getDay();
-		var i = 0;
-		var tdClassDefault = "dayActivator";
-		while (i < firstDay) {
-			html += "<td>&nbsp;</td>";
-			i++;
-		}
-		while (d.getMonth() == month) {
-			if (i % 7 === 0) {
-				html += "</tr><tr>";
-			}
-
-			var tdClass = tdClassDefault;
-			if (d.getTime() === config.currentDate.getTime()) {
-				tdClass += " currentDate";
-			}
-
-			if (d.getTime() === me.selectedDate.getTime()) {
-				tdClass += " selectedDate";
-			}
-
-			html += '<td class="'+tdClass+'">' + '' + d.getDate() + '' + '</td>';
-
-			d.setDate( d.getDate()+1 );
-			i++;
-		}
-		while (i % 7 !== 0) {
-			html += "<td>&nbsp;</td>";
-			i++;
-		}
-		html += "</tr>";
-		return html;
-	}
-
-	/*
-	 * Creates a month by appending the HTML
-	 * @param year (as number)
-	 * @param month (as number) (months run from 0-11)
-	 */
-	function createMonth(year,month) {
-		var monthHTML = '';
-		monthHTML += '<div class="month date' + year +"-" + (month+1) + '">';
-		monthHTML += 	'<div class="title">';
-		monthHTML += 		config.monthNames[month] + " " + year;
-		monthHTML += 	'</div>';
-		monthHTML += 	'<div class="days">';
-		monthHTML += 		'<table>';
-		monthHTML += 			'<thead>';
-		monthHTML += 				'<tr>';
-		monthHTML += 					'<th>Su</th>';
-		monthHTML += 					'<th>Mo</th>';
-		monthHTML += 					'<th>Tu</th>';
-		monthHTML += 					'<th>We</th>';
-		monthHTML += 					'<th>Th</th>';
-		monthHTML += 					'<th>Fr</th>';
-		monthHTML += 					'<th>Sa</th>';
-		monthHTML += 				'</tr>';
-		monthHTML += 			'</thead>';
-		monthHTML += 			'<tbody>';
-		monthHTML += 			'</tbody>';
-		monthHTML += 		'</table>';
-		monthHTML += 	'</div>';
-		monthHTML += '</div>';
-		config.monthsContainer.innerHTML += monthHTML;
-		$("div.months div.days table tbody", me.calendar).append(getCalendarTableRows(month, year));
-		prepareDayActivators();
-	}
-
-	/*
-	 * Apply events to calendar controls
-	 */
-	function prepareCalendarControls() {
-		$(me.calendar).find('.previous').on('click', setPreviousMonth);
-		$(me.calendar).find('.next').on('click', setNextMonth);
-		$(me.calendar).find('.close').on('click', $.proxy(me, 'onCloseClick'));
-	}
-
-	function prepareDropDowns() {
-		if (config.selectDay !== null) {
-			$(config.selectDay).on("change", setCalendarDateFromDropDown);
-		}
-		if (config.selectMonth !== null) {
-			$(config.selectMonth).on("change", setCalendarDateFromDropDown);
-		}
-		if (config.selectYear !== null) {
-			$(config.selectYear).on("change", setCalendarDateFromDropDown);
-		}
-	}
-
-	/*
-	 * The calendar will update if the drop down fields have a valid date.
-	 * @param void
-	 * @return void
-	 */
-	function setCalendarDateFromDropDown() {
+	defaults.currentDate = (function() {
 		var d = new Date();
 		d.setHours(0,0,0,0);
-		if (config.selectDay !== null) {
-			d.setDate(parseInt(config.selectDay.value));
-		}
-		if (config.selectMonth !== null) {
-			d.setMonth(parseInt(config.selectMonth.value)-1);
-		}
-		if (config.selectYear !== null) {
-			d.setYear(config.selectYear.value);
-		}
-		if(dateInRange(d, config.dateStart, config.dateEnd)) {
-			me.selectedDate = d;
-			state.currentSelectedDate = d;
-			removeCurrentMonth();
-			createMonth(me.selectedDate.getFullYear(),me.selectedDate.getMonth());
-		}
-	}
-
-	/*
-	 * When the calendar date changes the drop downs will be configured to match
-	 * if the drop downs have the correct range of values.
-	 * @param void
-	 * @return void
-	 */
-	function setDropDownFromCalendarDate() {
-		if (config.selectDay !== null) {
-			setSelectBoxValue(config.selectDay, me.selectedDate.getDate().toString());
-		}
-		if (config.selectMonth !== null) {
-			setSelectBoxValue(config.selectMonth, (me.selectedDate.getMonth()+1).toString());
-		}
-		if (config.selectYear !== null) {
-			setSelectBoxValue(config.selectYear, me.selectedDate.getFullYear().toString());
-		}
-	}
-
-	/*
-	 * Helper to set a value in a select field
-	 * @param selectNode (as DOM reference to select field)
-	 * @param selectValue (as string)
-	 * @return void
-	 */
-	function setSelectBoxValue(selectNode, selectValue) {
-		var options = selectNode.options;
-		for(var i = options.length-1;i>=0;i--) {
-			if(selectValue === options[i].value) {
-				selectNode.selectedIndex = i;
-				break;
-			}
-		}
-	}
-
-	/*
-	 * Sets the calendar to previous month if within range
-	 * @param void
-	 * @return false (as boolean) - stops default action on a link
-	 */
-	function setPreviousMonth() {
-		var pm = getPreviousMonth();
-		var hasPreviousMonth = dateInRange(pm, config.dateStart, config.dateEnd);
-		if(!hasPreviousMonth) {
-			return false;
-		}
-		removeCurrentMonth();
-		createMonth(pm.getFullYear(),pm.getMonth());
-		state.currentSelectedDate = pm;
-		return false;
-	}
-
-	/*
-	 * Sets the calendar to the next month if within range
-	 * @param void
-	 * @return false (as boolean) - stops default action on a link
-	 */
-	function setNextMonth() {
-		var nm = getNextMonth();
-		var hasNextMonth = dateInRange(nm, config.dateStart, config.dateEnd);
-		if(!hasNextMonth) {
-			return false;
-		}
-		removeCurrentMonth();
-		createMonth(nm.getFullYear(),nm.getMonth());
-		state.currentSelectedDate = nm;
-		return false;
-	}
-
-	/*
-	 * Get the previous month
-	 * See "state" for more information
-	 * @param void
-	 * @return d (as date object)
-	 */
-	function getPreviousMonth() {
-		var d = new Date(state.currentSelectedDate.getFullYear(), state.currentSelectedDate.getMonth(),1);
-		d = d.getTime() - config.dayInMs;
-		d = new Date(d);
 		return d;
+	}());
+
+	this.monthsContainer = null;
+	var calendarActivator = null;
+
+	options = options || {};
+
+	options.dateStart = options.dateStart || defaults.dateStart;
+	options.dateEnd = options.dateEnd || defaults.dateEnd;
+	options.currentDate = options.currentDate || defaults.currentDate;
+	options.title = options.title || 'Calendar';
+	options.calendarClass = options.calendarClass || 'calendarControl';
+	options.closeOnDateSelection = options.closeOnDateSelection || false;
+	options.hasCloseButton = options.hasCloseButton || false;
+	options.hasLinkActivator = options.hasLinkActivator || true;
+	options.hasLinkClass = options.hasLinkClass || 'calendarHasLink';
+	options.linkActivatorClass = options.linkActivatorClass || 'activateCalendar';
+	options.linkActivatorText = options.linkActivatorText || 'Show calendar';
+	options.startHidden = options.startHidden || false;
+	options.selectDay = options.selectDay || null;
+	options.selectMonth = options.selectMonth || null;
+	options.selectYear = options.selectYear || null;
+	options.hasDropDowns = (options.selectDay !== null || options.selectMonth !== null || options.selectYear !== null) || false;
+	options.appendCalendarTo = options.appendCalendarTo || null;
+
+	this.options = options;
+	this.state = {
+		currentSelectedDate: options.currentDate // stores in view month
+	};;
+
+	this.selectedDate = this.options.currentDate; // stores selected date (including day)
+	this.buildCalendar();
+};
+
+
+kitty.CalendarControl.prototype.buildCalendar = function() {
+	this.calendar = document.createElement("div");
+	this.calendar.className = this.options.calendarClass;
+
+
+
+	this.createPrimaryStructure();
+	if (this.dateInRange(this.selectedDate, this.options.dateStart, this.options.dateEnd)) {
+		this.createMonth(this.selectedDate.getFullYear(),this.selectedDate.getMonth());
 	}
 
-	/*
-	 * Get the next month
-	 * See "state" for more information
-	 * @param void
-	 * @return d (as date object)
-	 */
-	function getNextMonth() {
-		var d = new Date(state.currentSelectedDate.getFullYear(), state.currentSelectedDate.getMonth());
-		d = d.setMonth(d.getMonth()+1);
-		d = new Date(d);
-		return d;
+	this.prepareCalendarControls();
+
+	if (this.options.startHidden) {
+		this.hideCalendar();
+	}
+	else {
+		this.showCalendar();
 	}
 
-	/*
-	 * Check to see a date is within a certain range
-	 * @param date (as date object)
-	 * @param dateRangeFrom (as date object)
-	 * @param dateRangeTo (as date object)
-	 * @return true (as boolean) if date is in range otherwise false
-	 */
-	function dateInRange(date, dateRangeFrom, dateRangeTo) {
-		d = date.getTime();
-		drf = dateRangeFrom.getTime();
-		drt = dateRangeTo.getTime();
-		if(d > drf && d < drt) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	if(this.options.hasLinkActivator) {
+		$(this.calendar).addClass(this.options.hasLinkClass);
+		this.createCalendarActivator();
 	}
 
-	/*
-	 * Removes current month from DOM
-	 * @param void
-	 * @return void
-	 */
-	function removeCurrentMonth() {
-		config.monthsContainer.innerHTML = "";
+	if(this.options.appendCalendarTo !== null) {
+		this.options.appendCalendarTo.appendChild(this.calendar);
 	}
 
-	/*
-	 * Applies event handlers to the table cells for picking a date
-	 * @param void
-	 * @return void
-	 */
-	function prepareDayActivators() {
-		$("td.dayActivator", me.calendar).click(setSelectedDate);
-	}
-
-	/*
-	 * Set the selected date if the date is within range
-	 * @param void
-	 * @return void
-	 */
-	function setSelectedDate() {
-		var day = parseInt(this.innerHTML);
-		var yearMonth = $("div.month",config.monthsContainer)[0].className.split(" ")[1].split("date")[1].split("-");
-		var year = yearMonth[0];
-		var month = yearMonth[1]-1;
-		var d = new Date(year,month,day);
-		if(!dateInRange(d, config.dateStart, config.dateEnd)) {
-			return;
-		}
-
-		me.selectedDate = d;
-		removeCurrentMonth();
-		createMonth(me.selectedDate.getFullYear(),me.selectedDate.getMonth());
-
-		if(config.closeOnDateSelection) {
-			me.hideCalendar();
-		}
-
-		if(config.hasDropDowns) {
-			setDropDownFromCalendarDate();
-		}
+	if(this.options.hasDropDowns) {
+		this.prepareDropDowns();
+		this.setCalendarDateFromDropDown();
 	}
 };
 
-kitty.CalendarControl.prototype.buildControl = function() {
-	
+kitty.CalendarControl.prototype.createPrimaryStructure = function() {
+	this.calendar.innerHTML = this.getCalendarHtml();
+	this.monthsContainer = $(this.calendar).find(".calendar-months")[0];
+};
+
+kitty.CalendarControl.prototype.getCalendarHtml = function() {
+	var html = '';
+	html +=		'<div class="calendar">';
+	html +=			'<div class="title">';
+	html +=				this.options.title;
+	html +=			'</div>';
+	html +=			'<div class="actions">';
+	html +=				'<ul>';
+	html +=					'<li class="backward"><a href="#" class="previous">Prev</a></li>';
+	html +=					'<li class="forward"><a href="#" class="next">Next</a></li>';
+	html +=				'</ul>';
+	html +=			'</div>';
+	html +=			'<div class="calendar-months">';
+	html +=			'</div>';
+	if (this.options.hasCloseButton) {
+		html += '<div class="actions2">';
+		html += '<a href="#" class="close">Close</a>';
+		html += '</div>';
+	}
+	html +=		'</div>'
+	return html;
 };
 
 kitty.CalendarControl.prototype.onCloseClick = function(e) {
@@ -486,5 +153,225 @@ kitty.CalendarControl.prototype.showCalendar = function() {
 	$(this.calendar).find('.calendar').show();
 };
 
+kitty.CalendarControl.prototype.dateInRange = function(date, dateRangeFrom, dateRangeTo) {
+	d = date.getTime();
+	drf = dateRangeFrom.getTime();
+	drt = dateRangeTo.getTime();
+	if(d > drf && d < drt) {
+		return true;
+	}
+	else {
+		return false;
+	}
+};
+
+kitty.CalendarControl.prototype.createMonth = function(year, month) {
+	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 
+	var monthHTML = '';
+	monthHTML += '<div data-year="'+ year +'" data-month="'+ (month+1) +'" class="month date' + year +"-" + (month+1) + '">';
+	monthHTML += 	'<div class="title">';
+	monthHTML += 		monthNames[month] + " " + year;
+	monthHTML += 	'</div>';
+	monthHTML += 	'<div class="days">';
+	monthHTML += 		'<table>';
+	monthHTML += 			'<thead>';
+	monthHTML += 				'<tr>';
+	monthHTML += 					'<th>Su</th>';
+	monthHTML += 					'<th>Mo</th>';
+	monthHTML += 					'<th>Tu</th>';
+	monthHTML += 					'<th>We</th>';
+	monthHTML += 					'<th>Th</th>';
+	monthHTML += 					'<th>Fr</th>';
+	monthHTML += 					'<th>Sa</th>';
+	monthHTML += 				'</tr>';
+	monthHTML += 			'</thead>';
+	monthHTML += 			'<tbody>';
+	monthHTML += 			'</tbody>';
+	monthHTML += 		'</table>';
+	monthHTML += 	'</div>';
+	monthHTML += '</div>';
+	this.monthsContainer.innerHTML += monthHTML;
+	$(this.calendar).find(".calendar-months div.days table tbody").append(this.getCalendarTableRows(month, year));
+};
+
+kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
+	var html = "<tr>";
+	var d = new Date();
+
+	d.setFullYear(year,month,1,0);
+
+	d.setHours(0,0,0,0);
+	var firstDay = d.getDay();
+	var i = 0;
+	var tdClassDefault = "dayActivator";
+	while (i < firstDay) {
+		html += "<td>&nbsp;</td>";
+		i++;
+	}
+	while (d.getMonth() == month) {
+		if (i % 7 === 0) {
+			html += "</tr><tr>";
+		}
+
+		var tdClass = tdClassDefault;
+		if (d.getTime() === this.options.currentDate.getTime()) {
+			tdClass += " currentDate";
+		}
+
+		if (d.getTime() === this.selectedDate.getTime()) {
+			tdClass += " selectedDate";
+		}
+
+		html += '<td class="'+tdClass+'">' + '' + d.getDate() + '' + '</td>';
+
+		d.setDate( d.getDate()+1 );
+		i++;
+	}
+	while (i % 7 !== 0) {
+		html += "<td>&nbsp;</td>";
+		i++;
+	}
+	html += "</tr>";
+	return html;
+};
+
+kitty.CalendarControl.prototype.setSelectedDate = function(e) {
+	var day = parseInt(e.target.innerHTML);
+	var year = parseInt($(this.monthsContainer).find(".month").attr('data-year'),10);
+	var month = parseInt($(this.monthsContainer).find(".month").attr('data-month'), 10)-1;
+
+	var d = new Date(year,month,day);
+	if(!this.dateInRange(d, this.options.dateStart, this.options.dateEnd)) {
+		return;
+	}
+
+	this.selectedDate = d;
+	this.removeCurrentMonth();
+	this.createMonth(this.selectedDate.getFullYear(),this.selectedDate.getMonth());
+
+	if(this.options.closeOnDateSelection) {
+		this.hideCalendar();
+	}
+
+	if(this.options.hasDropDowns) {
+		this.setDropDownFromCalendarDate();
+	}
+};
+
+kitty.CalendarControl.prototype.prepareCalendarControls = function() {
+	$(this.calendar).on('click', '.previous', $.proxy(this, 'setPreviousMonth'));
+	$(this.calendar).on('click', '.next', $.proxy(this, 'setNextMonth'));
+	$(this.calendar).on('click', '.close', $.proxy(this, 'onCloseClick'));
+	$(this.calendar).on('click', '.dayActivator', $.proxy(this, 'setSelectedDate'));
+};
+
+kitty.CalendarControl.prototype.setPreviousMonth = function(e) {
+	e.preventDefault();
+	var pm = this.getPreviousMonth();
+	var hasPreviousMonth = this.dateInRange(pm, this.options.dateStart, this.options.dateEnd);
+	if(!hasPreviousMonth) {
+		return false;
+	}
+	this.removeCurrentMonth();
+	this.createMonth(pm.getFullYear(),pm.getMonth());
+	this.state.currentSelectedDate = pm;
+};
+
+kitty.CalendarControl.prototype.createCalendarActivator = function(	) {
+	var a = document.createElement("a");
+	a.href = "#";
+	a.className = this.options.linkActivatorClass;
+	a.innerHTML = this.options.linkActivatorText;
+	$(a).on('click', $.proxy(this, 'calendarActivatorOnClick'));
+	calendarActivator = a;
+	$(this.calendar).prepend(a);
+};
+
+kitty.CalendarControl.prototype.prepareDropDowns = function() {
+	if (this.options.selectDay !== null) {
+		$(this.options.selectDay).on("change", $.proxy(this, 'setCalendarDateFromDropDown'));
+	}
+	if (this.options.selectMonth !== null) {
+		$(this.options.selectMonth).on("change", $.proxy(this, 'setCalendarDateFromDropDown'));
+	}
+	if (this.options.selectYear !== null) {
+		$(this.options.selectYear).on("change", $.proxy(this, 'setCalendarDateFromDropDown'));
+	}	
+};
+
+kitty.CalendarControl.prototype.setCalendarDateFromDropDown = function() {
+	var d = new Date();
+	d.setHours(0,0,0,0);
+	if (this.options.selectDay !== null) {
+		d.setDate(parseInt(this.options.selectDay.value));
+	}
+	if (this.options.selectMonth !== null) {
+		d.setMonth(parseInt(this.options.selectMonth.value)-1);
+	}
+	if (this.options.selectYear !== null) {
+		d.setYear(this.options.selectYear.value);
+	}
+	if(this.dateInRange(d, this.options.dateStart, this.options.dateEnd)) {
+		this.selectedDate = d;
+		this.state.currentSelectedDate = d;
+		this.removeCurrentMonth();
+		this.createMonth(this.selectedDate.getFullYear(),this.selectedDate.getMonth());
+	}
+};
+
+kitty.CalendarControl.prototype.removeCurrentMonth = function() {
+	this.monthsContainer.innerHTML = "";
+};
+
+kitty.CalendarControl.prototype.setDropDownFromCalendarDate = function() {
+	if (this.options.selectDay !== null) {
+		this.setSelectBoxValue(this.options.selectDay, this.selectedDate.getDate().toString());
+	}
+	if (this.options.selectMonth !== null) {
+		this.setSelectBoxValue(this.options.selectMonth, (this.selectedDate.getMonth()+1).toString());
+	}
+	if (this.options.selectYear !== null) {
+		this.setSelectBoxValue(this.options.selectYear, this.selectedDate.getFullYear().toString());
+	}
+};
+
+kitty.CalendarControl.prototype.setSelectBoxValue = function(selectNode, selectValue) {
+	var options = selectNode.options;
+	for(var i = options.length-1;i>=0;i--) {
+		if(selectValue === options[i].value) {
+			selectNode.selectedIndex = i;
+			break;
+		}
+	}
+};
+
+kitty.CalendarControl.prototype.getNextMonth = function() {
+	var d = new Date(this.state.currentSelectedDate.getFullYear(), this.state.currentSelectedDate.getMonth());
+	d = d.setMonth(d.getMonth()+1);
+	d = new Date(d);
+	return d;
+};
+
+
+
+kitty.CalendarControl.prototype.setNextMonth = function(e) {
+	e.preventDefault();
+	var nm = this.getNextMonth();
+	var hasNextMonth = this.dateInRange(nm, this.options.dateStart, this.options.dateEnd);
+	if(!hasNextMonth) {
+		return false;
+	}
+	this.removeCurrentMonth();
+	this.createMonth(nm.getFullYear(),nm.getMonth());
+	this.state.currentSelectedDate = nm;
+};
+
+kitty.CalendarControl.prototype.getPreviousMonth = function() {
+	var dayInMs = 86400000;
+	var d = new Date(this.state.currentSelectedDate.getFullYear(), this.state.currentSelectedDate.getMonth(),1);
+	d = d.getTime() - dayInMs;
+	d = new Date(d);
+	return d;
+};
