@@ -64,11 +64,11 @@
 			}
 
 			.calendarControl-dayActivator-isToday {
-				background-color: yellow;
+				background-color: lightyellow;
 			}
 
 			.calendarControl-dayActivator-isSelected {
-				border: 2px solid red;
+				background-color: lightblue;
 			}
 
 			.calendarControl-title {
@@ -78,11 +78,14 @@
 			.calendarControl-days table {
 				table-layout: fixed;
 				width: 100%;
+				border-collapse: collapse;
 			}
-			
-			.calendarControl-days td {
+
+			.calendarControl-days td,
+			.calendarControl-days th {
 				padding: 9px 0px;
 				text-align: center;
+				border: 1px solid #ccc;
 			}
 
         </style>
@@ -98,7 +101,7 @@
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<input type="date" name="date" id="date">
+				<input type="text" name="date" id="date">
 				<div class="calendarControlContainer">
 				</div>
 			</div>
@@ -113,11 +116,6 @@
 				calendarCssClass: 'calendar',
 				container: $('.calendarControlContainer')[0]
 			});
-
-            var d = new Date(2017, 3, 25);
-            console.log(d);
-            date.selectDate(d);
-
         </script>
     </body>
 </html>
