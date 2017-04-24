@@ -16,6 +16,7 @@ kitty.CalendarControl = function(options) {
 	this.monthsContainer = null;
 	var calendarActivator = null;
 	this.setupOptions(options);
+	this.setupKeys();
 	
 	this.state = {
 		currentSelectedDate: options.currentDate // stores in view month
@@ -23,6 +24,7 @@ kitty.CalendarControl = function(options) {
 	this.selectedDate = this.options.currentDate; // stores selected date (including day)
 	this.buildCalendar();
 };
+
 
 kitty.CalendarControl.prototype.setupOptions = function(options) {
 	var defaults = {};
@@ -72,27 +74,84 @@ kitty.CalendarControl.prototype.buildCalendar = function() {
 };
 
 kitty.CalendarControl.prototype.prepareCalendarControls = function() {
-	$(this.calendar).on('click', '.calendarControl-back', $.proxy(this, 'setPreviousMonth'));
-	$(this.calendar).on('click', '.calendarControl-next', $.proxy(this, 'setNextMonth'));
-	$(this.calendar).on('click', '.calendarControl-dayActivator', $.proxy(this, 'setSelectedDate'));
+	$(this.calendar).on('click', '.calendarControl-back', $.proxy(this, 'onBackClick'));
+	$(this.calendar).on('click', '.calendarControl-next', $.proxy(this, 'onNextClick'));
+	$(this.calendar).on('click', '.calendarControl-dayActivator', $.proxy(this, 'onDayClick'));
 	$(this.calendar).on('keyup', '.calendarControl-dayActivator', $.proxy(this, 'onDayKeyUp'));
 };
 
+kitty.CalendarControl.prototype.setupKeys = function() {
+	this.keys = {
+		tab:       9,
+		enter:    13,
+		esc:      27,
+		space:    32,
+		pageup:   33,
+		pagedown: 34,
+		end:      35,
+		home:     36,
+		left:     37,
+		up:       38,
+		right:    39,
+		down:     40
+   };
+};
+
+
 kitty.CalendarControl.prototype.onDayKeyUp = function(e) {
 	switch(e.keyCode) {
-		case 40: //DOWN
-			this.onDayDownPressed();
+		case this.keys.down:
+			this.onDayDownPressed(e);
+			break;
+		case this.keys.up:
+			this.onDayUpPressed(e);
+			break;
+		case this.keys.left:
+			this.onDayLeftPressed(e);
+			break;
+		case this.keys.right:
+			this.onDayRightPressed(e);
+			break;
+		case this.keys.space:
+		case this.keys.enter:
+			this.onDayUpSpacePressed(e);
 			break;
 	}
 };
 
 kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
+	e.preventDefault();
+	console.log('down pressed');
 	// get next weeks day
 	// if day falls inside current month date
 		// focus
 	// else
 		// set next month
 		// focus on the day
+};
+
+kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
+	e.preventDefault();
+	console.log('up pressed');
+};
+
+kitty.CalendarControl.prototype.onDayUpSpacePressed = function(e) {
+	e.preventDefault();
+	console.log('space/return pressed');
+};
+
+kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
+	e.preventDefault();
+	console.log('left pressed');
+};
+
+kitty.CalendarControl.prototype.onDayRightPressed = function(e) {
+	e.preventDefault();
+	// 
+};
+
+kitty.CalendarControl.prototype.getDayCell = function(date) {
+	
 };
 
 kitty.CalendarControl.prototype.createPrimaryStructure = function() {
@@ -166,6 +225,7 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	var firstDay = d.getDay();
 	var i = 0;
 	var tdClassDefault = "calendarControl-dayActivator";
+	var tabIndex = '';
 	while (i < firstDay) {
 		html += "<td>&nbsp;</td>";
 		i++;
@@ -175,6 +235,8 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 			html += "</tr><tr>";
 		}
 
+		tabIndex = '';
+
 		var tdClass = tdClassDefault;
 		if (d.getTime() === this.options.currentDate.getTime()) {
 			tdClass += " calendarControl-dayActivator-isToday";
@@ -182,9 +244,10 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 
 		if (d.getTime() === this.selectedDate.getTime()) {
 			tdClass += " calendarControl-dayActivator-isSelected";
+			tabIndex = '0';
 		}
 
-		html += '<td tabindex="-1" class="'+tdClass+'">' + '' + d.getDate() + '' + '</td>';
+		html += '<td data-date="'+d.toString()+'" data-day="'+d.getDate()+'" data-month="'+d.getMonth()+'"  data-year="'+d.getFullYear()+'" tabindex="'+ tabIndex +'" class="'+tdClass+'">' + '' + d.getDate() + '' + '</td>';
 
 		d.setDate( d.getDate()+1 );
 		i++;
@@ -197,18 +260,38 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	return html;
 };
 
-kitty.CalendarControl.prototype.setSelectedDate = function(e) {
-	var day = parseInt(e.target.innerHTML);
-	var year = parseInt($(this.monthsContainer).find(".month").attr('data-year'),10);
-	var month = parseInt($(this.monthsContainer).find(".month").attr('data-month'), 10)-1;
-	var d = new Date(year,month,day);
-	this.selectedDate = d;
-	this.removeCurrentMonth();
-	this.createMonth(this.selectedDate.getFullYear(),this.selectedDate.getMonth());
+kitty.CalendarControl.prototype.onDayClick = function(e) {
+	var d = new Date($(e.currentTarget).attr('data-date'));
+	this.selectDate(d);
 };
 
-kitty.CalendarControl.prototype.setPreviousMonth = function(e) {
+kitty.CalendarControl.prototype.selectDate = function(date) {
+	this.unhighlightSelectedDate(this.selectedDate);
+	this.highlightSelectedDate(date);
+	// maybe hide calendar?
+};
+
+kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
+	var cell = $(this.calendar).find('[data-date="'+date.toString()+'"]');
+	cell.removeClass('calendarControl-dayActivator-isSelected');
+	cell.removeAttr('tabindex');
+	this.selectedDate = null;
+};
+
+kitty.CalendarControl.prototype.highlightSelectedDate = function(date) {
+	var cell = $(this.calendar).find('[data-date="'+date.toString()+'"]');
+	cell.attr('tabindex', '0');
+	cell.focus();
+	cell.addClass('calendarControl-dayActivator-isSelected');
+	this.selectedDate = date;
+};
+
+kitty.CalendarControl.prototype.onBackClick = function(e) {
 	e.preventDefault();
+	this.showPreviousMonth();
+};
+
+kitty.CalendarControl.prototype.showPreviousMonth = function() {
 	var pm = this.getPreviousMonth();
 	var hasPreviousMonth = this.dateInRange(pm, this.options.dateStart, this.options.dateEnd);
 	if(!hasPreviousMonth) {
@@ -230,8 +313,12 @@ kitty.CalendarControl.prototype.getNextMonth = function() {
 	return d;
 };
 
-kitty.CalendarControl.prototype.setNextMonth = function(e) {
+kitty.CalendarControl.prototype.onNextClick = function(e) {
 	e.preventDefault();
+	this.showNextMonth();
+};
+
+kitty.CalendarControl.prototype.showNextMonth = function() {
 	var nm = this.getNextMonth();
 	var hasNextMonth = this.dateInRange(nm, this.options.dateStart, this.options.dateEnd);
 	if(!hasNextMonth) {
