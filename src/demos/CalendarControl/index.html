@@ -6,25 +6,9 @@
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
-			.calendarControl {
-				position: relative;
-				display: inline-block;
-			}
-
-			.calendarControl {
-
-			}
-
-			.calendar {
-				border: 1px solid #eee;
-			}
-
-			.selectedDate {
-				background-color: red;
-			}
 
 
-			form {
+        	form {
 				padding: 20px;
 			}
 
@@ -37,6 +21,72 @@
 				font-size: 16px;
 				font-family: arial;
 			}
+
+			input[type="submit"] {
+				font-size: 16px;
+				padding: 10px 50px;
+				-webkit-appearance: none;
+				background: green;
+				border: none;
+				margin-top: 20px;
+				color: white;
+				display: block;
+			}
+
+
+			.calendarControlContainer {
+				padding: 20px 0;
+			}
+
+			.calendarControl {
+				border: 2px solid #222;
+				padding: 10px;
+				max-width: 400px;
+			}
+
+			.calendarControl-title {
+				margin-bottom: 20px;
+			}
+
+			.calendarControl ul {
+				text-align: center;
+				margin: 0 0 10px 0;
+				padding: 0;
+			}
+
+			.calendarControl ul li {
+				display: inline-block;
+				padding: 10px;
+			}
+
+			.calendarControl-dayActivator {
+				border: 2px solid white;
+			}
+
+			.calendarControl-dayActivator-isToday {
+				background-color: yellow;
+			}
+
+			.calendarControl-dayActivator-isSelected {
+				border: 2px solid red;
+			}
+
+			.calendarControl-title {
+				text-align: center;
+			}
+
+			.calendarControl-days table {
+				table-layout: fixed;
+				width: 100%;
+			}
+			
+			.calendarControl-days td {
+				padding: 9px 0px;
+				text-align: center;
+			}
+
+			
+
 
         </style>
     </head>
@@ -52,34 +102,9 @@
 			<div class="date">
 				<label for="date">Choose date</label>
 				<input type="date" name="date" id="date">
-			</div>        	
-
-
-
-			<div class="calendarControl">
-				<div>
-					<select name="day">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-					<select name="month">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-					<select name="year">
-						<option>2017</option>
-						<option>2018</option>
-					</select>
+				<div class="calendarControlContainer">
 				</div>
 			</div>
-
-			<br><br>
 			<input type="submit" name="send" value="Next">
 		</form>
 
@@ -88,12 +113,8 @@
         <script src="../../kitty/kitty.CalendarControl.js"></script>
         <script>
             var date = new kitty.CalendarControl({
-				appendTo: $('.calendarControl')[0],
 				calendarCssClass: 'calendar',
-				selectDay: $('.calendarControl select')[0],
-				selectMonth: $('.calendarControl select')[1],
-				selectYear: $('.calendarControl select')[2],
-				appendCalendarTo: $('.calendarControl')[0]
+				container: $('.calendarControlContainer')[0]
 			});
         </script>
     </body>
