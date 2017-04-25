@@ -118,7 +118,8 @@
             var date = new kitty.CalendarControl({
 				calendarCssClass: 'calendar',
 				container: $('.calendarControlContainer')[0],
-				currentDate: new Date(2017, 3, 1)
+				currentDate: new Date(2017, 3, 1),
+				calendarId: 'calendarA'
 			});
 			date.on('select', function(e) {
 				console.log(arguments);

@@ -1,8 +1,5 @@
 /**
 
-- prefix id to things (currently hard coded)
-- add activedescendant now as there is no real focus
-- date selection
 - show/hide via button
 - populate text box (but that's probably by event emitter?)
 - Move a year at a time buttons?
@@ -75,6 +72,7 @@ kitty.CalendarControl.prototype.setupOptions = function(options) {
 	options.endDate = options.endDate || defaults.dateEnd;
 	options.currentDate = options.currentDate || defaults.currentDate;
 	options.calendarClass = options.calendarClass || 'calendarControl';
+	options.calendarId = options.calendarId || 'calendarId';
 	this.options = options;
 };
 
@@ -91,7 +89,7 @@ kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	html +=			'<div class="'+this.options.calendarClass+'-months">';
 	html += 			'<div class="'+this.options.calendarClass+'-month">';
 	html += 				'<div class="'+this.options.calendarClass+'-days">';
-	html += 					'<table aria-role="grid" aria-labelledby="somePrefix_label" tabindex="0">';
+	html += 					'<table aria-role="grid" aria-activedescendant="'+this.getActiveDescendantId()+'" aria-labelledby="somePrefix_label" tabindex="0">';
 	html += 						'<thead>';
 	html += 							'<tr>';
 	html += 								'<th role="columnheader"><abbr title="Sunday">Sun</abbr></th>';
@@ -114,6 +112,10 @@ kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	return html;
 };
 
+kitty.CalendarControl.prototype.getActiveDescendantId = function() {
+	return this.options.calendarId + '_day_' + this.selectedDate.getDate();
+};
+
 kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	var html = "<tr>";
 	var d = new Date();
@@ -124,7 +126,6 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	var firstDay = d.getDay();
 	var i = 0;
 	var tdClassDefault = this.options.calendarClass+'-dayActivator';
-	var tabIndex = '';
 	var ariaSelected = 'false';
 	while (i < firstDay) {
 		html += "<td>&nbsp;</td>";
@@ -135,7 +136,6 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 			html += '</tr><tr aria-role="row">';
 		}
 
-		tabIndex = '';
 		ariaSelected = 'false';
 
 		var tdClass = tdClassDefault;
@@ -145,11 +145,10 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 
 		if (d.getTime() === this.selectedDate.getTime()) {
 			tdClass += ' '+this.options.calendarClass+'-dayActivator-isSelected';
-			tabIndex = '0';
 			ariaSelected = 'true';
 		}
 
-		html += this.getCellHtml(d, tabIndex, tdClass, ariaSelected);
+		html += this.getCellHtml(d, tdClass, ariaSelected);
 
 		d.setDate( d.getDate()+1 );
 		i++;
@@ -162,9 +161,9 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	return html;
 };
 
-kitty.CalendarControl.prototype.getCellHtml = function(date, tabIndex, tdClass, ariaSelected) {
+kitty.CalendarControl.prototype.getCellHtml = function(date, tdClass, ariaSelected) {
 	var label = date.getDate() + ' ' + this.monthNames[date.getMonth()] + ', ' + date.getFullYear();
-	return '<td aria-role="gridcell" aria-selected="'+ariaSelected+'" aria-label="'+label+'" data-date="'+date.toString()+'" tabindex="'+ tabIndex +'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
+	return '<td aria-role="gridcell" aria-selected="'+ariaSelected+'" aria-label="'+label+'" data-date="'+date.toString()+'" id="'+this.options.calendarId+'_day_'+date.getDate()+'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
 };
 
 kitty.CalendarControl.prototype.buildCalendar = function() {
@@ -332,6 +331,7 @@ kitty.CalendarControl.prototype.updateCalendarHtml = function(year, month) {
 kitty.CalendarControl.prototype.selectDate = function(date) {
 	this.unhighlightSelectedDate(this.selectedDate);
 	this.highlightSelectedDate(date);
+	this.updateActiveDescendant();
 };
 
 kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
@@ -340,6 +340,10 @@ kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
 	cell.attr('aria-selected', 'false');
 	cell.removeAttr('tabindex');
 	this.selectedDate = null;
+};
+
+kitty.CalendarControl.prototype.updateActiveDescendant = function() {
+	this.calendar.find('table').attr('aria-activedescendant', this.getActiveDescendantId());
 };
 
 kitty.CalendarControl.prototype.highlightSelectedDate = function(date) {
