@@ -1,7 +1,8 @@
 /**
 
 - prefix id to things (currently hard coded)
-- event emitter
+- add activedescendant now as there is no real focus
+- date selection
 - show/hide via button
 - populate text box (but that's probably by event emitter?)
 - Spec events perhaps
@@ -13,6 +14,7 @@
 * @param {String} options.calendarClass The class name for the calendar
 */
 kitty.CalendarControl = function(options) {
+	this.eventEmitter = new kitty.EventEmitter();
 	this.monthsContainer = null;
 	var calendarActivator = null;
 	this.setupOptions(options);
@@ -24,6 +26,10 @@ kitty.CalendarControl = function(options) {
 	};
 	this.selectedDate = this.options.currentDate; // stores selected date (including day)
 	this.buildCalendar();
+};
+
+kitty.CalendarControl.prototype.on = function(eventName, fn, context) {
+	this.eventEmitter.on(eventName, fn, context);
 };
 
 kitty.CalendarControl.prototype.setupMonthNames = function() {
@@ -77,16 +83,16 @@ kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	var html = '';
 	html +=		'<div class="calendarControl-wrapper">';
 	html +=			'<div class="calendarControl-actions">';
-	html +=				'<button type="button" class="calendarControl-back">&larr;</button>';
-	html += 			'<div id="somePrefix_label" role="heading" aria-live="assertive" and aria-atomic="true" class="calendarControl-title">';
+	html +=				'<button aria-label="Previous month" type="button" class="calendarControl-back">&larr;</button>';
+	html += 			'<div aria-label="Currently viewing month:" id="somePrefix_label" role="heading" aria-live="assertive" and aria-atomic="true" class="calendarControl-title">';
 	html += 				this.monthNames[month] + " " + year;
 	html += 			'</div>';
-	html +=				'<button type="button" class="calendarControl-next">&rarr;</button>';
+	html +=				'<button aria-label="Next month" type="button" class="calendarControl-next">&rarr;</button>';
 	html +=			'</div>';
 	html +=			'<div class="calendarControl-months">';
 	html += 			'<div class="calendarControl-month">';
 	html += 				'<div class="calendarControl-days">';
-	html += 					'<table aria-role="grid" aria-labelledby="somePrefix_label">';
+	html += 					'<table aria-role="grid" aria-labelledby="somePrefix_label" tabindex="0">';
 	html += 						'<thead>';
 	html += 							'<tr>';
 	html += 								'<th role="columnheader"><abbr title="Sunday">Sun</abbr></th>';
@@ -134,7 +140,7 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 		ariaSelected = 'false';
 
 		var tdClass = tdClassDefault;
-		if (d.getTime() === this.options.currentDate.getTime()) {
+		if (d.getDate() === new Date().getDate()) {
 			tdClass += " calendarControl-dayActivator-isToday";
 		}
 
@@ -173,12 +179,19 @@ kitty.CalendarControl.prototype.prepareCalendarControls = function() {
 	this.calendar.on('click', '.calendarControl-back', $.proxy(this, 'onBackClick'));
 	this.calendar.on('click', '.calendarControl-next', $.proxy(this, 'onNextClick'));
 	this.calendar.on('click', '.calendarControl-dayActivator', $.proxy(this, 'onDayClick'));
-	this.calendar.on('keyup', '.calendarControl-dayActivator', $.proxy(this, 'onDayKeyUp'));
+	this.calendar.on('keyup', 'table', $.proxy(this, 'onGridKeyUp'));
+	// this.calendar.on('keyup', '.calendarControl-dayActivator', $.proxy(this, 'onDayKeyUp'));
 };
 
 kitty.CalendarControl.prototype.onDayClick = function(e) {
 	var d = new Date($(e.currentTarget).attr('data-date'));
 	this.selectDate(d);
+	this.eventEmitter.fire('select', {
+		date: this.selectedDate,
+		day: this.selectedDate.getDate(),
+		month: this.selectedDate.getMonth()+1,
+		year: this.selectedDate.getFullYear()
+	});
 };
 
 kitty.CalendarControl.prototype.onBackClick = function(e) {
@@ -206,7 +219,7 @@ kitty.CalendarControl.prototype.setupKeys = function() {
    };
 };
 
-kitty.CalendarControl.prototype.onDayKeyUp = function(e) {
+kitty.CalendarControl.prototype.onGridKeyUp = function(e) {
 	switch(e.keyCode) {
 		case this.keys.down:
 			this.onDayDownPressed(e);
@@ -229,12 +242,17 @@ kitty.CalendarControl.prototype.onDayKeyUp = function(e) {
 
 kitty.CalendarControl.prototype.onDayUpSpacePressed = function(e) {
 	e.preventDefault();
-	console.log('space/return pressed');
+	this.eventEmitter.fire('select', {
+		date: this.selectedDate,
+		day: this.selectedDate.getDate(),
+		month: this.selectedDate.getMonth()+1,
+		year: this.selectedDate.getFullYear()
+	});
 };
 
 kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
 	e.preventDefault();
-	var date = new Date($(e.currentTarget).attr('data-date'));
+	var date = new Date(this.selectedDate);
 	var newDate = this.getSameDayNextWeek(date);
 	if(newDate.getMonth() == this.state.currentSelectedDate.getMonth()) {
 		this.selectDate(newDate);
@@ -247,7 +265,7 @@ kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
 
 kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
 	e.preventDefault();
-	var date = new Date($(e.currentTarget).attr('data-date'));
+	var date = new Date(this.selectedDate);
 	var newDate = this.getSameDayLastWeek(date);
 	if(newDate.getMonth() == this.state.currentSelectedDate.getMonth()) {
 		this.selectDate(newDate);
@@ -260,7 +278,7 @@ kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
 
 kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
 	e.preventDefault();
-	var date = new Date($(e.currentTarget).attr('data-date'));
+	var date = new Date(this.selectedDate);
 	var newDate = this.getPreviousDay(date);
 	if(newDate.getMonth() == this.state.currentSelectedDate.getMonth()) {
 		this.selectDate(newDate);
@@ -273,7 +291,7 @@ kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
 
 kitty.CalendarControl.prototype.onDayRightPressed = function(e) {
 	e.preventDefault();
-	var date = new Date($(e.currentTarget).attr('data-date'));
+	var date = new Date(this.selectedDate);
 	var newDate = this.getNextDay(date);
 	if(newDate.getMonth() == this.state.currentSelectedDate.getMonth()) {
 		this.selectDate(newDate);
@@ -309,19 +327,13 @@ kitty.CalendarControl.prototype.getDayCell = function(date) {
 };
 
 kitty.CalendarControl.prototype.updateCalendarHtml = function(year, month) {
-	// 1. update title
 	this.calendar.find('.calendarControl-title').html(this.monthNames[month] + ' ' + year);
-
-	// 2. disable back/next button perhaps
-
-	// 3. update table html
 	this.calendar.find("tbody").html(this.getCalendarTableRows(month, year));
 };
 
 kitty.CalendarControl.prototype.selectDate = function(date) {
 	this.unhighlightSelectedDate(this.selectedDate);
 	this.highlightSelectedDate(date);
-	// maybe hide calendar?
 };
 
 kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
@@ -335,7 +347,6 @@ kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
 kitty.CalendarControl.prototype.highlightSelectedDate = function(date) {
 	var cell = this.getDayCell(date);
 	cell.attr('tabindex', '0');
-	cell.focus();
 	cell.addClass('calendarControl-dayActivator-isSelected');
 	cell.attr('aria-selected', 'true');
 	this.selectedDate = date;

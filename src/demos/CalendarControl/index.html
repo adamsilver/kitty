@@ -112,11 +112,16 @@
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.EventEmitter.js"></script>
         <script src="../../kitty/kitty.CalendarControl.js"></script>
         <script>
             var date = new kitty.CalendarControl({
 				calendarCssClass: 'calendar',
-				container: $('.calendarControlContainer')[0]
+				container: $('.calendarControlContainer')[0],
+				currentDate: new Date(2017, 3, 1)
+			});
+			date.on('select', function(e) {
+				console.log(arguments);
 			});
         </script>
     </body>
