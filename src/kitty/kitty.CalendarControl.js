@@ -1,5 +1,6 @@
 /**
 
+- prefix id to things (currently hard coded)
 - event emitter
 - show/hide via button
 - populate text box (but that's probably by event emitter?)
