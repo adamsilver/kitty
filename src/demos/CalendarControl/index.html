@@ -90,6 +90,10 @@
 				border: 1px solid #ccc;
 			}
 
+			.calendarControl-isHidden {
+				display: none;
+			}
+
         </style>
     </head>
     <body>
@@ -103,7 +107,7 @@
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<input type="date" name="date" id="date">
+				<input type="text" name="date" id="date"><button type="button">Show calendar</button>
 				<div class="calendarControlContainer"></div>
 			</div>
 			<input type="submit" name="send" value="Next">
@@ -121,16 +125,27 @@
 			}
 
 			// if(!supportsDateInput()) {
+
 				var date = new kitty.CalendarControl({
 					calendarCssClass: 'calendar',
 					container: $('.calendarControlContainer')[0],
 					currentDate: new Date(2017, 3, 1),
-					calendarId: 'calendarA',
+					calendarId: 'calendar1',
 					startHidden: true
 				});
 				date.on('select', function(e) {
-					console.log(arguments);
+					$('#date').val(e.day+'/'+e.month+'/'+e.year);
+					date.hide();
 				});
+				date.show();
+				// var button = new ButtonToggler();
+				// button.on('show', function() {
+				// 	date.show();
+				// });
+				// button.on('hide', function() {
+				// 	date.hide();
+				// })
+
 			// }
         </script>
     </body>

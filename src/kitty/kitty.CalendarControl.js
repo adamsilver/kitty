@@ -20,6 +20,9 @@ kitty.CalendarControl = function(options) {
 	};
 	this.selectedDate = this.options.currentDate; // stores selected date (including day)
 	this.buildCalendar();
+	if(this.options.startHidden) {
+		this.hide();
+	}
 };
 
 kitty.CalendarControl.prototype.on = function(eventName, fn, context) {
@@ -393,4 +396,14 @@ kitty.CalendarControl.prototype.dateInRange = function(date, dateRangeFrom, date
 	} else {
 		return false;
 	}
+};
+
+kitty.CalendarControl.prototype.show = function() {
+	this.calendar.attr('aria-hidden', 'false');
+	this.calendar.removeClass(this.options.calendarClass+'-isHidden');
+};
+
+kitty.CalendarControl.prototype.hide = function() {
+	this.calendar.attr('aria-hidden', 'true');
+	this.calendar.addClass(this.options.calendarClass+'-isHidden');
 };
