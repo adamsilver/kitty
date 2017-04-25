@@ -12,8 +12,6 @@
 */
 kitty.CalendarControl = function(options) {
 	this.eventEmitter = new kitty.EventEmitter();
-	this.monthsContainer = null;
-	var calendarActivator = null;
 	this.setupOptions(options);
 	this.setupKeys();
 	this.setupMonthNames();
@@ -73,42 +71,35 @@ kitty.CalendarControl.prototype.setupOptions = function(options) {
 	options.currentDate = options.currentDate || defaults.currentDate;
 	options.calendarClass = options.calendarClass || 'calendarControl';
 	options.calendarId = options.calendarId || 'calendarId';
+	options.startHidden = options.startHidden || false;
 	this.options = options;
 };
 
 kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	var html = '';
-	html +=		'<div class="'+this.options.calendarClass+'-wrapper">';
-	html +=			'<div class="'+this.options.calendarClass+'-actions">';
-	html +=				'<button aria-label="Previous month" type="button" class="'+this.options.calendarClass+'-back">&larr;</button>';
-	html += 			'<div aria-label="Currently viewing month:" id="somePrefix_label" role="heading" aria-live="assertive" and aria-atomic="true" class="'+this.options.calendarClass+'-title">';
-	html += 				this.monthNames[month] + " " + year;
-	html += 			'</div>';
-	html +=				'<button aria-label="Next month" type="button" class="'+this.options.calendarClass+'-next">&rarr;</button>';
-	html +=			'</div>';
-	html +=			'<div class="'+this.options.calendarClass+'-months">';
-	html += 			'<div class="'+this.options.calendarClass+'-month">';
-	html += 				'<div class="'+this.options.calendarClass+'-days">';
-	html += 					'<table aria-role="grid" aria-activedescendant="'+this.getActiveDescendantId()+'" aria-labelledby="somePrefix_label" tabindex="0">';
-	html += 						'<thead>';
-	html += 							'<tr>';
-	html += 								'<th role="columnheader"><abbr title="Sunday">Sun</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Monday">Mon</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Tuesday">Tue</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Wednesday">Wed</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Thursday">Thu</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Friday">Fri</abbr></th>';
-	html += 								'<th role="columnheader"><abbr title="Saturday">Sat</abbr></th>';
-	html += 							'</tr>';
-	html += 						'</thead>';
-	html += 						'<tbody>';
-	html += 							this.getCalendarTableRows(month, year);
-	html += 						'</tbody>';
-	html += 					'</table>';
-	html += 				'</div>';
-	html += 			'</div>';
-	html +=			'</div>';
-	html +=		'</div>'
+	html +=		'<div class="'+this.options.calendarClass+'-actions">';
+	html +=			'<button aria-label="Previous month" type="button" class="'+this.options.calendarClass+'-back">&larr;</button>';
+	html += 		'<div aria-label="Currently viewing month:" id="somePrefix_label" role="heading" aria-live="assertive" and aria-atomic="true" class="'+this.options.calendarClass+'-title">';
+	html += 			this.monthNames[month] + " " + year;
+	html += 		'</div>';
+	html +=			'<button aria-label="Next month" type="button" class="'+this.options.calendarClass+'-next">&rarr;</button>';
+	html +=		'</div>';
+	html += 	'<table aria-role="grid" aria-activedescendant="'+this.getActiveDescendantId()+'" aria-labelledby="somePrefix_label" tabindex="0">';
+	html += 		'<thead>';
+	html += 			'<tr>';
+	html += 				'<th role="columnheader"><abbr title="Sunday">Sun</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Monday">Mon</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Tuesday">Tue</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Wednesday">Wed</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Thursday">Thu</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Friday">Fri</abbr></th>';
+	html += 				'<th role="columnheader"><abbr title="Saturday">Sat</abbr></th>';
+	html += 			'</tr>';
+	html += 		'</thead>';
+	html += 		'<tbody>';
+	html += 			this.getCalendarTableRows(month, year);
+	html += 		'</tbody>';
+	html += 	'</table>';
 	return html;
 };
 

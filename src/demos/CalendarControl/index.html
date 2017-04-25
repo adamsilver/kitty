@@ -77,14 +77,14 @@
 				text-align: center;
 			}
 
-			.calendarControl-days table {
+			.calendarControl table {
 				table-layout: fixed;
 				width: 100%;
 				border-collapse: collapse;
 			}
 
-			.calendarControl-days td,
-			.calendarControl-days th {
+			.calendarControl td,
+			.calendarControl th {
 				padding: 9px 0px;
 				text-align: center;
 				border: 1px solid #ccc;
@@ -103,9 +103,8 @@
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<input type="text" name="date" id="date">
-				<div class="calendarControlContainer">
-				</div>
+				<input type="date" name="date" id="date">
+				<div class="calendarControlContainer"></div>
 			</div>
 			<input type="submit" name="send" value="Next">
 		</form>
@@ -115,15 +114,24 @@
         <script src="../../kitty/kitty.EventEmitter.js"></script>
         <script src="../../kitty/kitty.CalendarControl.js"></script>
         <script>
-            var date = new kitty.CalendarControl({
-				calendarCssClass: 'calendar',
-				container: $('.calendarControlContainer')[0],
-				currentDate: new Date(2017, 3, 1),
-				calendarId: 'calendarA'
-			});
-			date.on('select', function(e) {
-				console.log(arguments);
-			});
+        	function supportsDateInput() {
+				var el = document.createElement('input')
+				el.type = "date";
+				return el.type == "date";
+			}
+
+			// if(!supportsDateInput()) {
+				var date = new kitty.CalendarControl({
+					calendarCssClass: 'calendar',
+					container: $('.calendarControlContainer')[0],
+					currentDate: new Date(2017, 3, 1),
+					calendarId: 'calendarA',
+					startHidden: true
+				});
+				date.on('select', function(e) {
+					console.log(arguments);
+				});
+			// }
         </script>
     </body>
 </html>
