@@ -4,8 +4,6 @@ UI Components i've built and used over the years. Some are in better condition t
 
 ## Components
 
-Number indicates quality (1 bad, 5 excellent).
-
 [Accordion (3)](http://adamsilver.github.io/kitty/src/demos/Accordion/)
 
 [Carousel (2)](http://adamsilver.github.io/kitty/src/demos/Accordion/)
@@ -21,3 +19,7 @@ Number indicates quality (1 bad, 5 excellent).
 [Models and Collection (2)](http://adamsilver.github.io/kitty/src/demos/Model/)
 
 [Star rating (3)](http://adamsilver.github.io/kitty/src/demos/Model/)
+
+[CalendarControl (4)](http://adamsilver.github.io/kitty/src/demos/CalendarControl/)
+
+[AutoCompleteControl (4)](http://adamsilver.github.io/kitty/src/demos/AutoCompleteControl/)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Type ahead demo</title>
+        <title>Autocomplete Demo</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -34,7 +34,7 @@
                 line-height: 22px;
                 padding: 6px 15px;
                 display: block;
-                
+
                 position: relative;
             }
 
@@ -49,7 +49,7 @@
         </style>
     </head>
     <body class="js-enabled">
-        <h1>Typeahead</h1>
+        <h1>Autocomplete Demo</h1>
 
         <form action="http://google.co.uk">
     		<div class="wrapper">
@@ -308,27 +308,14 @@
                     <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
     			</select>
     		</div>
-
-            <br><br><br><hr><br><br><br>
-
-            <select name="bigun" size="4">
-                <option value="Wallis and Futuna" data-alternative-spellings="WF" data-relevancy-booster="0.5">Wallis and Futuna</option>
-                <option value="Western Sahara" data-alternative-spellings="EH">Western Sahara</option>
-                <option value="Yemen" data-alternative-spellings="YE">Yemen</option>
-                <option value="Zambia" data-alternative-spellings="ZM">Zambia</option>
-                <option value="Zimbabwe" data-alternative-spellings="ZW">Zimbabwe</option>
-            </select>
-
         </form>
-
-
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
-        <script src="../../kitty/kitty.TypeAhead.js"></script>
+        <script src="../../kitty/kitty.AutoCompleteControl.js"></script>
         <script>
         	var select = document.getElementById('country');
-			var typeahead = new kitty.TypeAhead(select);
+			var ac = new kitty.AutoCompleteControl(select);
         </script>
     </body>
 </html>

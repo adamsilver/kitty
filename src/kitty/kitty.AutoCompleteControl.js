@@ -1,4 +1,4 @@
-kitty.TypeAhead = function(control, options) {
+kitty.AutoCompleteControl = function(control, options) {
 	this.controlId = control.id;
 	this.control = control;
 	this.changeSelectId();
@@ -8,15 +8,15 @@ kitty.TypeAhead = function(control, options) {
 	this.hideSelect();
 };
 
-kitty.TypeAhead.prototype.changeSelectId = function() {
+kitty.AutoCompleteControl.prototype.changeSelectId = function() {
 	this.control.id = this.controlId + '-select';
 };
 
-kitty.TypeAhead.prototype.hideSelect = function() {
+kitty.AutoCompleteControl.prototype.hideSelect = function() {
 	$(this.control).remove();
 };
 
-kitty.TypeAhead.prototype.createTextBox = function() {
+kitty.AutoCompleteControl.prototype.createTextBox = function() {
 	this.textBox = $('<input type="text" role="combobox" autocomplete="off" aria-owns="suggestions">');
 	this.textBox.prop('id', this.controlId);
 	$(this.control).parents('div').append(this.textBox);
@@ -24,26 +24,26 @@ kitty.TypeAhead.prototype.createTextBox = function() {
 	// this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 };
 
-kitty.TypeAhead.prototype.createShowSuggestionsButton = function() {
-	this.toggleButton = $('<button>&darr;</button>');
-	$(this.control).parents('div').append(this.toggleButton);
-	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
+kitty.AutoCompleteControl.prototype.createShowSuggestionsButton = function() {
+	// this.toggleButton = $('<button>&darr;</button>');
+	// $(this.control).parents('div').append(this.toggleButton);
+	// this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
 };
 
-kitty.TypeAhead.prototype.onToggleButtonClick = function(e) {
+kitty.AutoCompleteControl.prototype.onToggleButtonClick = function(e) {
 	this.clearSuggestions();
 	this.buildAllSuggestions();
 	this.showMenu();
 };
 
-kitty.TypeAhead.prototype.createSuggestionsPanel = function() {
+kitty.AutoCompleteControl.prototype.createSuggestionsPanel = function() {
 	this.suggestionsPanel = $('<ul id="suggestions" role="listbox" class="hide"></ul>');
 	$(this.control).parents('div').append(this.suggestionsPanel);
 	this.suggestionsPanel.on('keydown', 'li', $.proxy(this, 'onSuggestionsKeyDown'));
 	this.suggestionsPanel.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
 };
 
-kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
+kitty.AutoCompleteControl.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
 		case 40: //DOWN
 			this.onTextBoxDownPressed(e);
@@ -55,7 +55,7 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 			// it triggers this event listener to fire
 			// but we don't want this to run because it will
 			// reshow the menu because the length is more than 0
-			// perhaps instead of this state "hack" we could... 
+			// perhaps instead of this state "hack" we could...
 			// instead check that the value is an actual suggestion
 			// if it is don't show the box. Could serve double purpose.
 			if(this.suggestionSelected) {
@@ -75,7 +75,7 @@ kitty.TypeAhead.prototype.onTextBoxKeyUp = function(e) {
 	}
 };
 
-kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionsKeyDown = function(e) {
 	switch (e.keyCode) {
 		case 13: // ENTER
 			this.onSuggestionEnterPressed(e);
@@ -96,47 +96,47 @@ kitty.TypeAhead.prototype.onSuggestionsKeyDown = function(e) {
 	}
 };
 
-kitty.TypeAhead.prototype.onSuggestionEscapePressed = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionEscapePressed = function(e) {
 	e.preventDefault();
 	this.clearSuggestions();
 	this.hideMenu();
 	this.focusTextBox();
 };
 
-kitty.TypeAhead.prototype.focusTextBox = function() {
+kitty.AutoCompleteControl.prototype.focusTextBox = function() {
 	this.textBox.focus();
 };
 
-kitty.TypeAhead.prototype.onSuggestionClick = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionClick = function(e) {
 	this.textBox.val($(e.currentTarget).text());
 	this.hideMenu();
 	this.focusTextBox();
 };
 
-kitty.TypeAhead.prototype.onSuggestionEnterPressed = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionEnterPressed = function(e) {
 	this.selectSuggestion();
 	e.preventDefault();
 };
 
-kitty.TypeAhead.prototype.onSuggestionSpacePressed = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionSpacePressed = function(e) {
 	this.selectSuggestion();
 	e.preventDefault();
 };
 
-kitty.TypeAhead.prototype.selectSuggestion = function() {
+kitty.AutoCompleteControl.prototype.selectSuggestion = function() {
 	this.suggestionSelected = true;
 	this.textBox.val($(this.activeSuggestion).text());
 	this.focusTextBox();
 	this.hideMenu();
 };
 
-kitty.TypeAhead.prototype.onTextBoxDownPressed = function(e) {
+kitty.AutoCompleteControl.prototype.onTextBoxDownPressed = function(e) {
 	this.showMenu();
 	var firstSuggestion = this.suggestionsPanel.find('li')[0];
 	this.highlightItem(firstSuggestion);
 };
 
-kitty.TypeAhead.prototype.onSuggestionDownPressed = function(e) {
+kitty.AutoCompleteControl.prototype.onSuggestionDownPressed = function(e) {
 	if(this.activeSuggestion) {
 		var nextSuggestion = $(this.activeSuggestion).next();
 		if(nextSuggestion[0]) {
@@ -146,7 +146,7 @@ kitty.TypeAhead.prototype.onSuggestionDownPressed = function(e) {
 	e.preventDefault();
 };
 
-kitty.TypeAhead.prototype.onSuggestionUpPressed = function(e) {	
+kitty.AutoCompleteControl.prototype.onSuggestionUpPressed = function(e) {
 	var previousSuggestion = $(this.activeSuggestion).prev();
 	if(previousSuggestion[0]) {
 		this.highlightItem(previousSuggestion[0]);
@@ -157,12 +157,12 @@ kitty.TypeAhead.prototype.onSuggestionUpPressed = function(e) {
 	e.preventDefault();
 };
 
-kitty.TypeAhead.prototype.clearActiveSuggestion = function() {
+kitty.AutoCompleteControl.prototype.clearActiveSuggestion = function() {
 	$(this.activeSuggestion).removeClass('active-suggestion');
 	this.activeSuggestion = null;
 };
 
-kitty.TypeAhead.prototype.highlightItem = function(suggestion) {
+kitty.AutoCompleteControl.prototype.highlightItem = function(suggestion) {
 	/*
 		1. Unhighlight previous if any DONE
 		2. Add highlight state using a class DONE
@@ -177,21 +177,21 @@ kitty.TypeAhead.prototype.highlightItem = function(suggestion) {
 	this.activeSuggestion = suggestion;
 };
 
-kitty.TypeAhead.prototype.showMenu = function() {
+kitty.AutoCompleteControl.prototype.showMenu = function() {
 	this.suggestionsPanel.removeClass('hide');
 	this.textBox.attr('aria-expanded', 'true');
 };
 
-kitty.TypeAhead.prototype.hideMenu = function() {
+kitty.AutoCompleteControl.prototype.hideMenu = function() {
 	this.suggestionsPanel.addClass('hide');
 	this.textBox.attr('aria-expanded', 'false');
 };
 
-kitty.TypeAhead.prototype.clearSuggestions = function() {
+kitty.AutoCompleteControl.prototype.clearSuggestions = function() {
 	this.suggestionsPanel.empty();
 };
 
-kitty.TypeAhead.prototype.buildFilteredSuggestions = function() {
+kitty.AutoCompleteControl.prototype.buildFilteredSuggestions = function() {
 	var value = this.textBox.val().toLowerCase();
 	var options = this.control.options;
 	var optionText;
@@ -203,7 +203,7 @@ kitty.TypeAhead.prototype.buildFilteredSuggestions = function() {
 	}
 };
 
-kitty.TypeAhead.prototype.buildAllSuggestions = function() {
+kitty.AutoCompleteControl.prototype.buildAllSuggestions = function() {
 	var options = this.control.options;
 	for(var i = 0; i < options.length; i++) {
 		optionText = $(options[i]).text();
