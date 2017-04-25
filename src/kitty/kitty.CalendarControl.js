@@ -5,7 +5,7 @@
 - date selection
 - show/hide via button
 - populate text box (but that's probably by event emitter?)
-- Spec events perhaps
+- Spec events perhapss
 
 * @param {HTMLElement} options.container The element that the calendar will be appended into the DOM
 * @param {Date} options.startDate The start date range
