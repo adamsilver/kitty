@@ -2,8 +2,6 @@
 
 - using arrows to get to date not in range
 - aria
-- next previous link styles
-- next previous should be buttons
 - accessible markup
 - event emitter
 - more spec stuff
@@ -19,6 +17,7 @@ kitty.CalendarControl = function(options) {
 	var calendarActivator = null;
 	this.setupOptions(options);
 	this.setupKeys();
+	this.setupMonthNames();
 
 	this.state = {
 		currentSelectedDate: options.currentDate // stores in view month
@@ -27,6 +26,22 @@ kitty.CalendarControl = function(options) {
 	this.buildCalendar();
 };
 
+kitty.CalendarControl.prototype.setupMonthNames = function() {
+	this.monthNames = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	];
+};
 
 kitty.CalendarControl.prototype.setupOptions = function(options) {
 	var defaults = {};
@@ -59,26 +74,17 @@ kitty.CalendarControl.prototype.setupOptions = function(options) {
 };
 
 kitty.CalendarControl.prototype.buildCalendar = function() {
-	this.calendar = document.createElement("div");
-	this.calendar.className = this.options.calendarClass;
-
-	this.createPrimaryStructure();
-	if (this.dateInRange(this.selectedDate, this.options.startDate, this.options.endDate)) {
-		this.createMonth(this.selectedDate.getFullYear(),this.selectedDate.getMonth());
-	}
-
+	this.calendar = $('<div class="'+this.options.calendarClass+'">');
+	this.calendar.html(this.getCalendarHtml(this.selectedDate.getFullYear(), this.selectedDate.getMonth()));
 	this.prepareCalendarControls();
-
-	if(this.options.container !== null) {
-		this.options.container.appendChild(this.calendar);
-	}
+	$(this.options.container).append(this.calendar);
 };
 
 kitty.CalendarControl.prototype.prepareCalendarControls = function() {
-	$(this.calendar).on('click', '.calendarControl-back', $.proxy(this, 'onBackClick'));
-	$(this.calendar).on('click', '.calendarControl-next', $.proxy(this, 'onNextClick'));
-	$(this.calendar).on('click', '.calendarControl-dayActivator', $.proxy(this, 'onDayClick'));
-	$(this.calendar).on('keyup', '.calendarControl-dayActivator', $.proxy(this, 'onDayKeyUp'));
+	this.calendar.on('click', '.calendarControl-back', $.proxy(this, 'onBackClick'));
+	this.calendar.on('click', '.calendarControl-next', $.proxy(this, 'onNextClick'));
+	this.calendar.on('click', '.calendarControl-dayActivator', $.proxy(this, 'onDayClick'));
+	this.calendar.on('keyup', '.calendarControl-dayActivator', $.proxy(this, 'onDayKeyUp'));
 };
 
 kitty.CalendarControl.prototype.onDayClick = function(e) {
@@ -145,7 +151,7 @@ kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
 		this.selectDate(newDate);
 	} else {
 		this.state.currentSelectedDate = newDate;
-		this.createMonth(newDate.getFullYear(), newDate.getMonth());
+		this.updateCalendarHtml(newDate.getFullYear(), newDate.getMonth());
 		this.selectDate(newDate);
 	}
 };
@@ -158,7 +164,7 @@ kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
 		this.selectDate(newDate);
 	} else {
 		this.state.currentSelectedDate = newDate;
-		this.createMonth(newDate.getFullYear(), newDate.getMonth());
+		this.updateCalendarHtml(newDate.getFullYear(), newDate.getMonth());
 		this.selectDate(newDate);
 	}
 };
@@ -171,7 +177,7 @@ kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
 		this.selectDate(newDate);
 	} else {
 		this.state.currentSelectedDate = newDate;
-		this.createMonth(newDate.getFullYear(), newDate.getMonth());
+		this.updateCalendarHtml(newDate.getFullYear(), newDate.getMonth());
 		this.selectDate(newDate);
 	}
 };
@@ -184,7 +190,7 @@ kitty.CalendarControl.prototype.onDayRightPressed = function(e) {
 		this.selectDate(newDate);
 	} else {
 		this.state.currentSelectedDate = newDate;
-		this.createMonth(newDate.getFullYear(), newDate.getMonth());
+		this.updateCalendarHtml(newDate.getFullYear(), newDate.getMonth());
 		this.selectDate(newDate);
 	}
 };
@@ -210,56 +216,53 @@ kitty.CalendarControl.prototype.getSameDayNextWeek = function(date) {
 };
 
 kitty.CalendarControl.prototype.getDayCell = function(date) {
-	return $(this.calendar).find('[data-date="'+date.toString()+'"]');
+	return this.calendar.find('[data-date="'+date.toString()+'"]');
 };
 
-kitty.CalendarControl.prototype.createPrimaryStructure = function() {
-	this.calendar.innerHTML = this.getCalendarHtml();
-	this.monthsContainer = $(this.calendar).find(".calendarControl-months")[0];
-};
-
-kitty.CalendarControl.prototype.getCalendarHtml = function() {
+kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	var html = '';
 	html +=		'<div class="calendarControl-wrapper">';
 	html +=			'<div class="calendarControl-actions">';
-	html +=				'<ul>';
-	html +=					'<li class="calendarControl-back"><button type="button">Prev</button></li>';
-	html +=					'<li class="calendarControl-next"><button type="button">Next</button></li>';
-	html +=				'</ul>';
+	html +=				'<button type="button" class="calendarControl-back">&larr;</button>';
+	html += 			'<div role="heading" class="calendarControl-title">';
+	html += 				this.monthNames[month] + " " + year;
+	html += 			'</div>';
+	html +=				'<button type="button" class="calendarControl-next">&rarr;</button>';
 	html +=			'</div>';
 	html +=			'<div class="calendarControl-months">';
+	html += 			'<div class="calendarControl-month">';
+	html += 				'<div class="calendarControl-days">';
+	html += 					'<table aria-role="grid" aria-label="Date picker">';
+	html += 						'<thead>';
+	html += 							'<tr>';
+	html += 								'<th><abbr title="Sunday">Sun</abbr></th>';
+	html += 								'<th><abbr title="Monday">Mon</abbr></th>';
+	html += 								'<th><abbr title="Tuesday">Tue</abbr></th>';
+	html += 								'<th><abbr title="Wednesday">Wed</abbr></th>';
+	html += 								'<th><abbr title="Thursday">Thu</abbr></th>';
+	html += 								'<th><abbr title="Friday">Fri</abbr></th>';
+	html += 								'<th><abbr title="Saturday">Sat</abbr></th>';
+	html += 							'</tr>';
+	html += 						'</thead>';
+	html += 						'<tbody>';
+	html += 							this.getCalendarTableRows(month, year);
+	html += 						'</tbody>';
+	html += 					'</table>';
+	html += 				'</div>';
+	html += 			'</div>';
 	html +=			'</div>';
 	html +=		'</div>'
 	return html;
 };
 
-kitty.CalendarControl.prototype.createMonth = function(year, month) {
-	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-	var monthHTML = '';
-	monthHTML += '<div class="calendarControl-month">';
-	monthHTML += 	'<div class="calendarControl-title">';
-	monthHTML += 		monthNames[month] + " " + year;
-	monthHTML += 	'</div>';
-	monthHTML += 	'<div class="calendarControl-days">';
-	monthHTML += 		'<table>';
-	monthHTML += 			'<thead>';
-	monthHTML += 				'<tr>';
-	monthHTML += 					'<th><abbr title="Sunday">Sun</abbr></th>';
-	monthHTML += 					'<th><abbr title="Monday">Mon</abbr></th>';
-	monthHTML += 					'<th><abbr title="Tuesday">Tue</abbr></th>';
-	monthHTML += 					'<th><abbr title="Wednesday">Wed</abbr></th>';
-	monthHTML += 					'<th><abbr title="Thursday">Thu</abbr></th>';
-	monthHTML += 					'<th><abbr title="Friday">Fri</abbr></th>';
-	monthHTML += 					'<th><abbr title="Saturday">Sat</abbr></th>';
-	monthHTML += 				'</tr>';
-	monthHTML += 			'</thead>';
-	monthHTML += 			'<tbody>';
-	monthHTML += 			'</tbody>';
-	monthHTML += 		'</table>';
-	monthHTML += 	'</div>';
-	monthHTML += '</div>';
-	this.monthsContainer.innerHTML = monthHTML;
-	$(this.calendar).find(".calendarControl-months .calendarControl-days table tbody").append(this.getCalendarTableRows(month, year));
+kitty.CalendarControl.prototype.updateCalendarHtml = function(year, month) {
+	// 1. update title
+	this.calendar.find('.calendarControl-title').html(this.monthNames[month] + ' ' + year);
+
+	// 2. disable back/next button perhaps
+
+	// 3. update table html
+	this.calendar.find("tbody").html(this.getCalendarTableRows(month, year));
 };
 
 kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
@@ -308,7 +311,8 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 };
 
 kitty.CalendarControl.prototype.getCellHtml = function(date, tabIndex, tdClass) {
-	return '<td data-date="'+date.toString()+'" tabindex="'+ tabIndex +'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
+	var label = date.getDate() + ' ' + this.monthNames[date.getMonth()] + ', ' + date.getFullYear();
+	return '<td aria-role="gridcell" aria-label="'+label+'" data-date="'+date.toString()+'" tabindex="'+ tabIndex +'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
 };
 
 kitty.CalendarControl.prototype.selectDate = function(date) {
@@ -340,7 +344,7 @@ kitty.CalendarControl.prototype.showPreviousMonth = function() {
 	}
 	this.state.currentSelectedDate = pm;
 	this.selectedDate = pm;
-	this.createMonth(pm.getFullYear(),pm.getMonth());
+	this.updateCalendarHtml(pm.getFullYear(), pm.getMonth());
 };
 
 kitty.CalendarControl.prototype.showNextMonth = function() {
@@ -351,7 +355,7 @@ kitty.CalendarControl.prototype.showNextMonth = function() {
 	}
 	this.state.currentSelectedDate = nm;
 	this.selectedDate = nm;
-	this.createMonth(nm.getFullYear(),nm.getMonth());
+	this.updateCalendarHtml(nm.getFullYear(), nm.getMonth());
 };
 
 kitty.CalendarControl.prototype.getPreviousMonth = function() {
