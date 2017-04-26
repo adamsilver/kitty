@@ -71,7 +71,7 @@ kitty.AutocompleteControl.prototype.onTextBoxBlur = function(e) {
 };
 
 kitty.AutocompleteControl.prototype.createButton = function() {
-	this.button = $('<button type="button" tabindex="-1">&darr;</button>');
+	this.button = $('<button type="button" tabindex="-1">&#9662;</button>');
 	$(this.control).parents('div').append(this.button);
 	this.button.on('click', $.proxy(this, 'onButtonClick'));
 };
@@ -79,8 +79,8 @@ kitty.AutocompleteControl.prototype.createButton = function() {
 kitty.AutocompleteControl.prototype.onButtonClick = function(e) {
 	window.clearTimeout(this.timeout);
 	this.clearOptions();
-	this.buildAllSuggestions();
-	this.showSuggestionsPanel();
+	this.buildAllOptions();
+	this.showOptionsPanel();
 	this.textBox.focus();
 };
 
@@ -93,8 +93,10 @@ kitty.AutocompleteControl.prototype.createSuggestionsPanel = function() {
 
 
 kitty.AutocompleteControl.prototype.onTextBoxCharacterEntered = function(e) {
-	this.buildOptions();
-	this.showSuggestionsPanel();
+	if(this.textBox.val().trim().length > 0) {
+		this.buildOptions();
+		this.showOptionsPanel();
+	}
 };
 
 kitty.AutocompleteControl.prototype.onTextBoxEscapePressed = function(e) {
@@ -143,9 +145,16 @@ kitty.AutocompleteControl.prototype.onTextBoxDownPressed = function(e) {
 			this.selectOption(option);
 		}
 	} else {
-		this.showSuggestionsPanel();
+		if(this.textBox.val().trim().length == 0) {
+			this.buildAllOptions();
+		} else {
+			this.buildOptions();
+		}
+		this.showOptionsPanel();
 		option = this.getFirstOption();
-		this.selectOption(option);
+		if(option[0]) {
+			this.selectOption(option);
+		}
 	}
 };
 
@@ -190,7 +199,6 @@ kitty.AutocompleteControl.prototype.selectOption = function(option) {
 		TODO: update active-descendant on textbox
 		TODO: aria-selected=true
 	*/
-
 	if(this.activeOptionId) {
 		var activeOption = this.getOptionById(this.activeOptionId);
 		activeOption.removeClass('active-suggestion');
@@ -232,7 +240,7 @@ kitty.AutocompleteControl.prototype.clearActiveSuggestion = function() {
 	this.activeSuggestion = null;
 };
 
-kitty.AutocompleteControl.prototype.showSuggestionsPanel = function() {
+kitty.AutocompleteControl.prototype.showOptionsPanel = function() {
 	this.suggestionsPanel.removeClass('hide');
 	this.textBox.attr('aria-expanded', 'true');
 };
@@ -262,7 +270,7 @@ kitty.AutocompleteControl.prototype.buildOptions = function() {
 	this.suggestionsPanel.scrollTop(this.suggestionsPanel.scrollTop());
 };
 
-kitty.AutocompleteControl.prototype.buildAllSuggestions = function() {
+kitty.AutocompleteControl.prototype.buildAllOptions = function() {
 	var options = this.control.options;
 	for(var i = 0; i < options.length; i++) {
 		optionText = $(options[i]).text();
