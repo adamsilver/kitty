@@ -12,38 +12,44 @@
 
             .wrapper {
                 position: relative;
-                max-width: 200px;
+                max-width: 20em;
             }
 
             #suggestions {
                 margin: 0;
-                max-height: 200px;
+                max-height: 218px;
                 overflow-y: auto;
                 position: relative;
-                font-size: 16px;
+                font-size: 100%;
                 padding: 0;
                 position: absolute;
-                top: 40px;
+                top: 48px;
                 width: 100%;
                 background-color: #fff;
+                border-radius: 0;
                 box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
                 z-index: 2;
-                border: 2px solid #ccc;
+                border: 2px solid #222;
+                width: 90%;
             }
 
             #suggestions li {
                 line-height: 22px;
                 padding: 6px 15px;
                 display: block;
+                border-bottom: 2px solid #ccc;
             }
 
             #suggestions li:hover {
-                background-color: yellow;
-                color: black;
+                background-color: #005EA5;
+                border-color: #005EA5;
+                color: white;
             }
 
             .active-suggestion {
-                background-color: blue;
+                background-color: #005EA5;
                 color: white;
             }
 
@@ -52,11 +58,20 @@
             }
 
             [role=combobox] {
+               -webkit-appearance: none;
+                border-radius: 0;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                width: 90%;
+                font-size: inherit;
+                line-height: 1.25;
                 padding: 4px;
+                border: 2px solid #222;
             }
 
             [role=combobox]:focus {
-                outline: 3px solid #222;
+                /*outline: 3px solid #222;*/
             }
 
             button {
