@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Autocomplete Demo</title>
+        <title>AutocompleteControl Demo</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -28,6 +28,7 @@
                 background-color: #fff;
                 box-sizing: border-box;
                 z-index: 2;
+                border: 2px solid #ccc;
             }
 
             #suggestions li {
@@ -45,6 +46,10 @@
 
             .hide {
                 display: none;
+            }
+
+            [role=combobox]:focus {
+                outline: 3px solid #222;
             }
         </style>
     </head>
@@ -315,7 +320,7 @@
         <script src="../../kitty/kitty.AutoCompleteControl.js"></script>
         <script>
         	var select = document.getElementById('country');
-			var ac = new kitty.AutoCompleteControl(select);
+			var ac = new kitty.AutocompleteControl(select);
         </script>
     </body>
 </html>
