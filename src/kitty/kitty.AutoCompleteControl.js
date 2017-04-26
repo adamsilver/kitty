@@ -24,11 +24,50 @@ kitty.AutocompleteControl.prototype.createTextBox = function() {
 	this.textBox.prop('id', this.controlId);
 	$(this.control).parents('div').append(this.textBox);
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
+	this.textBox.on('keydown', $.proxy(this, 'onTextBoxKeyDown'));
 	this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 };
 
+kitty.AutocompleteControl.prototype.onTextBoxKeyDown = function(e) {
+	switch (e.keyCode) {
+		case 13: // ENTER
+			this.onTextBoxKeyDownEnterPressed(e);
+			break;
+	}
+};
+
+kitty.AutocompleteControl.prototype.onTextBoxKeyDownEnterPressed = function(e) {
+	if(this.isOptionMenuShowing()) {
+		e.preventDefault();
+	}
+};
+
+kitty.AutocompleteControl.prototype.onTextBoxKeyUp = function(e) {
+	switch (e.keyCode) {
+		case 38: //UP
+			this.onTextBoxUpPressed(e);
+			break;
+		case 40: //DOWN
+			this.onTextBoxDownPressed(e);
+			break;
+		case 13: // ENTER
+			this.onTextBoxEnterPressed(e);
+			break;
+		case 32: // SPACE
+			this.onTextBoxSpacePressed(e);
+			break;
+		case 27: // ESCAPE
+			this.onTextBoxEscapePressed(e);
+			break;
+		default:
+			this.onTextBoxCharacterEntered(e);
+	}
+};
+
 kitty.AutocompleteControl.prototype.onTextBoxBlur = function(e) {
-	this.hideOptions();
+	this.timeout = window.setTimeout(function() {
+		this.hideOptions();
+	}.bind(this), 100)
 };
 
 kitty.AutocompleteControl.prototype.createButton = function() {
@@ -38,6 +77,7 @@ kitty.AutocompleteControl.prototype.createButton = function() {
 };
 
 kitty.AutocompleteControl.prototype.onButtonClick = function(e) {
+	window.clearTimeout(this.timeout);
 	this.clearOptions();
 	this.buildAllSuggestions();
 	this.showSuggestionsPanel();
@@ -47,73 +87,23 @@ kitty.AutocompleteControl.prototype.onButtonClick = function(e) {
 kitty.AutocompleteControl.prototype.createSuggestionsPanel = function() {
 	this.suggestionsPanel = $('<ul id="suggestions" role="listbox" class="hide"></ul>');
 	$(this.control).parents('div').append(this.suggestionsPanel);
-	// this.suggestionsPanel.on('keydown', 'li', $.proxy(this, 'onSuggestionsKeyDown'));
 	this.suggestionsPanel.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
 };
 
-kitty.AutocompleteControl.prototype.onTextBoxKeyUp = function(e) {
-	switch (e.keyCode) {
-		case 38: //UP
-			this.onTextBoxUpPressed(e);
-			e.preventDefault();
-			break;
-		case 40: //DOWN
-			this.onTextBoxDownPressed(e);
-			e.preventDefault();
-			break;
-		default:
 
-			this.onTextBoxCharacterEntered(e);
-
-			// when a suggestion is selected and the text box is focussed
-			// it triggers this event listener to fire
-			// but we don't want this to run because it will
-			// reshow the menu because the length is more than 0
-			// perhaps instead of this state "hack" we could...
-			// instead check that the value is an actual suggestion
-			// if it is don't show the box. Could serve double purpose.
-			// if(this.suggestionSelected) {
-			// 	this.suggestionSelected = false;
-			// 	return;
-			// }
-			// if(this.textBox.val().length > 0) {
-			// 	this.clearOptions();
-			// 	this.buildFilteredSuggestions();
-			// 	if(this.suggestionsPanel.find('li').length) {
-			// 		this.showSuggestionsPanel();
-			// 	}
-			// } else {
-			// 	this.clearOptions();
-			// 	this.hideOptions();
-			// }
-	}
-};
 
 kitty.AutocompleteControl.prototype.onTextBoxCharacterEntered = function(e) {
 	this.buildOptions();
 	this.showSuggestionsPanel();
 };
 
-// kitty.AutocompleteControl.prototype.onSuggestionsKeyDown = function(e) {
-// 	switch (e.keyCode) {
-// 		case 13: // ENTER
-// 			this.onSuggestionEnterPressed(e);
-// 			break;
-// 		case 32: // SPACE
-// 			this.onSuggestionSpacePressed(e);
-// 			break;
-// 		case 27: // ESCAPE
-// 			this.onSuggestionEscapePressed(e);
-// 			break;
-// 		default:
-// 	}
-// };
-
-kitty.AutocompleteControl.prototype.onSuggestionEscapePressed = function(e) {
-	e.preventDefault();
-	this.clearOptions();
-	this.hideOptions();
-	this.focusTextBox();
+kitty.AutocompleteControl.prototype.onTextBoxEscapePressed = function(e) {
+	if(this.isOptionMenuShowing()) {
+		this.clearOptions();
+		this.hideOptions();
+		this.focusTextBox();
+		e.preventDefault();
+	}
 };
 
 kitty.AutocompleteControl.prototype.focusTextBox = function() {
@@ -126,19 +116,21 @@ kitty.AutocompleteControl.prototype.onSuggestionClick = function(e) {
 	this.focusTextBox();
 };
 
-kitty.AutocompleteControl.prototype.onSuggestionEnterPressed = function(e) {
-	this.selectSuggestion();
-	e.preventDefault();
+kitty.AutocompleteControl.prototype.onTextBoxEnterPressed = function(e) {
+	if(this.isOptionMenuShowing()) {
+		this.selectSuggestion();
+	}
 };
 
-kitty.AutocompleteControl.prototype.onSuggestionSpacePressed = function(e) {
-	this.selectSuggestion();
-	e.preventDefault();
+kitty.AutocompleteControl.prototype.onTextBoxSpacePressed = function(e) {
+	if(this.isOptionMenuShowing()) {
+		this.selectSuggestion();
+		e.preventDefault();
+	}
 };
 
 kitty.AutocompleteControl.prototype.selectSuggestion = function() {
-	this.suggestionSelected = true;
-	this.textBox.val($(this.activeSuggestion).text());
+	this.textBox.val(this.getActiveOption().text());
 	this.focusTextBox();
 	this.hideOptions();
 };
