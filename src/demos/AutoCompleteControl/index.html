@@ -16,12 +16,11 @@
                 margin-bottom: 8px;
 			}
 
-            .wrapper {
+            .autocomplete {
                 position: relative;
-                max-width: 20em;
             }
 
-            #suggestions {
+            .autocomplete-options {
                 margin: 0;
                 max-height: 218px;
                 overflow-y: auto;
@@ -41,29 +40,25 @@
                 width: 90%;
             }
 
-            #suggestions li {
+            .autocomplete-option {
                 line-height: 22px;
                 padding: 6px 15px;
                 display: block;
                 border-bottom: 2px solid #ccc;
             }
 
-            #suggestions li:hover {
+            .autocomplete-option:hover,
+            .autocomplete-option-isActive {
                 background-color: #005EA5;
                 border-color: #005EA5;
                 color: white;
             }
 
-            .active-suggestion {
-                background-color: #005EA5;
-                color: white;
-            }
-
-            .hide {
+            .autocomplete-options-isHidden {
                 display: none;
             }
 
-            [role=combobox] {
+            .autocomplete-textBox {
                -webkit-appearance: none;
                 border-radius: 0;
                 box-sizing: border-box;
@@ -77,17 +72,14 @@
                 border: 2px solid #222;
             }
 
-            [role=combobox]:focus {
-                /*outline: 3px solid #222;*/
-            }
-
-            button {
+            .autocomplete-button {
                 position: relative;
-                left: -25px;
+                left: -29px;
+                top: 1px;
                 -webkit-appearance: none;
                 border: none;
                 background-color: #fff;
-                font-size: 16px;
+                font-size: 18px;
             }
         </style>
     </head>
@@ -95,7 +87,7 @@
         <h1>Autocomplete Demo</h1>
 
         <form action="http://google.co.uk">
-    		<div class="wrapper">
+    		<div class="autocomplete">
     			<label for="country">
     				Choose country
     			</label>
