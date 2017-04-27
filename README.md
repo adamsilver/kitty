@@ -22,4 +22,4 @@ UI Components i've built and used over the years. Some are in better condition t
 
 [CalendarControl (4)](http://adamsilver.github.io/kitty/src/demos/CalendarControl/)
 
-[AutoCompleteControl (4)](http://adamsilver.github.io/kitty/src/demos/AutoCompleteControl/)
+[AutoCompleteControl (4)](http://adamsilver.github.io/kitty/src/demos/AutocompleteControl/)
