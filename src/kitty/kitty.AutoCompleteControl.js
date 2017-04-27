@@ -9,10 +9,21 @@ kitty.AutocompleteControl = function(control, options) {
 	this.createTextBox();
 	this.createButton();
 	this.createOptionsUl();
-	this.removeSelect();
+	this.removeSelectBox();
+	this.setupKeys();
 };
 
-kitty.AutocompleteControl.prototype.removeSelect = function() {
+kitty.AutocompleteControl.prototype.setupKeys = function() {
+	this.keys = {
+		enter:    13,
+		esc:      27,
+		space:    32,
+		up:       38,
+		down:     40
+   };
+};
+
+kitty.AutocompleteControl.prototype.removeSelectBox = function() {
 	$(this.control).remove();
 };
 
@@ -27,7 +38,7 @@ kitty.AutocompleteControl.prototype.createTextBox = function() {
 
 kitty.AutocompleteControl.prototype.onTextBoxKeyDown = function(e) {
 	switch (e.keyCode) {
-		case 13: // ENTER
+		case this.keys.enter:
 			this.onTextBoxKeyDownEnterPressed(e);
 			break;
 	}
@@ -45,19 +56,19 @@ kitty.AutocompleteControl.prototype.onTextBoxKeyDownEnterPressed = function(e) {
 
 kitty.AutocompleteControl.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
-		case 38: //UP
+		case this.keys.up:
 			this.onTextBoxUpPressed(e);
 			break;
-		case 40: //DOWN
+		case this.keys.down:
 			this.onTextBoxDownPressed(e);
 			break;
-		case 13: // ENTER
+		case this.keys.enter:
 			this.onTextBoxEnterPressed(e);
 			break;
-		case 32: // SPACE
+		case this.keys.space:
 			this.onTextBoxSpacePressed(e);
 			break;
-		case 27: // ESCAPE
+		case this.keys.esc:
 			this.onTextBoxEscapePressed(e);
 			break;
 		default:
