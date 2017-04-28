@@ -63,3 +63,15 @@
     display: none;
 }
 
+.autocomplete-status {
+    border: 0px;
+    clip: rect(0px 0px 0px 0px);
+    height: 1px;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
