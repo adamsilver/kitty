@@ -30,7 +30,7 @@ kitty.AutocompleteControl.prototype.onStatusTimeout = function() {
 };
 
 kitty.AutocompleteControl.prototype.setupKeys = function() {
-	this.keys = { 
+	this.keys = {
 		enter: 13,
 		esc: 27,
 		space: 32,
@@ -44,7 +44,7 @@ kitty.AutocompleteControl.prototype.removeSelectBox = function() {
 };
 
 kitty.AutocompleteControl.prototype.createTextBox = function() {
-	this.textBox = $('<input class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
+	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
 	this.textBox.prop('id', this.controlId);
 	this.container.append(this.textBox);
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
