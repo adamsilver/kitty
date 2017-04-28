@@ -1,6 +1,6 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
-// liveregion
-// search for adam - no results
+// update text box to selected value as go up and down
+// ...remember original value
 // lookup/search sophistication option
 
 kitty.AutocompleteControl = function(control) {
