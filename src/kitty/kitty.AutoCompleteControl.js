@@ -16,8 +16,17 @@ kitty.AutocompleteControl = function(control) {
 };
 
 kitty.AutocompleteControl.prototype.createStatusBox = function() {
-	this.status = $('<div aria-live="polite" role="status" class="autocomplete-status" />');
+	this.status = $('<div aria-live="polite" role="status" aria-atomic="true" class="autocomplete-status" />');
 	this.container.append(this.status);
+};
+
+kitty.AutocompleteControl.prototype.updateStatus = function(status) {
+	this.status.text(status);
+	this.statusTimer = window.setTimeout($.proxy(this, 'onStatusTimeout'), 1000);
+};
+
+kitty.AutocompleteControl.prototype.onStatusTimeout = function() {
+	this.status.text('');
 };
 
 kitty.AutocompleteControl.prototype.setupKeys = function() {
@@ -118,9 +127,11 @@ kitty.AutocompleteControl.prototype.onTextBoxCharacterPressed = function(e) {
 		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
+			this.updateStatus(options.length + ' results available.');
 		} else {
 			this.hideOptions();
 			this.clearOptions();
+			this.updateStatus('No results.');
 		}
 	}
 };
