@@ -1,11 +1,10 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
 // liveregion
 // lookup/search sophistication option
-// markup injection?
 
-kitty.AutocompleteControl = function(control, options) {
-	this.controlId = control.id;
+kitty.AutocompleteControl = function(control) {
 	this.control = control;
+	this.controlId = control.id;
 	this.createTextBox();
 	this.createButton();
 	this.createOptionsUl();
@@ -14,12 +13,12 @@ kitty.AutocompleteControl = function(control, options) {
 };
 
 kitty.AutocompleteControl.prototype.setupKeys = function() {
-	this.keys = {
-		enter:    13,
-		esc:      27,
-		space:    32,
-		up:       38,
-		down:     40
+	this.keys = { 
+		enter: 13,
+		esc: 27,
+		space: 32,
+		up: 38,
+		down: 40
    };
 };
 

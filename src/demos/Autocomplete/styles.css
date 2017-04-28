@@ -1,0 +1,65 @@
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-textBox {
+   -webkit-appearance: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 1.25;
+    padding: 0.5em;
+    border: 2px solid #222;
+}
+
+.autocomplete-button {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+    -webkit-appearance: none;
+    border: none;
+    background-color: #fff;
+    font-size: 1em;
+}
+
+.autocomplete-options {
+    margin: 0;
+    max-height: 12em;
+    overflow-y: auto;
+    position: relative;
+    font-size: 100%;
+    padding: 0;
+    position: absolute;
+    top: 2.3em;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    z-index: 2;
+    border: 2px solid #222;
+}
+
+.autocomplete-option {
+    line-height: 22px;
+    padding: 0.5em;
+    display: block;
+    border-bottom: 2px solid #ccc;
+}
+
+.autocomplete-option:hover,
+.autocomplete-option-isActive {
+    background-color: #005EA5;
+    border-color: #005EA5;
+    color: white;
+}
+
+.autocomplete-options-isHidden {
+    display: none;
+}
+
