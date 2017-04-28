@@ -1,5 +1,6 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
 // liveregion
+// search for adam - no results
 // lookup/search sophistication option
 
 kitty.AutocompleteControl = function(control) {
@@ -71,7 +72,7 @@ kitty.AutocompleteControl.prototype.onTextBoxKeyUp = function(e) {
 			this.onTextBoxEscapePressed(e);
 			break;
 		default:
-			this.onTextBoxCharacterEntered(e);
+			this.onTextBoxCharacterPressed(e);
 	}
 };
 
@@ -103,10 +104,16 @@ kitty.AutocompleteControl.prototype.createOptionsUl = function() {
 
 
 
-kitty.AutocompleteControl.prototype.onTextBoxCharacterEntered = function(e) {
+kitty.AutocompleteControl.prototype.onTextBoxCharacterPressed = function(e) {
 	if(this.textBox.val().trim().length > 0) {
-		this.buildOptions();
-		this.showOptionsPanel();
+		var options = this.getOptions(this.textBox.val().trim());
+		if(options.length > 0) {
+			this.buildOptions(options);
+			this.showOptionsPanel();
+		} else {
+			this.hideOptions();
+			this.clearOptions();
+		}
 	}
 };
 
@@ -159,7 +166,8 @@ kitty.AutocompleteControl.prototype.onTextBoxDownPressed = function(e) {
 		if(this.textBox.val().trim().length == 0) {
 			this.buildAllOptions();
 		} else {
-			this.buildOptions();
+			var options = this.getOptions(this.textBox.val().trim());
+			this.buildOptions(options);
 		}
 		this.showOptionsPanel();
 		option = this.getFirstOption();
@@ -251,17 +259,24 @@ kitty.AutocompleteControl.prototype.clearOptions = function() {
 	this.optionsUl.empty();
 };
 
-kitty.AutocompleteControl.prototype.buildOptions = function() {
+kitty.AutocompleteControl.prototype.getOptions = function(value) {
+	var options = [];
+	var selectOptions = this.control.options;
+	var text;
+	for(var i = 0; i < selectOptions.length; i++) {
+		text = $(selectOptions[i]).text();
+		if(text.toLowerCase().indexOf(value) > -1) {
+			options.push(text);
+		}
+	}
+	return options;
+};
+
+kitty.AutocompleteControl.prototype.buildOptions = function(options) {
 	this.clearOptions();
 	this.activeOptionId = null;
-	var value = this.textBox.val().toLowerCase();
-	var options = this.control.options;
-	var optionText;
 	for(var i = 0; i < options.length; i++) {
-		optionText = $(options[i]).text();
-		if(optionText.toLowerCase().indexOf(value) > -1) {
-			this.optionsUl.append(this.getOptionHtml(i, optionText));
-		}
+		this.optionsUl.append(this.getOptionHtml(i, options[i]));
 	}
 	this.optionsUl.scrollTop(this.optionsUl.scrollTop());
 };
