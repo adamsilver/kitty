@@ -30,6 +30,8 @@
     margin: 0;
     max-height: 12em;
     overflow-y: auto;
+    overflow-y: scroll; /* has to be scroll, not auto */
+  	-webkit-overflow-scrolling: touch;
     position: relative;
     font-size: 100%;
     padding: 0;
