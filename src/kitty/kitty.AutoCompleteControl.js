@@ -123,7 +123,7 @@ kitty.AutocompleteControl.prototype.createOptionsUl = function() {
 
 kitty.AutocompleteControl.prototype.onTextBoxCharacterPressed = function(e) {
 	if(this.textBox.val().trim().length > 0) {
-		var options = this.getOptions(this.textBox.val().trim());
+		var options = this.getOptions(this.textBox.val().trim().toLowerCase());
 		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
