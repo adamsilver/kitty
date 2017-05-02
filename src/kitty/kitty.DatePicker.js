@@ -121,6 +121,8 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 	var i = 0;
 	var tdClassDefault = this.options.calendarClass+'-dayActivator';
 	var ariaSelected = 'false';
+	var now = new Date();
+	now.setHours(0,0,0,0);
 	while (i < firstDay) {
 		html += "<td>&nbsp;</td>";
 		i++;
@@ -133,7 +135,7 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 		ariaSelected = 'false';
 
 		var tdClass = tdClassDefault;
-		if (d.getDate() === new Date().getDate()) {
+		if (d.getTime() === now.getTime()) {
 			tdClass += ' '+this.options.calendarClass+'-dayActivator-isToday';
 		}
 
