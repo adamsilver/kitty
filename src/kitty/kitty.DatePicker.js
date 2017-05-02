@@ -10,7 +10,7 @@
 * @param {Date} options.currentDate The currently active date, defaults to today
 * @param {String} options.calendarClass The class name for the calendar
 */
-kitty.CalendarControl = function(options) {
+kitty.DatePicker = function(options) {
 	this.eventEmitter = new kitty.EventEmitter();
 	this.setupOptions(options);
 	this.setupKeys();
@@ -25,11 +25,11 @@ kitty.CalendarControl = function(options) {
 	}
 };
 
-kitty.CalendarControl.prototype.on = function(eventName, fn, context) {
+kitty.DatePicker.prototype.on = function(eventName, fn, context) {
 	this.eventEmitter.on(eventName, fn, context);
 };
 
-kitty.CalendarControl.prototype.setupMonthNames = function() {
+kitty.DatePicker.prototype.setupMonthNames = function() {
 	this.monthNames = [
 		"January",
 		"February",
@@ -46,7 +46,7 @@ kitty.CalendarControl.prototype.setupMonthNames = function() {
 	];
 };
 
-kitty.CalendarControl.prototype.setupOptions = function(options) {
+kitty.DatePicker.prototype.setupOptions = function(options) {
 	var defaults = {};
 
 	defaults.dateStart = (function() {
@@ -78,7 +78,7 @@ kitty.CalendarControl.prototype.setupOptions = function(options) {
 	this.options = options;
 };
 
-kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
+kitty.DatePicker.prototype.getCalendarHtml = function(year, month) {
 	var html = '';
 	html +=		'<div class="'+this.options.calendarClass+'-actions">';
 	html +=			'<button aria-label="Previous month" type="button" class="'+this.options.calendarClass+'-back">&larr;</button>';
@@ -106,11 +106,11 @@ kitty.CalendarControl.prototype.getCalendarHtml = function(year, month) {
 	return html;
 };
 
-kitty.CalendarControl.prototype.getActiveDescendantId = function() {
+kitty.DatePicker.prototype.getActiveDescendantId = function() {
 	return this.options.calendarId + '_day_' + this.selectedDate.getDate();
 };
 
-kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
+kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 	var html = "<tr>";
 	var d = new Date();
 
@@ -155,26 +155,26 @@ kitty.CalendarControl.prototype.getCalendarTableRows = function(month, year) {
 	return html;
 };
 
-kitty.CalendarControl.prototype.getCellHtml = function(date, tdClass, ariaSelected) {
+kitty.DatePicker.prototype.getCellHtml = function(date, tdClass, ariaSelected) {
 	var label = date.getDate() + ' ' + this.monthNames[date.getMonth()] + ', ' + date.getFullYear();
 	return '<td aria-role="gridcell" aria-selected="'+ariaSelected+'" aria-label="'+label+'" data-date="'+date.toString()+'" id="'+this.options.calendarId+'_day_'+date.getDate()+'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
 };
 
-kitty.CalendarControl.prototype.buildCalendar = function() {
+kitty.DatePicker.prototype.buildCalendar = function() {
 	this.calendar = $('<div class="'+this.options.calendarClass+'">');
 	this.calendar.html(this.getCalendarHtml(this.selectedDate.getFullYear(), this.selectedDate.getMonth()));
 	this.prepareCalendarControls();
 	$(this.options.container).append(this.calendar);
 };
 
-kitty.CalendarControl.prototype.prepareCalendarControls = function() {
+kitty.DatePicker.prototype.prepareCalendarControls = function() {
 	this.calendar.on('click', '.'+this.options.calendarClass+'-back', $.proxy(this, 'onBackClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-next', $.proxy(this, 'onNextClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-dayActivator', $.proxy(this, 'onDayClick'));
 	this.calendar.on('keyup', 'table', $.proxy(this, 'onGridKeyUp'));
 };
 
-kitty.CalendarControl.prototype.onDayClick = function(e) {
+kitty.DatePicker.prototype.onDayClick = function(e) {
 	var d = new Date($(e.currentTarget).attr('data-date'));
 	this.selectDate(d);
 	this.eventEmitter.fire('select', {
@@ -185,15 +185,15 @@ kitty.CalendarControl.prototype.onDayClick = function(e) {
 	});
 };
 
-kitty.CalendarControl.prototype.onBackClick = function(e) {
+kitty.DatePicker.prototype.onBackClick = function(e) {
 	this.showPreviousMonth();
 };
 
-kitty.CalendarControl.prototype.onNextClick = function(e) {
+kitty.DatePicker.prototype.onNextClick = function(e) {
 	this.showNextMonth();
 };
 
-kitty.CalendarControl.prototype.setupKeys = function() {
+kitty.DatePicker.prototype.setupKeys = function() {
 	this.keys = {
 		tab:       9,
 		enter:    13,
@@ -210,7 +210,7 @@ kitty.CalendarControl.prototype.setupKeys = function() {
    };
 };
 
-kitty.CalendarControl.prototype.onGridKeyUp = function(e) {
+kitty.DatePicker.prototype.onGridKeyUp = function(e) {
 	switch(e.keyCode) {
 		case this.keys.down:
 			this.onDayDownPressed(e);
@@ -231,7 +231,7 @@ kitty.CalendarControl.prototype.onGridKeyUp = function(e) {
 	}
 };
 
-kitty.CalendarControl.prototype.onDayUpSpacePressed = function(e) {
+kitty.DatePicker.prototype.onDayUpSpacePressed = function(e) {
 	e.preventDefault();
 	this.eventEmitter.fire('select', {
 		date: this.selectedDate,
@@ -241,7 +241,7 @@ kitty.CalendarControl.prototype.onDayUpSpacePressed = function(e) {
 	});
 };
 
-kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
+kitty.DatePicker.prototype.onDayDownPressed = function(e) {
 	e.preventDefault();
 	var date = new Date(this.selectedDate);
 	var newDate = this.getSameDayNextWeek(date);
@@ -254,7 +254,7 @@ kitty.CalendarControl.prototype.onDayDownPressed = function(e) {
 	}
 };
 
-kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
+kitty.DatePicker.prototype.onDayUpPressed = function(e) {
 	e.preventDefault();
 	var date = new Date(this.selectedDate);
 	var newDate = this.getSameDayLastWeek(date);
@@ -267,7 +267,7 @@ kitty.CalendarControl.prototype.onDayUpPressed = function(e) {
 	}
 };
 
-kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
+kitty.DatePicker.prototype.onDayLeftPressed = function(e) {
 	e.preventDefault();
 	var date = new Date(this.selectedDate);
 	var newDate = this.getPreviousDay(date);
@@ -280,7 +280,7 @@ kitty.CalendarControl.prototype.onDayLeftPressed = function(e) {
 	}
 };
 
-kitty.CalendarControl.prototype.onDayRightPressed = function(e) {
+kitty.DatePicker.prototype.onDayRightPressed = function(e) {
 	e.preventDefault();
 	var date = new Date(this.selectedDate);
 	var newDate = this.getNextDay(date);
@@ -293,42 +293,42 @@ kitty.CalendarControl.prototype.onDayRightPressed = function(e) {
 	}
 };
 
-kitty.CalendarControl.prototype.getPreviousDay = function(date) {
+kitty.DatePicker.prototype.getPreviousDay = function(date) {
 	date.setDate(date.getDate()-1);
 	return date;
 };
 
-kitty.CalendarControl.prototype.getSameDayLastWeek = function(date) {
+kitty.DatePicker.prototype.getSameDayLastWeek = function(date) {
 	date.setDate(date.getDate()-7);
 	return date;
 };
 
-kitty.CalendarControl.prototype.getNextDay = function(date) {
+kitty.DatePicker.prototype.getNextDay = function(date) {
 	date.setDate(date.getDate()+1);
 	return date;
 };
 
-kitty.CalendarControl.prototype.getSameDayNextWeek = function(date) {
+kitty.DatePicker.prototype.getSameDayNextWeek = function(date) {
 	date.setDate(date.getDate()+7);
 	return date;
 };
 
-kitty.CalendarControl.prototype.getDayCell = function(date) {
+kitty.DatePicker.prototype.getDayCell = function(date) {
 	return this.calendar.find('[data-date="'+date.toString()+'"]');
 };
 
-kitty.CalendarControl.prototype.updateCalendarHtml = function(year, month) {
+kitty.DatePicker.prototype.updateCalendarHtml = function(year, month) {
 	this.calendar.find('.'+this.options.calendarClass+'-title').html(this.monthNames[month] + ' ' + year);
 	this.calendar.find("tbody").html(this.getCalendarTableRows(month, year));
 };
 
-kitty.CalendarControl.prototype.selectDate = function(date) {
+kitty.DatePicker.prototype.selectDate = function(date) {
 	this.unhighlightSelectedDate(this.selectedDate);
 	this.highlightSelectedDate(date);
 	this.updateActiveDescendant();
 };
 
-kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
+kitty.DatePicker.prototype.unhighlightSelectedDate = function(date) {
 	var cell = this.getDayCell(date);
 	cell.removeClass(this.options.calendarClass+'-dayActivator-isSelected');
 	cell.attr('aria-selected', 'false');
@@ -336,11 +336,11 @@ kitty.CalendarControl.prototype.unhighlightSelectedDate = function(date) {
 	this.selectedDate = null;
 };
 
-kitty.CalendarControl.prototype.updateActiveDescendant = function() {
+kitty.DatePicker.prototype.updateActiveDescendant = function() {
 	this.calendar.find('table').attr('aria-activedescendant', this.getActiveDescendantId());
 };
 
-kitty.CalendarControl.prototype.highlightSelectedDate = function(date) {
+kitty.DatePicker.prototype.highlightSelectedDate = function(date) {
 	var cell = this.getDayCell(date);
 	cell.attr('tabindex', '0');
 	cell.addClass(this.options.calendarClass+'-dayActivator-isSelected');
@@ -348,7 +348,7 @@ kitty.CalendarControl.prototype.highlightSelectedDate = function(date) {
 	this.selectedDate = date;
 };
 
-kitty.CalendarControl.prototype.showPreviousMonth = function() {
+kitty.DatePicker.prototype.showPreviousMonth = function() {
 	var pm = this.getPreviousMonth();
 	var hasPreviousMonth = this.dateInRange(pm, this.options.startDate, this.options.endDate);
 	if(!hasPreviousMonth) {
@@ -359,7 +359,7 @@ kitty.CalendarControl.prototype.showPreviousMonth = function() {
 	this.updateCalendarHtml(pm.getFullYear(), pm.getMonth());
 };
 
-kitty.CalendarControl.prototype.showNextMonth = function() {
+kitty.DatePicker.prototype.showNextMonth = function() {
 	var nm = this.getNextMonth();
 	var hasNextMonth = this.dateInRange(nm, this.options.startDate, this.options.endDate);
 	if(!hasNextMonth) {
@@ -370,7 +370,7 @@ kitty.CalendarControl.prototype.showNextMonth = function() {
 	this.updateCalendarHtml(nm.getFullYear(), nm.getMonth());
 };
 
-kitty.CalendarControl.prototype.getPreviousMonth = function() {
+kitty.DatePicker.prototype.getPreviousMonth = function() {
 	var dayInMs = 86400000;
 	var d = new Date(this.state.currentSelectedDate.getFullYear(), this.state.currentSelectedDate.getMonth(),1);
 	d = d.getTime() - dayInMs;
@@ -379,7 +379,7 @@ kitty.CalendarControl.prototype.getPreviousMonth = function() {
 	return d;
 };
 
-kitty.CalendarControl.prototype.getNextMonth = function() {
+kitty.DatePicker.prototype.getNextMonth = function() {
 	var d = new Date(this.state.currentSelectedDate.getFullYear(), this.state.currentSelectedDate.getMonth());
 	d = d.setMonth(d.getMonth()+1);
 	d = new Date(d);
@@ -387,7 +387,7 @@ kitty.CalendarControl.prototype.getNextMonth = function() {
 	return d;
 };
 
-kitty.CalendarControl.prototype.dateInRange = function(date, dateRangeFrom, dateRangeTo) {
+kitty.DatePicker.prototype.dateInRange = function(date, dateRangeFrom, dateRangeTo) {
 	var d = date.getTime();
 	drf = dateRangeFrom.getTime();
 	drt = dateRangeTo.getTime();
@@ -398,12 +398,12 @@ kitty.CalendarControl.prototype.dateInRange = function(date, dateRangeFrom, date
 	}
 };
 
-kitty.CalendarControl.prototype.show = function() {
+kitty.DatePicker.prototype.show = function() {
 	this.calendar.attr('aria-hidden', 'false');
 	this.calendar.removeClass(this.options.calendarClass+'-isHidden');
 };
 
-kitty.CalendarControl.prototype.hide = function() {
+kitty.DatePicker.prototype.hide = function() {
 	this.calendar.attr('aria-hidden', 'true');
 	this.calendar.addClass(this.options.calendarClass+'-isHidden');
 };

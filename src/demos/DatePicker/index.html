@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Calendar Control Demo</title>
+        <title>Date Picker Demo</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <style>
+        	body {
+                font-family: arial, sans-serif;
+            }
 
+			label {
+				display: block;
+                margin-bottom: 8px;
+			}
 
         	form {
 				padding: 20px;
@@ -17,22 +24,31 @@
 			}
 
 			.date input {
-				padding: 10px;
-				font-size: 16px;
-				font-family: arial;
+				-webkit-appearance: none;
+			    border-radius: 0;
+			    box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    width: 100%;
+			    font-size: inherit;
+			    font-family: inherit;
+			    line-height: 1.25;
+			    padding: 0.5em;
+			    border: 2px solid #222;
+			    max-width: 130px;
 			}
 
 			input[type="submit"] {
 				font-size: 16px;
-				padding: 10px 50px;
+				padding: 10px 20px;
 				-webkit-appearance: none;
 				background: green;
 				border: none;
 				margin-top: 20px;
 				color: white;
 				display: block;
+				text-align: left;
 			}
-
 
 			.calendarControlContainer {
 				padding: 20px 0;
@@ -46,6 +62,8 @@
 
 			.calendarControl-actions {
 				text-align: center;
+				padding-top: 10px;
+				padding-bottom: 10px;
 			}
 
 			.calendarControl-title {
@@ -61,6 +79,23 @@
 				float: right;
 			}
 
+			.calendarControl-next,
+			.calendarControl-back {
+				-webkit-appearance: none;
+			    border: none;
+			    background-color: #ddd;
+			    font-size: 1em;
+			    line-height: 1.25;
+			    padding: 0.4em 0.5em;
+			    vertical-align: bottom;
+			    border-radius: 6px;
+			}
+
+			.calendarControl-next:hover,
+			.calendarControl-back:hover {
+			    background-color: #ccc;
+			}
+
 			.calendarControl-dayActivator {
 				border: 2px solid white;
 			}
@@ -70,7 +105,9 @@
 			}
 
 			.calendarControl-dayActivator-isSelected {
-				background-color: lightblue;
+				background-color: #005EA5;
+			    border-color: #005EA5;
+			    color: white;
 			}
 
 			.calendarControl-title {
@@ -94,10 +131,22 @@
 				display: none;
 			}
 
+			.calendarControl-toggleButton {
+			    -webkit-appearance: none;
+			    border: none;
+			    background-color: #ddd;
+			    font-size: 1em;
+			    line-height: 1.25;
+			    padding: 0.5em;
+			    border: 2px solid #ddd;
+			    vertical-align: bottom;
+			    border-radius: 6px;
+			}
+
         </style>
     </head>
     <body>
-        <h1>Calendar</h1>
+        <h1>Date Picker</h1>
 
         <ul>
         	<li>Start with input type date</li>
@@ -107,8 +156,11 @@
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<input type="text" name="date" id="date"><button type="button">Show calendar</button>
-				<div class="calendarControlContainer"></div>
+				<div class="whateverButSomething">
+					<input type="text" name="date" id="date">
+					<button type="button" class="calendarControl-toggleButton">Calendar</button>
+					<div class="calendarControlContainer"></div>
+				</div>
 			</div>
 			<input type="submit" name="send" value="Next">
 		</form>
@@ -116,7 +168,7 @@
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
         <script src="../../kitty/kitty.EventEmitter.js"></script>
-        <script src="../../kitty/kitty.CalendarControl.js"></script>
+        <script src="../../kitty/kitty.DatePicker.js"></script>
         <script>
         	function supportsDateInput() {
 				var el = document.createElement('input')
@@ -126,7 +178,7 @@
 
 			// if(!supportsDateInput()) {
 
-				var date = new kitty.CalendarControl({
+				var date = new kitty.DatePicker({
 					calendarCssClass: 'calendar',
 					container: $('.calendarControlContainer')[0],
 					currentDate: new Date(2017, 3, 1),
