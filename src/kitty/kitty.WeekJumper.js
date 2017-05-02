@@ -1,4 +1,4 @@
-kitty.DatePicker = function(container) {
+kitty.WeekJumper = function(container) {
 	this.container = container;
 	this.showing = false;
 	this.picker = this.container.find('.dates');
@@ -21,27 +21,27 @@ kitty.DatePicker = function(container) {
 
 };
 
-kitty.DatePicker.prototype.onPrevClicked = function(e) {
+kitty.WeekJumper.prototype.onPrevClicked = function(e) {
 	e.preventDefault();
 	var href = this.getHref($(e.currentTarget));
 	$(href).show();
 	$(e.currentTarget).parents('.month').hide();
 };
 
-kitty.DatePicker.prototype.onNextClicked = function(e) {
+kitty.WeekJumper.prototype.onNextClicked = function(e) {
 	e.preventDefault();
 	var href = this.getHref($(e.currentTarget));
 	$(href).show();
 	$(e.currentTarget).parents('.month').hide();
 };
 
-kitty.DatePicker.prototype.getHref = function(link) {
+kitty.WeekJumper.prototype.getHref = function(link) {
 	var href = link.attr("href");
 	href = href.slice(href.indexOf("#"), href.length);
 	return href;
 };
 
-kitty.DatePicker.prototype.onChooseDateClicked = function(e) {
+kitty.WeekJumper.prototype.onChooseDateClicked = function(e) {
 	e.preventDefault();
 	if(this.showing) {
 		this.hidePicker();
@@ -50,18 +50,18 @@ kitty.DatePicker.prototype.onChooseDateClicked = function(e) {
 	}
 };
 
-kitty.DatePicker.prototype.showPicker = function() {
+kitty.WeekJumper.prototype.showPicker = function() {
 	this.picker.show();
 	this.showing = true;
 };
 
-kitty.DatePicker.prototype.hidePicker = function() {
+kitty.WeekJumper.prototype.hidePicker = function() {
 	this.picker.hide();
 	this.showing = false;
 	this.picker.find('.month-current').show();
 };
 
-kitty.DatePicker.prototype.hideMonths = function() {
+kitty.WeekJumper.prototype.hideMonths = function() {
 	var months = this.picker.find('.month:not(.month-current)');
 	months.hide();
 };

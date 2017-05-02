@@ -22,7 +22,7 @@
 * @param {HTMLElement} options.appendCalendarTo The element that the calendar will be appended into the DOM
 * @param {String} options.hasLinkClass The class name for the associated link
 */
-kitty.DateSelector = function() {
+kitty.SelectBoxDatePicker = function() {
 	var config = {
 		dateStart: (function() {
 			var d = new Date();
@@ -453,29 +453,14 @@ kitty.DateSelector = function() {
 		}
 	}
 
-	/*
-	 * Removes current month from DOM
-	 * @param void
-	 * @return void
-	 */
 	function removeCurrentMonth() {
 		config.monthsContainer.innerHTML = "";
 	}
 
-	/*
-	 * Applies event handlers to the table cells for picking a date
-	 * @param void
-	 * @return void
-	 */
 	function prepareDayActivators() {
 		$("td.dayActivator",me.calendar).click(setSelectedDate);
 	}
 
-	/*
-	 * Set the selected date if the date is within range
-	 * @param void
-	 * @return void
-	 */
 	function setSelectedDate() {
 		var day = parseInt(this.innerHTML);
 		var yearMonth = $("div.month",config.monthsContainer)[0].className.split(" ")[1].split("date")[1].split("-");
@@ -499,52 +484,13 @@ kitty.DateSelector = function() {
 		}
 	}
 
-	/*
-	 * Hide the calendar
-	 * @param void
-	 * @return void
-	 */
 	function hideCalendar() {
 		$(me.calendar).find("div.calendar").css({"display": "none", "zIndex":"0"});
 		return false;
 	}
 
-	/*
-	 * Show the calendar
-	 * @param void
-	 * @return void
-	 */
 	function showCalendar() {
 		$(me.calendar).find("div.calendar").css({"display": "block", "zIndex": "999"});
 		return false;
 	}
 };
-
-
-
-
-
-
-
-/*
-
-var options = {
-appendTo: domNode,
-calendarCssClass: 'string',
-selectDay: domNode,
-selectMonth: domNode,
-selectYear: domNode,
-textInput: domNode
-}
-
-var cal = new kitty.DateSelector(options);
-
-cal.getDate();
-
-cal.setDate(dateObject);
-
-cal.show();
-
-cal.hide();
-
-*/
