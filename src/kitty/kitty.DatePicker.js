@@ -1,8 +1,8 @@
 /**
 
 - show/hide via button
-- populate text box (but that's probably by event emitter?)
-- Move a year at a time buttons?
+- use aria-pressed=true/false
+- calendarId
 
 * @param {HTMLElement} options.container The element that the calendar will be appended into the DOM
 * @param {Date} options.startDate The start date range
@@ -10,8 +10,9 @@
 * @param {Date} options.currentDate The currently active date, defaults to today
 * @param {String} options.calendarClass The class name for the calendar
 */
-kitty.DatePicker = function(options) {
-	this.eventEmitter = new kitty.EventEmitter();
+kitty.DatePicker = function(control, options) {
+	this.control = control;
+	this.container = $(control).parent();
 	this.setupOptions(options);
 	this.setupKeys();
 	this.setupMonthNames();
@@ -19,14 +20,8 @@ kitty.DatePicker = function(options) {
 		currentSelectedDate: options.currentDate // stores in view month
 	};
 	this.selectedDate = this.options.currentDate; // stores selected date (including day)
+	this.createToggleButton();
 	this.buildCalendar();
-	if(this.options.startHidden) {
-		this.hide();
-	}
-};
-
-kitty.DatePicker.prototype.on = function(eventName, fn, context) {
-	this.eventEmitter.on(eventName, fn, context);
 };
 
 kitty.DatePicker.prototype.setupMonthNames = function() {
@@ -164,27 +159,38 @@ kitty.DatePicker.prototype.getCellHtml = function(date, tdClass, ariaSelected) {
 
 kitty.DatePicker.prototype.buildCalendar = function() {
 	this.calendar = $('<div class="'+this.options.calendarClass+'">');
+	if(this.options.startHidden) {
+		this.hide();
+	} else {
+		this.show();
+	}
+
 	this.calendar.html(this.getCalendarHtml(this.selectedDate.getFullYear(), this.selectedDate.getMonth()));
-	this.prepareCalendarControls();
-	$(this.options.container).append(this.calendar);
+	this.addEventListeners();
+	this.container.append(this.calendar);
 };
 
-kitty.DatePicker.prototype.prepareCalendarControls = function() {
+kitty.DatePicker.prototype.addEventListeners = function() {
 	this.calendar.on('click', '.'+this.options.calendarClass+'-back', $.proxy(this, 'onBackClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-next', $.proxy(this, 'onNextClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-dayActivator', $.proxy(this, 'onDayClick'));
 	this.calendar.on('keyup', 'table', $.proxy(this, 'onGridKeyUp'));
 };
 
+kitty.DatePicker.prototype.createToggleButton = function() {
+	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button" tabindex="-1">Calendar</button>');
+	this.container.append(this.toggleButton);
+	this.toggleButton.on('click', $.proxy(this, 'onButtonClick'));
+};
+
+kitty.DatePicker.prototype.onButtonClick = function(e) {
+	
+};
+
 kitty.DatePicker.prototype.onDayClick = function(e) {
 	var d = new Date($(e.currentTarget).attr('data-date'));
 	this.selectDate(d);
-	this.eventEmitter.fire('select', {
-		date: this.selectedDate,
-		day: this.selectedDate.getDate(),
-		month: this.selectedDate.getMonth()+1,
-		year: this.selectedDate.getFullYear()
-	});
+	this.updateTextBoxDate(d);
 };
 
 kitty.DatePicker.prototype.onBackClick = function(e) {
@@ -235,12 +241,7 @@ kitty.DatePicker.prototype.onGridKeyUp = function(e) {
 
 kitty.DatePicker.prototype.onDayUpSpacePressed = function(e) {
 	e.preventDefault();
-	this.eventEmitter.fire('select', {
-		date: this.selectedDate,
-		day: this.selectedDate.getDate(),
-		month: this.selectedDate.getMonth()+1,
-		year: this.selectedDate.getFullYear()
-	});
+	this.updateTextBoxDate(this.selectedDate);
 };
 
 kitty.DatePicker.prototype.onDayDownPressed = function(e) {
@@ -328,6 +329,10 @@ kitty.DatePicker.prototype.selectDate = function(date) {
 	this.unhighlightSelectedDate(this.selectedDate);
 	this.highlightSelectedDate(date);
 	this.updateActiveDescendant();
+};
+
+kitty.DatePicker.prototype.updateTextBoxDate = function(date) {
+	this.control.value = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
 };
 
 kitty.DatePicker.prototype.unhighlightSelectedDate = function(date) {

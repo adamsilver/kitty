@@ -141,6 +141,11 @@
 			    border: 2px solid #ddd;
 			    vertical-align: bottom;
 			    border-radius: 6px;
+			    margin-bottom: 10px;
+			}
+
+			.datePickerWrapper input {
+				margin-bottom: 10px;
 			}
 
         </style>
@@ -156,10 +161,9 @@
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<div class="whateverButSomething">
+				<div class="datePickerWrapper">
 					<input type="text" name="date" id="date">
-					<button type="button" class="calendarControl-toggleButton">Calendar</button>
-					<div class="calendarControlContainer"></div>
+					<!--<button type="button" class="calendarControl-toggleButton">Calendar</button>-->
 				</div>
 			</div>
 			<input type="submit" name="send" value="Next">
@@ -167,7 +171,6 @@
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
-        <script src="../../kitty/kitty.EventEmitter.js"></script>
         <script src="../../kitty/kitty.DatePicker.js"></script>
         <script>
         	function supportsDateInput() {
@@ -178,24 +181,11 @@
 
 			// if(!supportsDateInput()) {
 
-				var date = new kitty.DatePicker({
+				var date = new kitty.DatePicker(document.getElementById('date'),{
 					calendarCssClass: 'calendar',
-					container: $('.calendarControlContainer')[0],
 					calendarId: 'calendar1',
-					startHidden: true
+					startHidden: false
 				});
-				date.on('select', function(e) {
-					$('#date').val(e.day+'/'+e.month+'/'+e.year);
-					date.hide();
-				});
-				date.show();
-				// var button = new ButtonToggler();
-				// button.on('show', function() {
-				// 	date.show();
-				// });
-				// button.on('hide', function() {
-				// 	date.hide();
-				// })
 
 			// }
         </script>
