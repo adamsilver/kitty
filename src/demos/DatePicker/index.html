@@ -35,7 +35,7 @@
 			    line-height: 1.25;
 			    padding: 0.5em;
 			    border: 2px solid #222;
-			    max-width: 130px;
+			    max-width: 170px;
 			}
 
 			input[type="submit"] {
@@ -144,7 +144,7 @@
 			    margin-bottom: 10px;
 			}
 
-			.datePickerWrapper input {
+			.calendarControlWrapper input {
 				margin-bottom: 10px;
 			}
 
@@ -155,15 +155,15 @@
 
         <ul>
         	<li>Start with input type date</li>
-        	<li>If not supported, and has js: hide input and replace with inline calendar that is a11y friendly</li>
+        	<li>If date input isn't supported but has Javascript enhance create custom date widget</li>
+        	<li>Otherwise, fall back to text box</li>
         </ul>
 
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Choose date</label>
-				<div class="datePickerWrapper">
-					<input type="text" name="date" id="date">
-					<!--<button type="button" class="calendarControl-toggleButton">Calendar</button>-->
+				<div class="calendarControlWrapper">
+					<input type="date" name="date" id="date">
 				</div>
 			</div>
 			<input type="submit" name="send" value="Next">
@@ -179,15 +179,13 @@
 				return el.type == "date";
 			}
 
-			// if(!supportsDateInput()) {
-
-				var date = new kitty.DatePicker(document.getElementById('date'),{
+			if(!supportsDateInput()) {
+				new kitty.DatePicker(document.getElementById('date'),{
 					calendarCssClass: 'calendar',
 					calendarId: 'calendar1',
 					startHidden: true
 				});
-
-			// }
+			}
         </script>
     </body>
 </html>
