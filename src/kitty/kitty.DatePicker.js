@@ -2,6 +2,7 @@
 
 - show/hide via button
 - use aria-pressed=true/false
+- aria-expanded
 - calendarId
 
 * @param {HTMLElement} options.container The element that the calendar will be appended into the DOM
@@ -178,13 +179,17 @@ kitty.DatePicker.prototype.addEventListeners = function() {
 };
 
 kitty.DatePicker.prototype.createToggleButton = function() {
-	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button" tabindex="-1">Calendar</button>');
+	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button">Calendar</button>');
 	this.container.append(this.toggleButton);
-	this.toggleButton.on('click', $.proxy(this, 'onButtonClick'));
+	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
 };
 
-kitty.DatePicker.prototype.onButtonClick = function(e) {
-	
+kitty.DatePicker.prototype.onToggleButtonClick = function(e) {
+	if(this.showing) {
+		this.hide();
+	} else {
+		this.show();
+	}
 };
 
 kitty.DatePicker.prototype.onDayClick = function(e) {
@@ -242,6 +247,7 @@ kitty.DatePicker.prototype.onGridKeyUp = function(e) {
 kitty.DatePicker.prototype.onDayUpSpacePressed = function(e) {
 	e.preventDefault();
 	this.updateTextBoxDate(this.selectedDate);
+	this.hide();
 };
 
 kitty.DatePicker.prototype.onDayDownPressed = function(e) {
@@ -408,9 +414,13 @@ kitty.DatePicker.prototype.dateInRange = function(date, dateRangeFrom, dateRange
 kitty.DatePicker.prototype.show = function() {
 	this.calendar.attr('aria-hidden', 'false');
 	this.calendar.removeClass(this.options.calendarClass+'-isHidden');
+	this.showing = true;
+	this.toggleButton.attr('aria-expanded', 'true');
 };
 
 kitty.DatePicker.prototype.hide = function() {
 	this.calendar.attr('aria-hidden', 'true');
 	this.calendar.addClass(this.options.calendarClass+'-isHidden');
+	this.showing = false;
+	this.toggleButton.attr('aria-expanded', 'false');
 };
