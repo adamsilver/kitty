@@ -1,11 +1,4 @@
 /**
-
-- show/hide via button
-- use aria-pressed=true/false
-- aria-expanded
-- calendarId
-
-* @param {HTMLElement} options.container The element that the calendar will be appended into the DOM
 * @param {Date} options.startDate The start date range
 * @param {Date} options.endDate The end date range
 * @param {Date} options.currentDate The currently active date, defaults to today
@@ -69,7 +62,6 @@ kitty.DatePicker.prototype.setupOptions = function(options) {
 	options.endDate = options.endDate || defaults.dateEnd;
 	options.currentDate = options.currentDate || defaults.currentDate;
 	options.calendarClass = options.calendarClass || 'calendarControl';
-	options.calendarId = options.calendarId || 'calendarId';
 	options.startHidden = options.startHidden || false;
 	this.options = options;
 };
@@ -103,7 +95,7 @@ kitty.DatePicker.prototype.getCalendarHtml = function(year, month) {
 };
 
 kitty.DatePicker.prototype.getActiveDescendantId = function() {
-	return this.options.calendarId + '_day_' + this.selectedDate.getDate();
+	return this.control.id + '_day_' + this.selectedDate.getDate();
 };
 
 kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
@@ -155,7 +147,7 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 
 kitty.DatePicker.prototype.getCellHtml = function(date, tdClass, ariaSelected) {
 	var label = date.getDate() + ' ' + this.monthNames[date.getMonth()] + ', ' + date.getFullYear();
-	return '<td aria-role="gridcell" aria-selected="'+ariaSelected+'" aria-label="'+label+'" data-date="'+date.toString()+'" id="'+this.options.calendarId+'_day_'+date.getDate()+'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
+	return '<td aria-role="gridcell" aria-selected="'+ariaSelected+'" aria-label="'+label+'" data-date="'+date.toString()+'" id="'+this.control.id+'_day_'+date.getDate()+'" class="'+tdClass+'">' + '' + date.getDate() + '' + '</td>';
 };
 
 kitty.DatePicker.prototype.buildCalendar = function() {
@@ -196,6 +188,7 @@ kitty.DatePicker.prototype.onDayClick = function(e) {
 	var d = new Date($(e.currentTarget).attr('data-date'));
 	this.selectDate(d);
 	this.updateTextBoxDate(d);
+	this.hide();
 };
 
 kitty.DatePicker.prototype.onBackClick = function(e) {
@@ -338,14 +331,14 @@ kitty.DatePicker.prototype.selectDate = function(date) {
 };
 
 kitty.DatePicker.prototype.updateTextBoxDate = function(date) {
-	this.control.value = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
+	this.control.value = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
 };
 
 kitty.DatePicker.prototype.unhighlightSelectedDate = function(date) {
 	var cell = this.getDayCell(date);
 	cell.removeClass(this.options.calendarClass+'-dayActivator-isSelected');
 	cell.attr('aria-selected', 'false');
-	cell.removeAttr('tabindex');
+	// cell.removeAttr('tabindex');
 	this.selectedDate = null;
 };
 
@@ -355,7 +348,7 @@ kitty.DatePicker.prototype.updateActiveDescendant = function() {
 
 kitty.DatePicker.prototype.highlightSelectedDate = function(date) {
 	var cell = this.getDayCell(date);
-	cell.attr('tabindex', '0');
+	// cell.attr('tabindex', '0');
 	cell.addClass(this.options.calendarClass+'-dayActivator-isSelected');
 	cell.attr('aria-selected', 'true');
 	this.selectedDate = date;
