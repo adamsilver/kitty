@@ -49,20 +49,33 @@
                 font-size: 0.7em;
             }
 
+            /*
+            &[aria-sort="ascending"]
+        background-color: rgba(0,0,255,0.3)
+        button:after
+            content: "\2193"
+    &[aria-sort="descending"]
+        background-color: rgba(0,0,255,0.3)
+        button:after
+            content: "\2191"*/
+
         </style>
     </head>
-    <body class="js-enabled">
+    <body>
         <h1>Sortable Table demo</h1>
 
-        <p>Description</p>
+        <p>Need live region to update state</p>
+        <p>User aria-sort for state of columns if just reading</p>
+        <p>Can't use caption for <a href="https://dequeuniversity.com/library/aria/tables/sf-sortable-grid">live region because NVDA and VoiceOver did not read it out</a></p>
+        <br><br>
 
         <table>
             <thead>
                 <tr>
                     <th width="10%"></th>
-                    <th class="sort" data-sort-direction="asc" width="40%">Name</th>
-                    <th class="sort" data-sort-direction="" width="20%">Age</th>
-                    <th class="sort" data-sort-direction="30%">Date</th>
+                    <th class="sort" aria-sort="ascending" width="40%">Name</th>
+                    <th class="sort" aria-sort="none" width="20%">Age</th>
+                    <th class="sort" aria-sort="none" width="30%">Date</th>
                 </tr>
             </thead>
             <tbody>
