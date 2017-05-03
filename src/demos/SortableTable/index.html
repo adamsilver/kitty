@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sortable Table demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body class="js-enabled">
+        <h1>Sortable Table demo</h1>
+
+        <p>Description</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="sort" data-sort-direction="asc">Name &#9662;</th>
+                    <th class="sort" data-sort-direction="">Age</th>
+                    <th class="sort" data-sort-direction="">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>Adam</td>
+                    <td>33 yrs</td>
+                    <td data-sort-value="2">19/09/1983</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>John</td>
+                    <td>40 yrs</td>
+                    <td data-sort-value="1">27/09/1975</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Priya</td>
+                    <td>26 yrs</td>
+                    <td data-sort-value="3">26/06/1989</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.SortableTable.js"></script>
+        <script>
+        	var table = $('table')[0];
+			new kitty.SortableTable(table);
+        </script>
+    </body>
+</html>
