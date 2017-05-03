@@ -26,7 +26,7 @@
                 font-size: 1.2em;
             }
 
-            .sort button {
+            [aria-sort] button {
                 border: none;
                 -webkit-appearance: none;
                 background-color: transparent;
@@ -37,16 +37,8 @@
                 box-sizing: border-box;
             }
 
-            .sort button:hover {
+            [aria-sort] button:hover {
                 background-color: #eee;
-            }
-
-            .sort-text {
-                text-decoration: underline;
-            }
-
-            .sort-arrow {
-                font-size: 0.7em;
             }
 
             [aria-sort="descending"] button:after {
@@ -73,9 +65,9 @@
             <thead>
                 <tr>
                     <th width="10%"></th>
-                    <th class="sort" aria-sort="ascending" width="40%">Name</th>
-                    <th class="sort" aria-sort="none" width="20%">Age</th>
-                    <th class="sort" aria-sort="none" width="30%">Date</th>
+                    <th aria-sort="ascending" width="40%">Name</th>
+                    <th aria-sort="none" width="20%">Age</th>
+                    <th aria-sort="none" width="30%">Date</th>
                 </tr>
             </thead>
             <tbody>

@@ -7,9 +7,11 @@ kitty.SortableTable = function(table) {
 
 kitty.SortableTable.prototype.createHeadingButtons = function() {
 	var headings = this.table.find('thead th');
+	var heading;
 	for(var i = 0; i < headings.length; i++) {
-		if($(headings[i]).hasClass('sort')) {
-			this.createHeadingButton(headings[i], i);
+		heading = $(headings[i]);
+		if(heading.attr('aria-sort')) {
+			this.createHeadingButton(heading, i);
 		}
 	}
 };
@@ -17,17 +19,7 @@ kitty.SortableTable.prototype.createHeadingButtons = function() {
 kitty.SortableTable.prototype.createHeadingButton = function(heading, i) {
 	var heading = $(heading);
 	var text = heading.text();
-	var textSpan = $('<span class="sort-text">'+text+'</span>');
-	// var arrowSpan = $('<span aria-hidden="true" class="sort-arrow"></span>');
-	// if(heading.attr('aria-sort') == 'asc') {
-	// 	arrowSpan.html(' &#9660;');
-	// }
-	// if(heading.attr('aria-sort') == 'desc') {
-	// 	arrowSpan.html(' &#9650;');
-	// }
-	var button = $('<button type="button" data-index="'+i+'"></button>');
-	button.append(textSpan);
-	// button.append(arrowSpan);
+	var button = $('<button type="button" data-index="'+i+'">'+text+'</button>');
 	heading.text('');
 	heading.append(button);
 };
@@ -36,7 +28,7 @@ kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 	var columnNumber = e.currentTarget.getAttribute('data-index');
 	var sortDirection = $(e.currentTarget).parent().attr('aria-sort');
 	var newSortDirection;
-	if(sortDirection == 'none' || sortDirection == 'descending') {
+	if(sortDirection === 'none' || sortDirection === 'descending') {
 		newSortDirection = 'ascending';
 	} else {
 		newSortDirection = 'descending';
@@ -49,17 +41,11 @@ kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 };
 
 kitty.SortableTable.prototype.updateButtonState = function(button, direction) {
-	var symbol = (direction == 'asc') ? '&#9660;' : '&#9650;';
-
-
 	button.parent().attr('aria-sort', direction);
-	// button.find('.sort-arrow').html(' '+symbol);
-	// &#9662;
 };
 
 kitty.SortableTable.prototype.removeButtonStates = function() {
 	this.table.find('thead th').attr('aria-sort', 'none');
-	// this.table.find('thead th .sort-arrow').text('');
 };
 
 kitty.SortableTable.prototype.addRows = function(rows) {
@@ -83,7 +69,7 @@ kitty.SortableTable.prototype.sort = function(rows, columnNumber, sortDirection)
 		var tdB = $(rowB).find('td').eq(columnNumber);
 		var valueA = this.getCellValue(tdA);
 		var valueB = this.getCellValue(tdB);
-		if(sortDirection == 'ascending') {
+		if(sortDirection === 'ascending') {
 			return valueA > valueB;
 		} else {
 			return valueB > valueA;
