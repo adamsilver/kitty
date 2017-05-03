@@ -12,14 +12,17 @@
 
             table {
                 border-collapse: collapse;
+                width: 100%;
+                max-width: 800px;
             }
 
-            th, td {
+            td {
                 border: 1px solid #ccc;
                 padding: 10px;
             }
 
             th {
+                border: 1px solid #ccc;
                 font-size: 1.2em;
             }
 
@@ -28,6 +31,14 @@
                 -webkit-appearance: none;
                 background-color: transparent;
                 font-size: inherit;
+                display: block;
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .sort button:hover {
+                background-color: #eee;
             }
 
             .sort-text {
@@ -48,10 +59,10 @@
         <table>
             <thead>
                 <tr>
-                    <th></th>
-                    <th class="sort" data-sort-direction="asc">Name</th>
-                    <th class="sort" data-sort-direction="">Age</th>
-                    <th class="sort" data-sort-direction="">Date</th>
+                    <th width="10%"></th>
+                    <th class="sort" data-sort-direction="asc" width="40%">Name</th>
+                    <th class="sort" data-sort-direction="" width="20%">Age</th>
+                    <th class="sort" data-sort-direction="30%">Date</th>
                 </tr>
             </thead>
             <tbody>
