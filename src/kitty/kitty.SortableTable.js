@@ -20,10 +20,10 @@ kitty.SortableTable.prototype.createHeadingButton = function(heading, i) {
 	var textSpan = $('<span class="sort-text">'+text+'</span>');
 	var arrowSpan = $('<span aria-hidden="true" class="sort-arrow"></span>');
 	if(heading.attr('data-sort-direction') == 'asc') {
-		arrowSpan.html(' 	&#9652;');
+		arrowSpan.html(' &#9660;');
 	}
 	if(heading.attr('data-sort-direction') == 'desc') {
-		arrowSpan.html(' &#9662;');
+		arrowSpan.html(' &#9650;');
 	}
 	var button = $('<button type="button" data-index="'+i+'"></button>');
 	button.append(textSpan);
@@ -44,7 +44,7 @@ kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 };
 
 kitty.SortableTable.prototype.updateButtonState = function(button, direction) {
-	var symbol = (direction == 'asc') ? '	&#9652;' : '&#9662;';
+	var symbol = (direction == 'asc') ? '&#9660;' : '&#9650;';
 
 
 	button.parent().attr('data-sort-direction', direction);
