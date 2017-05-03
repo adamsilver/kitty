@@ -17,11 +17,17 @@ kitty.SortableTable.prototype.createHeadingButtons = function() {
 kitty.SortableTable.prototype.createHeadingButton = function(heading, i) {
 	var heading = $(heading);
 	var text = heading.text();
-	var textSpan = '<span class="text">'+text+'</span>';
-	// var descriptionSpan = '<span class="text">'+text+'</span>';
-
-	var arrowSpan = '<span aria-hidden="true"></span>';
-	var button = $('<button type="button" data-index="'+i+'">'+textSpan+arrowSpan+'</button>');
+	var textSpan = $('<span class="sort-text">'+text+'</span>');
+	var arrowSpan = $('<span aria-hidden="true" class="sort-arrow"></span>');
+	if(heading.attr('data-sort-direction') == 'asc') {
+		arrowSpan.html(' 	&#9652;');
+	}
+	if(heading.attr('data-sort-direction') == 'desc') {
+		arrowSpan.html(' &#9662;');
+	}
+	var button = $('<button type="button" data-index="'+i+'"></button>');
+	button.append(textSpan);
+	button.append(arrowSpan);
 	heading.text('');
 	heading.append(button);
 };
@@ -34,11 +40,21 @@ kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 	var sortedRows = this.sort(rows, columnNumber, newSortDirection);
 	this.addRows(sortedRows);
 	this.removeButtonStates();
-	$(e.currentTarget).parent().attr('data-sort-direction', newSortDirection);
+	this.updateButtonState($(e.currentTarget), newSortDirection);
+};
+
+kitty.SortableTable.prototype.updateButtonState = function(button, direction) {
+	var symbol = (direction == 'asc') ? '	&#9652;' : '&#9662;';
+
+
+	button.parent().attr('data-sort-direction', direction);
+	button.find('.sort-arrow').html(' '+symbol);
+	// &#9662;
 };
 
 kitty.SortableTable.prototype.removeButtonStates = function() {
 	this.table.find('thead th').attr('data-sort-direction', '');
+	this.table.find('thead th .sort-arrow').text('');
 };
 
 kitty.SortableTable.prototype.addRows = function(rows) {
