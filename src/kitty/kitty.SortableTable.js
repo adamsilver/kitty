@@ -1,8 +1,18 @@
-kitty.SortableTable = function(table) {
+kitty.SortableTable = function(table, options) {
 	this.table = $(table);
+	this.setupOptions(options)
 	this.body = this.table.find('tbody');
 	this.createHeadingButtons();
+	this.createStatusBox();
 	this.table.on('click', 'th button', $.proxy(this, 'onSortButtonClick'));
+};
+
+kitty.SortableTable.prototype.setupOptions = function(options) {
+	options = options || {};
+	options.statusMessage = options.statusMessage || 'Sort by %heading% (%direction%)';
+	options.ascendingText = options.ascendingText || 'ascending';
+	options.descendingText = options.descendingText || 'descending';
+	this.options = options;
 };
 
 kitty.SortableTable.prototype.createHeadingButtons = function() {
@@ -24,6 +34,11 @@ kitty.SortableTable.prototype.createHeadingButton = function(heading, i) {
 	heading.append(button);
 };
 
+kitty.SortableTable.prototype.createStatusBox = function() {
+	this.status = $('<div aria-live="polite" role="status" aria-atomic="true" class="sortableTable-status" />');
+	this.table.parent().append(this.status);
+};
+
 kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 	var columnNumber = e.currentTarget.getAttribute('data-index');
 	var sortDirection = $(e.currentTarget).parent().attr('aria-sort');
@@ -42,6 +57,10 @@ kitty.SortableTable.prototype.onSortButtonClick = function(e) {
 
 kitty.SortableTable.prototype.updateButtonState = function(button, direction) {
 	button.parent().attr('aria-sort', direction);
+	var message = this.options.statusMessage
+	message = message.replace(/%heading%/, button.text());
+	message = message.replace(/%direction%/, this.options[direction+'Text']);
+	this.status.text(message);
 };
 
 kitty.SortableTable.prototype.removeButtonStates = function() {
