@@ -119,6 +119,11 @@ kitty.Autocomplete.prototype.createOptionsUl = function() {
 	this.optionsUl = $('<ul id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
 	this.container.append(this.optionsUl);
 	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
+	this.optionsUl.on('mousedown', $.proxy(this, 'onSuggestionPanelMouseDown'));
+};
+
+kitty.Autocomplete.prototype.onSuggestionPanelMouseDown = function(e) {
+	window.clearTimeout(this.timeout);
 };
 
 kitty.Autocomplete.prototype.onTextBoxCharacterPressed = function(e) {
@@ -157,7 +162,6 @@ kitty.Autocomplete.prototype.onSuggestionClick = function(e) {
 	this.textBox.val($(e.currentTarget).text());
 	this.hideOptions();
 	this.focusTextBox();
-	window.clearTimeout(this.timeout);
 };
 
 kitty.Autocomplete.prototype.onTextBoxEnterPressed = function(e) {
