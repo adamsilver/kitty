@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sortable Table demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                max-width: 800px;
+            }
+
+            td {
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
+
+            th {
+                border: 1px solid #ccc;
+                font-size: 1.2em;
+            }
+
+            [aria-sort] button {
+                border: none;
+                -webkit-appearance: none;
+                background-color: transparent;
+                font-size: inherit;
+                display: block;
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            [aria-sort] button:hover {
+                background-color: #eee;
+            }
+
+            [aria-sort="ascending"] button:after {
+                content: "\25b2";
+                font-size: 0.7em;
+            }
+
+            [aria-sort="descending"] button:after {
+                content: "\25bc";
+                font-size: 0.7em;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Sortable Table demo</h1>
+
+        <p>Need live region to update state</p>
+        <p>User aria-sort for state of columns if just reading</p>
+        <p>Can't use caption for <a href="https://dequeuniversity.com/library/aria/tables/sf-sortable-grid">live region because NVDA and VoiceOver did not read it out</a></p>
+        <br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="10%"></th>
+                    <th aria-sort="ascending" width="40%">Name</th>
+                    <th aria-sort="none" width="20%">Age</th>
+                    <th aria-sort="none" width="30%">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>Adam</td>
+                    <td>33 yrs</td>
+                    <td data-sort-value="2">19/09/1983</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>John</td>
+                    <td>40 yrs</td>
+                    <td data-sort-value="1">27/09/1975</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Priya</td>
+                    <td>26 yrs</td>
+                    <td data-sort-value="3">26/06/1989</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.SortableTable.js"></script>
+        <script>
+        	var table = $('table')[0];
+			new kitty.SortableTable(table);
+        </script>
+    </body>
+</html>
