@@ -157,6 +157,7 @@ kitty.Autocomplete.prototype.onSuggestionClick = function(e) {
 	this.textBox.val($(e.currentTarget).text());
 	this.hideOptions();
 	this.focusTextBox();
+	e.preventDefault(); // for ie9 clicking scroll bar inside overflow :()
 };
 
 kitty.Autocomplete.prototype.onTextBoxEnterPressed = function(e) {
