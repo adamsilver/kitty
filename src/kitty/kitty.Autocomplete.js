@@ -137,12 +137,16 @@ kitty.Autocomplete.prototype.onTextBoxCharacterPressed = function(e) {
 };
 
 kitty.Autocomplete.prototype.onTextBoxEscapePressed = function(e) {
-	if(this.isOptionSelected()) {
+	if(this.isShowingMenu()) {
 		this.clearOptions();
 		this.hideOptions();
 		this.focusTextBox();
 		e.preventDefault();
 	}
+};
+
+kitty.Autocomplete.prototype.isShowingMenu = function() {
+	return this.textBox.attr('aria-expanded', 'true');
 };
 
 kitty.Autocomplete.prototype.focusTextBox = function() {
