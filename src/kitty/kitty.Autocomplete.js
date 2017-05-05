@@ -47,8 +47,8 @@ kitty.Autocomplete.prototype.createTextBox = function() {
 	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
 	this.textBox.prop('id', this.controlId);
 	this.container.append(this.textBox);
-	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 	this.textBox.on('keydown', $.proxy(this, 'onTextBoxKeyDown'));
+	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 	this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 };
 
@@ -261,6 +261,7 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 
 kitty.Autocomplete.prototype.updateActiveDescendant = function(id) {
 	this.textBox.attr('aria-activedescendant', id);
+	// this.container.attr('aria-activedescendant', id);
 };
 
 kitty.Autocomplete.prototype.getOptionById = function(id) {
