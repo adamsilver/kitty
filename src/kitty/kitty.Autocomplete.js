@@ -98,7 +98,7 @@ kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 kitty.Autocomplete.prototype.onTextBoxBlur = function(e) {
 	this.timeout = window.setTimeout(function() {
 		this.hideOptions();
-	}.bind(this), 100)
+	}.bind(this), 100);
 };
 
 kitty.Autocomplete.prototype.createButton = function() {
@@ -186,7 +186,7 @@ kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 			this.highlightOption(option);
 		}
 	} else {
-		if(this.textBox.val().trim().length == 0) {
+		if(this.textBox.val().trim().length === 0) {
 			this.buildAllOptions();
 			this.showOptionsPanel();
 		} else {
@@ -323,5 +323,5 @@ kitty.Autocomplete.prototype.buildAllOptions = function() {
 };
 
 kitty.Autocomplete.prototype.getOptionHtml = function(i, text) {
-	return '<li class="autocomplete-option" aria-selected="false" role="option" id="autocomplete-option--' + i + '">' + text + '</li>'
+	return '<li class="autocomplete-option" aria-selected="false" role="option" id="autocomplete-option--' + i + '">' + text + '</li>';
 };
