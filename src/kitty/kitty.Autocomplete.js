@@ -254,7 +254,6 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 
 	option.addClass('autocomplete-option-isActive');
 	option.attr('aria-selected', 'true');
-	option.focus();
 	option.parent().scrollTop(option.parent().scrollTop() + option.position().top);
 	this.activeOptionId = option[0].id;
 	this.updateActiveDescendant(this.activeOptionId);
