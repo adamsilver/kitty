@@ -40,13 +40,6 @@ kitty.Autocomplete.prototype.addTextBoxEvents = function() {
 kitty.Autocomplete.prototype.addSuggestionEvents = function() {
 	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
 	this.optionsUl.on('keyup', $.proxy(this, 'onSuggestionsKeyUp'));
-	this.optionsUl.on('keydown', $.proxy(this, 'onSuggestionsKeyDown'));
-};
-
-kitty.Autocomplete.prototype.onTextBoxKeyDownEnterPressed = function(e) {
-	if(this.isOptionSelected()) {
-		e.preventDefault();
-	}
 };
 
 kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
@@ -56,25 +49,10 @@ kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 		case this.keys.down:
 			this.onTextBoxDownPressed(e);
 			break;
-		default:
-			this.onTextBoxCharacterPressed(e);
-	}
-};
-
-kitty.Autocomplete.prototype.onSuggestionsKeyDown = function(e) {
-	switch (e.keyCode) {
-		case this.keys.up:
-			break;
-		case this.keys.down:
-			break;
 		case this.keys.enter:
 			break;
-		case this.keys.space:
-			break;
-		case this.keys.esc:
-			break;
 		default:
-			this.onSuggestionCharacterType(e);
+			this.onTextBoxCharacterPressed(e);
 	}
 };
 
@@ -84,7 +62,7 @@ kitty.Autocomplete.prototype.onSuggestionsKeyUp = function(e) {
 			this.onSuggestionUpArrow(e);
 			break;
 		case this.keys.down:
-			this.onSuggestionContainerDownArrow(e);
+			this.onSuggestionDownArrow(e);
 			break;
 		case this.keys.enter:
 			this.onSuggestionEnter(e);
@@ -163,33 +141,28 @@ kitty.Autocomplete.prototype.selectOption = function() {
 kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 	var option;
 	var options;
-	if(this.isOptionSelected()) {
-		option = this.getNextOption();
-		if(option[0]) {
-			this.highlightOption(option);
-		}
+	// No chars typed
+	if(this.textBox.val().trim().length === 0) {
+		options = this.getAllOptions();
+		this.buildOptions(options);
+		this.showOptionsPanel();
+		this.optionsUl.focus();
+	// Chars typed
 	} else {
-		if(this.textBox.val().trim().length === 0) {
-			options = this.getAllOptions();
+		options = this.getOptions(this.textBox.val().trim());
+		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
 			this.optionsUl.focus();
-		} else {
-			var options = this.getOptions(this.textBox.val().trim());
-			if(options.length > 0) {
-				this.buildOptions(options);
-				this.showOptionsPanel();
-				this.optionsUl.focus();
-			}
 		}
-		option = this.getFirstOption();
-		if(option[0]) {
-			this.highlightOption(option);
-		}
+	}
+	option = this.getFirstOption();
+	if(option[0]) {
+		this.highlightOption(option);
 	}
 };
 
-kitty.Autocomplete.prototype.onSuggestionContainerDownArrow = function(e) {
+kitty.Autocomplete.prototype.onSuggestionDownArrow = function(e) {
 	var option = this.getNextOption();
 	if(option[0]) {
 		this.highlightOption(option);
