@@ -30,6 +30,10 @@ kitty.Autocomplete.prototype.addTextBoxEvents = function() {
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 	this.textBox.on('keydown', $.proxy(function(e) {
 		switch (e.keyCode) {
+			// this ensures that when users tabs away
+			// from textbox that the normal tab sequence
+			// is adhered to. We hide the options, which
+			// removes the ability to focus the options
 			case this.keys.tab:
 				this.hideOptions();
 				break;
@@ -44,45 +48,55 @@ kitty.Autocomplete.prototype.addSuggestionEvents = function() {
 
 kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
+		case this.keys.esc:
+			// we ignore when users presses escape
+			break;
 		case this.keys.up:
+			// we ignore when the user presses up when on textbox
 			break;
 		case this.keys.down:
+			// we want to handle this one
 			this.onTextBoxDownPressed(e);
 			break;
 		case this.keys.enter:
+			// we ignore when the user presses enter here,
+			// otherwise the menu will show briefly before
+			// submission completes
 			break;
 		default:
-			this.onTextBoxCharacterPressed(e);
+			// show suggestion
+			this.onTextBoxType(e);
 	}
 };
 
 kitty.Autocomplete.prototype.onSuggestionsKeyUp = function(e) {
 	switch (e.keyCode) {
 		case this.keys.up:
+			// want to highlight previous option
 			this.onSuggestionUpArrow(e);
 			break;
 		case this.keys.down:
+			// want to highlight next suggestion
 			this.onSuggestionDownArrow(e);
 			break;
 		case this.keys.enter:
+			// want to select the suggestion
 			this.onSuggestionEnter(e);
 			break;
 		case this.keys.space:
+			// want to select the suggestion
 			this.onSuggestionSpace(e);
 			break;
 		case this.keys.esc:
+			// want to hide options
 			this.onSuggestionEscape(e);
 			break;
 		default:
-			this.onSuggestionCharacterType(e);
+			this.textBox.focus();
 	}
 };
 
-kitty.Autocomplete.prototype.onSuggestionCharacterType = function(e) {
-	this.textBox.focus();
-};
-
-kitty.Autocomplete.prototype.onTextBoxCharacterPressed = function(e) {
+kitty.Autocomplete.prototype.onTextBoxType = function(e) {
 	if(this.textBox.val().trim().length > 0) {
 		var options = this.getOptions(this.textBox.val().trim().toLowerCase());
 		if(options.length > 0) {
@@ -97,12 +111,9 @@ kitty.Autocomplete.prototype.onTextBoxCharacterPressed = function(e) {
 };
 
 kitty.Autocomplete.prototype.onSuggestionEscape = function(e) {
-	if(this.isShowingMenu()) {
-		this.clearOptions();
-		this.hideOptions();
-		this.focusTextBox();
-		e.preventDefault();
-	}
+	this.clearOptions();
+	this.hideOptions();
+	this.focusTextBox();
 };
 
 kitty.Autocomplete.prototype.isShowingMenu = function() {
@@ -178,12 +189,6 @@ kitty.Autocomplete.prototype.onSuggestionUpArrow = function(e) {
 			this.focusTextBox();
 			this.hideOptions();
 		}
-	}
-};
-
-kitty.Autocomplete.prototype.onTextBoxKeyDownUpPressed = function(e) {
-	if(this.isOptionSelected()) {
-		e.preventDefault();
 	}
 };
 
