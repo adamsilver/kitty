@@ -8,7 +8,7 @@ kitty.Autocomplete = function(control) {
 	this.control = control;
 	this.controlId = control.id;
 	this.createTextBox();
-	//this.createButton();
+	this.createButton();
 	this.createOptionsUl();
 	this.removeSelectBox();
 	this.createStatusBox();
@@ -27,7 +27,6 @@ kitty.Autocomplete.prototype.setupKeys = function() {
 };
 
 kitty.Autocomplete.prototype.addTextBoxEvents = function() {
-	this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
 	this.textBox.on('keydown', $.proxy(function(e) {
 		switch (e.keyCode) {
@@ -37,13 +36,6 @@ kitty.Autocomplete.prototype.addTextBoxEvents = function() {
 		}
 	}, this));
 };
-
-kitty.Autocomplete.prototype.onTextBoxBlur = function(e) {
-	// this.timeout = window.setTimeout(function() {
-	// 	this.hideOptions();
-	// }.bind(this), 100);
-};
-
 
 kitty.Autocomplete.prototype.addSuggestionEvents = function() {
 	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
@@ -59,6 +51,8 @@ kitty.Autocomplete.prototype.onTextBoxKeyDownEnterPressed = function(e) {
 
 kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 	switch (e.keyCode) {
+		case this.keys.up:
+			break;
 		case this.keys.down:
 			this.onTextBoxDownPressed(e);
 			break;
@@ -116,12 +110,11 @@ kitty.Autocomplete.prototype.onTextBoxCharacterPressed = function(e) {
 		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
-			this.updateStatus(options.length + ' results available.');
 		} else {
 			this.hideOptions();
 			this.clearOptions();
-			this.updateStatus('No results.');
 		}
+		this.updateStatus(options.length);
 	}
 };
 
@@ -169,21 +162,24 @@ kitty.Autocomplete.prototype.selectOption = function() {
 
 kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 	var option;
+	var options;
 	if(this.isOptionSelected()) {
 		option = this.getNextOption();
 		if(option[0]) {
 			this.highlightOption(option);
 		}
 	} else {
-		this.optionsUl.focus();
 		if(this.textBox.val().trim().length === 0) {
-		// 	this.buildAllOptions();
-		// 	this.showOptionsPanel();
+			options = this.getAllOptions();
+			this.buildOptions(options);
+			this.showOptionsPanel();
+			this.optionsUl.focus();
 		} else {
 			var options = this.getOptions(this.textBox.val().trim());
 			if(options.length > 0) {
 				this.buildOptions(options);
 				this.showOptionsPanel();
+				this.optionsUl.focus();
 			}
 		}
 		option = this.getFirstOption();
@@ -302,6 +298,16 @@ kitty.Autocomplete.prototype.getOptions = function(value) {
 	return options;
 };
 
+kitty.Autocomplete.prototype.getAllOptions = function() {
+	var options = [];
+	var selectOptions = this.control.options;
+	var text;
+	for(var i = 0; i < selectOptions.length; i++) {
+		options.push($(selectOptions[i]).text());
+	}
+	return options;
+};
+
 kitty.Autocomplete.prototype.buildOptions = function(options) {
 	this.clearOptions();
 	this.activeOptionId = null;
@@ -329,8 +335,15 @@ kitty.Autocomplete.prototype.createStatusBox = function() {
 	this.container.append(this.status);
 };
 
-kitty.Autocomplete.prototype.updateStatus = function(status) {
-	this.status.text(status);
+kitty.Autocomplete.prototype.updateStatus = function(resultCount) {
+	if(resultCount === 0) {
+		this.status.text('No results.');
+	} else {
+		this.status.text(resultCount + ' results available.');
+	}
+	window.setTimeout(function() {
+		this.status.text('');
+	}.bind(this), 1000);
 };
 
 kitty.Autocomplete.prototype.removeSelectBox = function() {
@@ -357,11 +370,12 @@ kitty.Autocomplete.prototype.createButton = function() {
 kitty.Autocomplete.prototype.onButtonClick = function(e) {
 	window.clearTimeout(this.timeout);
 	this.clearOptions();
-	this.buildAllOptions();
+	var options = this.getAllOptions();
+	this.buildOptions(options);
+	this.updateStatus(options.length);
 	this.showOptionsPanel();
 	this.textBox.focus();
 };
-
 
 kitty.Autocomplete.prototype.createOptionsUl = function() {
 	this.optionsUl = $('<ul tabindex="0" id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
