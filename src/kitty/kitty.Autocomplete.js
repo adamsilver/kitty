@@ -8,20 +8,11 @@ kitty.Autocomplete = function(control) {
 	this.control = control;
 	this.controlId = control.id;
 	this.createTextBox();
-	this.createButton();
+	//this.createButton();
 	this.createOptionsUl();
 	this.removeSelectBox();
 	this.createStatusBox();
 	this.setupKeys();
-};
-
-kitty.Autocomplete.prototype.createStatusBox = function() {
-	this.status = $('<div aria-live="polite" role="status" aria-atomic="true" class="autocomplete-status" />');
-	this.container.append(this.status);
-};
-
-kitty.Autocomplete.prototype.updateStatus = function(status) {
-	this.status.text(status);
 };
 
 kitty.Autocomplete.prototype.setupKeys = function() {
@@ -30,33 +21,34 @@ kitty.Autocomplete.prototype.setupKeys = function() {
 		esc: 27,
 		space: 32,
 		up: 38,
-		down: 40
+		down: 40,
+		tab: 9
    };
 };
 
-kitty.Autocomplete.prototype.removeSelectBox = function() {
-	$(this.control).remove();
-};
-
-kitty.Autocomplete.prototype.createTextBox = function() {
-	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
-	this.textBox.prop('id', this.controlId);
-	this.container.append(this.textBox);
-	this.textBox.on('keydown', $.proxy(this, 'onTextBoxKeyDown'));
+kitty.Autocomplete.prototype.addTextBoxEvents = function() {
+	this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
 	this.textBox.on('keyup', $.proxy(this, 'onTextBoxKeyUp'));
-	// this.textBox.on('blur', $.proxy(this, 'onTextBoxBlur'));
+	this.textBox.on('keydown', $.proxy(function(e) {
+		switch (e.keyCode) {
+			case this.keys.tab:
+				this.hideOptions();
+				break;
+		}
+	}, this));
 };
 
-kitty.Autocomplete.prototype.onTextBoxKeyDown = function(e) {
-	switch (e.keyCode) {
-		case this.keys.up:
-			// this.onTextBoxKeyDownUpPressed(e);
-			break;
-	}
+kitty.Autocomplete.prototype.onTextBoxBlur = function(e) {
+	// this.timeout = window.setTimeout(function() {
+	// 	this.hideOptions();
+	// }.bind(this), 100);
 };
 
-kitty.Autocomplete.prototype.getOptionsId = function() {
-	return 'autocomplete-options--'+this.controlId;
+
+kitty.Autocomplete.prototype.addSuggestionEvents = function() {
+	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
+	this.optionsUl.on('keyup', $.proxy(this, 'onSuggestionsKeyUp'));
+	this.optionsUl.on('keydown', $.proxy(this, 'onSuggestionsKeyDown'));
 };
 
 kitty.Autocomplete.prototype.onTextBoxKeyDownEnterPressed = function(e) {
@@ -75,36 +67,7 @@ kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 	}
 };
 
-kitty.Autocomplete.prototype.onTextBoxBlur = function(e) {
-	this.timeout = window.setTimeout(function() {
-		this.hideOptions();
-	}.bind(this), 100);
-};
-
-kitty.Autocomplete.prototype.createButton = function() {
-	this.button = $('<button class="autocomplete-button" type="button" tabindex="-1">&#9662;</button>');
-	this.container.append(this.button);
-	this.button.on('click', $.proxy(this, 'onButtonClick'));
-};
-
-kitty.Autocomplete.prototype.onButtonClick = function(e) {
-	window.clearTimeout(this.timeout);
-	this.clearOptions();
-	this.buildAllOptions();
-	this.showOptionsPanel();
-	this.textBox.focus();
-};
-
-kitty.Autocomplete.prototype.createOptionsUl = function() {
-	this.optionsUl = $('<ul tabindex="0" id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
-	this.container.append(this.optionsUl);
-	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
-	this.optionsUl.on('focus', $.proxy(this, 'onSuggestionContainerFocus'));
-	this.optionsUl.on('keyup', $.proxy(this, 'onSuggestionContainerKeyUp'));
-	this.optionsUl.on('keydown', $.proxy(this, 'onSuggestionContainerKeyDown'));
-};
-
-kitty.Autocomplete.prototype.onSuggestionContainerKeyDown = function(e) {
+kitty.Autocomplete.prototype.onSuggestionsKeyDown = function(e) {
 	switch (e.keyCode) {
 		case this.keys.up:
 			break;
@@ -121,7 +84,7 @@ kitty.Autocomplete.prototype.onSuggestionContainerKeyDown = function(e) {
 	}
 };
 
-kitty.Autocomplete.prototype.onSuggestionContainerKeyUp = function(e) {
+kitty.Autocomplete.prototype.onSuggestionsKeyUp = function(e) {
 	switch (e.keyCode) {
 		case this.keys.up:
 			this.onSuggestionUpArrow(e);
@@ -141,10 +104,6 @@ kitty.Autocomplete.prototype.onSuggestionContainerKeyUp = function(e) {
 		default:
 			this.onSuggestionCharacterType(e);
 	}
-};
-
-kitty.Autocomplete.prototype.onSuggestionContainerFocus = function(e) {
-	window.clearTimeout(this.timeout);
 };
 
 kitty.Autocomplete.prototype.onSuggestionCharacterType = function(e) {
@@ -309,6 +268,7 @@ kitty.Autocomplete.prototype.showOptionsPanel = function() {
 	this.optionsUl.removeClass('autocomplete-options-isHidden');
 	this.optionsUl.attr('aria-hidden', 'false');
 	this.textBox.attr('aria-expanded', 'true');
+	this.textBox.attr('tabindex', '0');
 };
 
 kitty.Autocomplete.prototype.hideOptions = function() {
@@ -318,6 +278,7 @@ kitty.Autocomplete.prototype.hideOptions = function() {
 	this.removeActiveDescendant();
 	this.activeOptionId = null;
 	this.clearOptions();
+	this.textBox.removeAttr('tabindex');
 };
 
 kitty.Autocomplete.prototype.removeActiveDescendant = function() {
@@ -361,4 +322,49 @@ kitty.Autocomplete.prototype.buildAllOptions = function() {
 
 kitty.Autocomplete.prototype.getOptionHtml = function(i, text) {
 	return '<li class="autocomplete-option" aria-selected="false" role="option" id="autocomplete-option--' + i + '">' + text + '</li>';
+};
+
+kitty.Autocomplete.prototype.createStatusBox = function() {
+	this.status = $('<div aria-live="polite" role="status" aria-atomic="true" class="autocomplete-status" />');
+	this.container.append(this.status);
+};
+
+kitty.Autocomplete.prototype.updateStatus = function(status) {
+	this.status.text(status);
+};
+
+kitty.Autocomplete.prototype.removeSelectBox = function() {
+	$(this.control).remove();
+};
+
+kitty.Autocomplete.prototype.createTextBox = function() {
+	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
+	this.textBox.prop('id', this.controlId);
+	this.container.append(this.textBox);
+	this.addTextBoxEvents();
+};
+
+kitty.Autocomplete.prototype.getOptionsId = function() {
+	return 'autocomplete-options--'+this.controlId;
+};
+
+kitty.Autocomplete.prototype.createButton = function() {
+	this.button = $('<button class="autocomplete-button" type="button" tabindex="-1">&#9662;</button>');
+	this.container.append(this.button);
+	this.button.on('click', $.proxy(this, 'onButtonClick'));
+};
+
+kitty.Autocomplete.prototype.onButtonClick = function(e) {
+	window.clearTimeout(this.timeout);
+	this.clearOptions();
+	this.buildAllOptions();
+	this.showOptionsPanel();
+	this.textBox.focus();
+};
+
+
+kitty.Autocomplete.prototype.createOptionsUl = function() {
+	this.optionsUl = $('<ul tabindex="0" id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
+	this.container.append(this.optionsUl);
+	this.addSuggestionEvents();
 };
