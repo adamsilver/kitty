@@ -5,15 +5,9 @@
         <meta name="viewport" content="initial-scale=1.0">
         <meta name="Author" content="Adam Silver">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <link rel="stylesheet" href="../GlobalCSS/main.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../GlobalCSS/forms.css" type="text/css" media="all">
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-
-            body {
-                font-family: arial;
-            }
 
             header,
             footer {
@@ -47,23 +41,7 @@
                 border: none;
             }
 
-            .field {
-                max-width: 600px;
-                padding-top: 25px;
-                padding-bottom: 25px;
-                border-bottom: 1px solid #f5f5f5;
-            }
-
             .field-simple label {
-                display: block;
-            }
-
-            .field-label {
-                display: block;
-            }
-
-            .field-hint {
-                color: #666;
                 display: block;
             }
 
@@ -129,7 +107,9 @@
             <form method="get" action="http://google.co.uk">
                 <div class="field field-simple">
                     <label for="emailaddress">
-                        Email address
+                    	<span class="field-label">
+                        	Email address
+                        </span>
                     </label>
                     <input type="email" name="emailaddress" id="emailaddress">
                 </div>
@@ -144,39 +124,39 @@
                     </label>
                     <input type="text" name="password" id="password">
                 </div>
-                <div class="field">
+                <div class="field field-radios">
                     <fieldset>
                         <legend>
                             Favourite colour
                         </legend>
-                        <div class="choice">
-                            <input type="radio" name="colour" id="colour">
-                            <label for="colour">Red</label>
+                        <div class="field-choice">
+                            <label for="colour"><input type="radio" name="colour" id="colour">
+                            Red</label>
                         </div>
-                        <div class="choice">
-                            <input type="radio" name="colour" id="colour2">
-                            <label for="colour2">Blue</label>
+                        <div class="field-choice">
+                            <label for="colour2"><input type="radio" name="colour" id="colour2">
+                            Blue</label>
                         </div>
-                        <div class="choice">
-                            <input type="radio" name="colour" id="colour3">
-                            <label for="colour3">Yellow</label>
+                        <div class="field-choice">
+                            <label for="colour3"><input type="radio" name="colour" id="colour3">
+                            Yellow</label>
                         </div>
                     </fieldset>
                 </div>
-                <div class="field">
+                <div class="field field-checkboxes">
                     <fieldset>
                         <legend>Things you love</legend>
-                        <div class="choice">
-                            <input type="checkbox" name="things" id="things" value="chocolate">
-                            <label for="things">Chocolate</label>
+                        <div class="field-choice">
+                            <label for="things"><input type="checkbox" name="things" id="things" value="chocolate">
+                            Chocolate</label>
                         </div>
-                        <div class="choice">
-                            <input type="checkbox" name="things" id="things2" value="sweets">
-                            <label for="things2">Sweets</label>
+                        <div class="field-choice">
+                            <label for="things2"><input type="checkbox" name="things" id="things2" value="sweets">
+                            Sweets</label>
                         </div>
-                        <div class="choice">
-                            <input type="checkbox" name="things" id="things3" value="fries">
-                            <label for="things3">Fries</label>
+                        <div class="field-choice">
+                            <label for="things3"><input type="checkbox" name="things" id="things3" value="fries">
+                            Fries</label>
                         </div>
                     </fieldset>
                 </div>

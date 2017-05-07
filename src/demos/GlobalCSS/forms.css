@@ -1,0 +1,56 @@
+.field {
+	margin-bottom: 30px;
+}
+
+.field-simple label {
+	display: block;
+	margin-bottom: 8px;
+}
+
+.field-hint {
+    color: #666;
+    display: block;
+}
+
+.field-simple [type="text"],
+.field-simple [type="email"]
+ {
+	-webkit-appearance: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 1.25;
+    padding: 0.5em;
+    border: 2px solid #222;
+    max-width: 25em;
+}
+
+.field-radios legend,
+.field-checkboxes legend {
+	margin-bottom: 8px;
+}
+
+.field-choice label {
+	padding: 16px;
+	background-color: #eee;
+	max-width: 25em;
+	margin-bottom: 2px;
+	display: block;
+	padding: 1.2em;
+	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.field-choice input {
+	display: inline-block;
+	margin-right: 7px;
+}
+
+.field-choice label:hover {
+	background-color: #ddd;
+}
