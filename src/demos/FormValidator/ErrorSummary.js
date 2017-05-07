@@ -13,11 +13,11 @@ ErrorSummary.prototype.onErrorClicked = function(e) {
 ErrorSummary.prototype.showErrors = function (errors) {
     this.container.html(this.getErrorHtml(errors));
     this.container.removeClass('errorSummary-isHidden');
-    this.container.find('h2')[0].focus();
+    this.container.focus();
 };
 
 ErrorSummary.prototype.getErrorHtml = function(errors) {
-    var html = '<h2 tabindex="-1">You have ' + errors.length + ' errors</h2>';
+    var html = '<h2>You have ' + errors.length + ' errors</h2>';
     html += '<ul>';
     for (var i = 0, j = errors.length; i < j; i++) {
         var error = errors[i];
