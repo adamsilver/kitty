@@ -1,7 +1,4 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
-// update text box to selected value as go up and down
-// ...remember original value
-// lookup/search sophistication option
 
 kitty.Autocomplete = function(control) {
 	this.container = $(control).parent();
@@ -43,7 +40,7 @@ kitty.Autocomplete.prototype.addTextBoxEvents = function() {
 
 kitty.Autocomplete.prototype.addSuggestionEvents = function() {
 	this.optionsUl.on('click', 'li', $.proxy(this, 'onSuggestionClick'));
-	this.optionsUl.on('keyup', $.proxy(this, 'onSuggestionsKeyUp'));
+	this.optionsUl.on('keydown', $.proxy(this, 'onSuggestionsKeyDown'));
 };
 
 kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
@@ -69,7 +66,7 @@ kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 	}
 };
 
-kitty.Autocomplete.prototype.onSuggestionsKeyUp = function(e) {
+kitty.Autocomplete.prototype.onSuggestionsKeyDown = function(e) {
 	switch (e.keyCode) {
 		case this.keys.up:
 			// want to highlight previous option
@@ -178,6 +175,7 @@ kitty.Autocomplete.prototype.onSuggestionDownArrow = function(e) {
 	if(option[0]) {
 		this.highlightOption(option);
 	}
+	e.preventDefault();
 };
 
 kitty.Autocomplete.prototype.onSuggestionUpArrow = function(e) {
@@ -185,11 +183,13 @@ kitty.Autocomplete.prototype.onSuggestionUpArrow = function(e) {
 		option = this.getPreviousOption();
 		if(option[0]) {
 			this.highlightOption(option);
+
 		} else {
 			this.focusTextBox();
 			this.hideOptions();
 		}
 	}
+	e.preventDefault();
 };
 
 kitty.Autocomplete.prototype.isFirstOptionSelected = function() {
@@ -225,7 +225,12 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 
 	option.addClass('autocomplete-option-isActive');
 	option.attr('aria-selected', 'true');
-	option.parent().scrollTop(option.parent().scrollTop() + option.position().top);
+
+	
+	if(!isVisible(option.parent(), option)) {
+		option.parent().scrollTop(option.parent().scrollTop() + option.position().top);
+	}
+
 	this.activeOptionId = option[0].id;
 	this.updateActiveDescendant(this.activeOptionId);
 };
@@ -360,3 +365,22 @@ kitty.Autocomplete.prototype.createOptionsUl = function() {
 	this.container.append(this.optionsUl);
 	this.addSuggestionEvents();
 };
+
+function isVisible(container, element) {
+	var containerHeight = $(container).height();
+	var elementTop = $(element).offset().top;
+	var containerTop = $(container).offset().top;
+	var elementHeight = $(element).height() + parseInt($(element).css('padding-top')) + parseInt($(element).css('padding-bottom'));
+    var visible;
+
+    if ((elementTop - containerTop < 0) || (elementTop - containerTop + elementHeight > containerHeight)) {
+      visible = false;
+    }
+    else {
+      visible = true;
+    }
+    return visible;
+}
+
+
+
