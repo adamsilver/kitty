@@ -131,6 +131,7 @@ kitty.Autocomplete.prototype.onSuggestionEnter = function(e) {
 	if(this.isOptionSelected()) {
 		this.selectOption();
 	}
+	e.preventDefault();
 };
 
 kitty.Autocomplete.prototype.onSuggestionSpace = function(e) {
@@ -226,7 +227,6 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 	option.addClass('autocomplete-option-isActive');
 	option.attr('aria-selected', 'true');
 
-	
 	if(!isVisible(option.parent(), option)) {
 		option.parent().scrollTop(option.parent().scrollTop() + option.position().top);
 	}
