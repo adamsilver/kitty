@@ -55,6 +55,9 @@ kitty.Autocomplete.prototype.onTextBoxKeyUp = function(e) {
 			// we want to handle this one
 			this.onTextBoxDownPressed(e);
 			break;
+		case this.keys.tab:
+			this.hideOptions();
+			break;
 		case this.keys.enter:
 			// we ignore when the user presses enter here,
 			// otherwise the menu will show briefly before
@@ -87,6 +90,9 @@ kitty.Autocomplete.prototype.onSuggestionsKeyDown = function(e) {
 		case this.keys.esc:
 			// want to hide options
 			this.onSuggestionEscape(e);
+			break;
+		case this.keys.tab:
+			this.hideOptions();
 			break;
 		default:
 			this.textBox.focus();
@@ -257,7 +263,7 @@ kitty.Autocomplete.prototype.hideOptions = function() {
 	this.removeActiveDescendant();
 	this.activeOptionId = null;
 	this.clearOptions();
-	this.textBox.removeAttr('tabindex');
+	this.textBox.removeAttr('tabindex', '-1');
 };
 
 kitty.Autocomplete.prototype.removeActiveDescendant = function() {
