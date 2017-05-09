@@ -165,9 +165,11 @@ kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 	// Chars typed
 	} else {
 		options = this.getOptions(this.textBox.val().trim());
+		console.log(options);
 		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
+
 			this.optionsUl.focus();
 		}
 	}
@@ -280,7 +282,7 @@ kitty.Autocomplete.prototype.getOptions = function(value) {
 	var text;
 	for(var i = 0; i < selectOptions.length; i++) {
 		text = $(selectOptions[i]).text();
-		if(text.toLowerCase().indexOf(value) > -1) {
+		if(text.toLowerCase().indexOf(value.toLowerCase()) > -1) {
 			options.push(text);
 		}
 	}
