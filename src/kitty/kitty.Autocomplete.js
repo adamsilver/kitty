@@ -240,6 +240,7 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 
 	this.activeOptionId = option[0].id;
 	this.updateActiveDescendant(this.activeOptionId);
+	option.focus();
 };
 
 kitty.Autocomplete.prototype.updateActiveDescendant = function(id) {
@@ -317,7 +318,7 @@ kitty.Autocomplete.prototype.buildAllOptions = function() {
 };
 
 kitty.Autocomplete.prototype.getOptionHtml = function(i, text) {
-	return '<li class="autocomplete-option" aria-selected="false" role="option" id="autocomplete-option--' + i + '">' + text + '</li>';
+	return '<li tabindex="-1" class="autocomplete-option" aria-selected="false" role="option" id="autocomplete-option--' + i + '">' + text + '</li>';
 };
 
 kitty.Autocomplete.prototype.createStatusBox = function() {
