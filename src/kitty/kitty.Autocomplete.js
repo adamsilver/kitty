@@ -240,7 +240,7 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 
 	this.activeOptionId = option[0].id;
 	this.updateActiveDescendant(this.activeOptionId);
-	option.focus();
+	// option.focus();
 };
 
 kitty.Autocomplete.prototype.updateActiveDescendant = function(id) {
