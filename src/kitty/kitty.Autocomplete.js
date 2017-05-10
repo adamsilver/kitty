@@ -165,7 +165,6 @@ kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 	// Chars typed
 	} else {
 		options = this.getOptions(this.textBox.val().trim());
-		console.log(options);
 		if(options.length > 0) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
