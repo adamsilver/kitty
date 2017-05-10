@@ -342,7 +342,7 @@ kitty.Autocomplete.prototype.removeSelectBox = function() {
 };
 
 kitty.Autocomplete.prototype.createTextBox = function() {
-	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'">');
+	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'" aria-autocomplete="list">');
 	this.textBox.prop('id', this.controlId);
 	this.container.append(this.textBox);
 	this.addTextBoxEvents();
