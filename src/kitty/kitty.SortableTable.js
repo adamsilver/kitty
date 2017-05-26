@@ -88,9 +88,21 @@ kitty.SortableTable.prototype.sort = function(rows, columnNumber, sortDirection)
 		var valueA = this.getCellValue(tdA);
 		var valueB = this.getCellValue(tdB);
 		if(sortDirection === 'ascending') {
-			return valueA > valueB;
+			if(valueA < valueB) {
+				return -1;
+			}
+			if(valueA > valueB) {
+				return 1;
+			}
+			return 0;
 		} else {
-			return valueB > valueA;
+			if(valueB < valueA) {
+				return -1;
+			}
+			if(valueB > valueA) {
+				return 1;
+			}
+			return 0;
 		}
 	}, this));
 	return newRows;
@@ -99,5 +111,8 @@ kitty.SortableTable.prototype.sort = function(rows, columnNumber, sortDirection)
 kitty.SortableTable.prototype.getCellValue = function(cell) {
 	var val = cell.attr('data-sort-value');
 	val = val || cell.html();
+	if($.isNumeric(val)) {
+		val = parseInt(val, 10);
+	}
 	return val;
 };
