@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Menu demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+
+        </style>
+        <link rel="stylesheet" href="styles.css" type="text/css" media="all">
+    </head>
+    <body class="js-enabled">
+        <h1>Menu demo</h1>
+
+        Start with a menu bar. Without JS voiceover will announce the button is part of a menu for example.
+
+        When JS available enhance with the following
+
+        - give each button tabindex-1 so that the menubar is operable with the keyboard but not in the normal tab sequence. Menus with lots of buttons are a pain as user has to step through them all to leave the menu.
+
+        - on small screens, when no space, change the role to menu, instead of menubar, as this indicates it's normal popupable i.e. revealed with a user action, and hidden otherwise.
+
+        - also on small screens, create a button with
+
+	    <button aria-haspopup="true" aria-expanded="false">
+		  Difficulty
+		  <span aria-hidden="true">&#x25be;</span>
+		</button>
+
+		so that the user focuses on the button and will know it has a menu with the popup attribute. Clicking it toggles the visibility of the menu on small screens. This button doesnt exist on big screens.
+
+        - on big screens, continue to use menubar.
+
+
+        <form>
+			<div role="menubar">
+				<input role="menuitem" type="submit" name="archive" value="Archive">
+				<input role="menuitem" type="submit" name="delete" value="Delete">
+				<input role="menuitem" type="submit" name="spam" value="Mark as spam">
+			</div>
+			<fieldset>
+				<legend>Emails</legend>
+				<input type="checkbox">
+			</fieldset>
+        </form>
+
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.Menu.js"></script>
+        <script>
+        	var container;
+			new kitty.Menu(container);
+        </script>
+    </body>
+</html>
