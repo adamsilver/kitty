@@ -3,7 +3,6 @@ kitty.Menu = function(container) {
 	this.setupKeys();
 	this.setupTabIndex();
 	this.container.on('keydown', 'input', $.proxy(this, 'onButtonKeydown'));
-	// capture focus of first input and change tabindex. or something.
 };
 
 kitty.Menu.prototype.setupKeys = function() {
@@ -11,12 +10,13 @@ kitty.Menu.prototype.setupKeys = function() {
 		enter: 13,
 		esc: 27,
 		space: 32,
+		left: 37,
 		up: 38,
+		right: 39,
 		down: 40,
 		tab: 9
    };
 };
-
 
 kitty.Menu.prototype.setupTabIndex = function() {
 	this.container.find('input').each($.proxy(function(index, el) {
@@ -28,10 +28,10 @@ kitty.Menu.prototype.setupTabIndex = function() {
 
 kitty.Menu.prototype.onButtonKeydown = function(e) {
 	switch (e.keyCode) {
-		case this.keys.down:
+		case this.keys.right:
 			this.focusNext(e.currentTarget);
 			break;
-		case this.keys.up:
+		case this.keys.left:
 			this.focusPrevious(e.currentTarget);
 			break;
 		case this.keys.tab:
@@ -41,13 +41,20 @@ kitty.Menu.prototype.onButtonKeydown = function(e) {
 
 kitty.Menu.prototype.focusNext = function(currentButton) {
 	var next = $(currentButton).next();
-	next.focus();
-
+	if(next[0]) {
+		next.focus();
+	} else {
+		this.container.find('input').first().focus();
+	}
 };
 
 kitty.Menu.prototype.focusPrevious = function(currentButton) {
 	var prev = $(currentButton).prev();
-	prev.focus();
+	if(prev[0]) {
+		prev.focus();
+	} else {
+		this.container.find('input').last().focus();
+	}
 };
 
 kitty.Menu.prototype.resetFirstButtonTabIndex = function() {
