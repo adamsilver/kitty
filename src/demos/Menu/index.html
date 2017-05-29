@@ -11,9 +11,19 @@
                 font-family: arial, sans-serif;
             }
 
-			[role=menubar] {
+			.menu {
 				margin-bottom: 20px;
 				padding: 20px 0;
+				position: relative;
+			}
+
+			.menu button {
+				-webkit-appearance: none;
+				appearance: none;
+				padding: 10px 20px;
+				border: none;
+				background-color: #eee;
+				font-size: 1em;
 			}
 
 			[role=menuitem] {
@@ -23,6 +33,17 @@
 				border: none;
 				background-color: #eee;
 				font-size: 1em;
+			}
+
+			.menu [role=menu] {
+				position: absolute;
+				width: 20em;
+			}
+
+			.menu [role=menu] [role=menuitem] {
+				display: block;
+				width: 10em;
+				text-align: left;
 			}
         </style>
     </head>

@@ -24,7 +24,7 @@ kitty.Menu.prototype.onSmallModeEnabled = function() {
 };
 
 kitty.Menu.prototype.onSmallModeDisabled = function() {
-	this.menuButton.remove();
+	this.menuButton.detach();
 	this.showMenu();
 	this.menu[0].setAttribute('role', 'menubar');
 	this.smallMode = false;
@@ -46,6 +46,7 @@ kitty.Menu.prototype.onMenuButtonclick = function(e) {
 		this.menu.find('input')[0].focus();
 	} else {
 		this.hideMenu();
+		this.menuButton.focus();
 	}
 };
 
