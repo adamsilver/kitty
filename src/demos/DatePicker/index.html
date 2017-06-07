@@ -34,7 +34,7 @@
 			    font-family: inherit;
 			    line-height: 1.25;
 			    padding: 0.5em;
-			    border: 2px solid #222;
+			    border: 3px solid #222;
 			    max-width: 170px;
 			}
 
@@ -50,12 +50,14 @@
 				text-align: left;
 			}
 
-			.calendarControlContainer {
-				padding: 20px 0;
+			.calendarControl {
+				border-left: 6px solid #ccc;
+				padding: 10px;
+				max-width: 400px;
 			}
 
-			.calendarControl {
-				border: 2px solid #222;
+			.calendarControl-wrapper {
+				border: 3px solid #222;
 				padding: 10px;
 				max-width: 400px;
 			}
@@ -86,7 +88,7 @@
 			    background-color: #ddd;
 			    font-size: 1em;
 			    line-height: 1.25;
-			    padding: 0.4em 0.5em;
+			    padding: 0.4em 0.9em;
 			    vertical-align: bottom;
 			    border-radius: 6px;
 			}
@@ -98,6 +100,10 @@
 
 			.calendarControl-dayActivator {
 				border: 2px solid white;
+			}
+
+			.calendarControl-previousMonthDay {
+				color: #999;
 			}
 
 			.calendarControl-dayActivator-isToday {
@@ -161,9 +167,9 @@
 
         <form action="http://google.com" method="get">
 			<div class="date">
-				<label for="date">Choose date</label>
+				<label for="date">Date</label>
 				<div class="calendarControlWrapper">
-					<input type="date" name="date" id="date">
+					<input type="text" name="date" id="date">
 				</div>
 			</div>
 			<input type="submit" name="send" value="Next">
@@ -179,13 +185,13 @@
 				return el.type == "date";
 			}
 
-			if(!supportsDateInput()) {
+			// if(!supportsDateInput()) {
 				new kitty.DatePicker(document.getElementById('date'),{
 					calendarCssClass: 'calendar',
 					calendarId: 'calendar1',
 					startHidden: true
 				});
-			}
+			// }
         </script>
     </body>
 </html>
