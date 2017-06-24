@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Password Reveal demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+
+			label {
+				display: block;
+			}
+
+
+        </style>
+    </head>
+    <body>
+        <h1>Password Reveal</h1>
+
+		<form>
+			<div>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password">
+			</div>
+			<br><br>
+			<input type="submit" value="Register">
+		</form>
+
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.PasswordReveal.js"></script>
+        <script>
+        	var input = document.getElementById('password');
+			new kitty.PasswordReveal(input);
+        </script>
+    </body>
+</html>
