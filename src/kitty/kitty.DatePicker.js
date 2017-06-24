@@ -67,13 +67,13 @@ kitty.DatePicker.prototype.setupOptions = function(options) {
 };
 
 kitty.DatePicker.prototype.getCalendarHtml = function(year, month) {
-	var html = '';
+	var html = '<div class="'+this.options.calendarClass+'-wrapper">';
 	html +=		'<div class="'+this.options.calendarClass+'-actions">';
-	html +=			'<button aria-label="Previous month" type="button" class="'+this.options.calendarClass+'-back">&larr;</button>';
+	html +=			'<button aria-label="Previous month" type="button" class="'+this.options.calendarClass+'-back">&#10094;</button>';
 	html += 		'<div aria-label="Currently viewing month:" id="somePrefix_label" role="heading" aria-live="assertive" and aria-atomic="true" class="'+this.options.calendarClass+'-title">';
 	html += 			this.monthNames[month] + " " + year;
 	html += 		'</div>';
-	html +=			'<button aria-label="Next month" type="button" class="'+this.options.calendarClass+'-next">&rarr;</button>';
+	html +=			'<button aria-label="Next month" type="button" class="'+this.options.calendarClass+'-next">&#10095;</button>';
 	html +=		'</div>';
 	html += 	'<table aria-role="grid" aria-activedescendant="'+this.getActiveDescendantId()+'" aria-labelledby="somePrefix_label" tabindex="0">';
 	html += 		'<thead>';
@@ -98,6 +98,13 @@ kitty.DatePicker.prototype.getActiveDescendantId = function() {
 	return this.control.id + '_day_' + this.selectedDate.getDate();
 };
 
+kitty.DatePicker.prototype.getFirstDateOfMonth = function(month, year) {
+	var d = new Date();
+	d.setFullYear(year,month,1,0);
+	d.setHours(0,0,0,0);
+	return d;
+};
+
 kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 	var html = "<tr>";
 	var d = new Date();
@@ -111,10 +118,17 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 	var ariaSelected = 'false';
 	var now = new Date();
 	now.setHours(0,0,0,0);
+	
 	while (i < firstDay) {
-		html += "<td>&nbsp;</td>";
+		var daysToSubtract = firstDay - i;
+		var paddedDate = new Date();
+		paddedDate.setDate(d.getDate()-daysToSubtract);
+		html += '<td class="calendarControl-previousMonthDay">'+paddedDate.getDate()+'</td>';
 		i++;
 	}
+
+	var daysToIgnore = i;
+
 	while (d.getMonth() == month) {
 		if (i % 7 === 0) {
 			html += '</tr><tr aria-role="row">';
@@ -135,10 +149,14 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 		html += this.getCellHtml(d, tdClass, ariaSelected);
 
 		d.setDate( d.getDate()+1 );
+		
 		i++;
 	}
+
 	while (i % 7 !== 0) {
-		html += "<td>&nbsp;</td>";
+		var firstDate = this.getFirstDateOfMonth(month, year);
+		firstDate.setDate(firstDate.getDate()+(i-daysToIgnore));
+		html += '<td class="calendarControl-previousMonthDay">'+firstDate.getDate()+'</td>';
 		i++;
 	}
 	html += "</tr>";
@@ -171,7 +189,7 @@ kitty.DatePicker.prototype.addEventListeners = function() {
 };
 
 kitty.DatePicker.prototype.createToggleButton = function() {
-	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button">Calendar</button>');
+	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button">View calendar</button>');
 	this.container.append(this.toggleButton);
 	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
 };

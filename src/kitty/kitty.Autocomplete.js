@@ -1,4 +1,5 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
+// hide options when click document, but not textbox
 
 kitty.Autocomplete = function(control) {
 	this.container = $(control).parent();
@@ -10,6 +11,13 @@ kitty.Autocomplete = function(control) {
 	this.removeSelectBox();
 	this.createStatusBox();
 	this.setupKeys();
+	$(document).on('click', $.proxy(this, 'onDocumentClick'));
+};
+
+kitty.Autocomplete.prototype.onDocumentClick = function(e) {
+	if(!$.contains(this.container[0], e.target)) {
+        this.hideOptions();
+    }
 };
 
 kitty.Autocomplete.prototype.setupKeys = function() {
