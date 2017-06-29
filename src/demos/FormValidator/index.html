@@ -93,12 +93,10 @@
         <header>
             <h1>Form Validator</h1>
             <p>Fully accessible and flexible form validation pattern and script.</p>
-            <h2>Notes</h2>
             <ul>
                 <li>An error summary appears at the top with links to the fields</li>
                 <li>Validation occurs on submit and moves focus to the summary</li>
-                <li>Errors are injected into labels for assistive devices and visual users alike</li>
-                <li>Fields that use a fieldset (radios or checkboxes) inject errors into the legend, for assistive devices and visual users alike</li>
+                <li>Errors are injected into labels/legends for assistive devices and visual users alike</li>
             <ul>
         </header>
         <main>
@@ -180,16 +178,39 @@
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
-        <script src="../../kitty/kitty.clone.js"></script>
-        <script src="../../kitty/kitty.inherit.js"></script>
         <script src="../../kitty/kitty.validators.js"></script>
         <script src="../../kitty/kitty.FormValidator.js"></script>
-        <script src="ErrorSummary.js"></script>
-        <script src="DemoFormValidator.js"></script>
-        <script src="LoginFormValidator.js"></script>
         <script>
-               var errorSummary = new ErrorSummary();
-               new LoginFormValidator(document.forms[0]);
+                var validator = new kitty.FormValidator(document.forms[0]);
+                validator.addValidator("emailaddress", [{ 
+                    message: "Email address cannot be empty", 
+                    method: kitty.validators.notEmpty }
+                ]);
+                validator.addValidator("password", [{
+                    message: "Password cannot be empty", 
+                    method: kitty.validators.notEmpty
+                }, {
+                    message: "Password must contain at least 8 characters",
+                    method: kitty.validators.minLength, 
+                    params: { minLength: 8 }
+                }]);
+                validator.addValidator("colour", [{
+                    message: "You must pick a colour",
+                    method: function(controls) {
+                        var valid = false;
+                        for(var i = 0; i < controls.length; i++) {
+                            if(controls[i].checked) {
+                                valid = true;
+                                break;
+                            }
+                        }
+                        return valid;
+                    }
+                }]);
+                validator.addValidator("whatever", [{ 
+                    message: "You must select a whatever", 
+                    method: kitty.validators.notEmpty 
+                }]);
         </script>
     </body>
 </html>
