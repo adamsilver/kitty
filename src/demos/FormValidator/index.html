@@ -46,13 +46,13 @@
             }
 
             .errorSummary {
-                border: 5px solid #FF4136;
+                border: 5px solid #B10E1E;
                 margin-bottom: 40px;
                 padding: 20px;
             }
 
             .errorSummary h2 {
-                color: #FF4136;
+                color: #000;
                 margin-bottom: 10px;
             }
 
@@ -63,10 +63,11 @@
             .errorSummary ul li {
                 list-style: none;
                 margin-bottom: 6px;
+                font-weight: bold;
             }
 
             .errorSummary a {
-                color: #FF4136;
+                color: #B10E1E;
             }
 
             .errorSummary-isHidden {
@@ -75,7 +76,8 @@
 
             .error {
                 display: block;
-                color: red;
+                color: #B10E1E;
+                font-weight: bold;
             }
 
             .error span {
@@ -183,19 +185,19 @@
         <script>
                 var validator = new kitty.FormValidator(document.forms[0]);
                 validator.addValidator("emailaddress", [{ 
-                    message: "Email address cannot be empty", 
+                    message: "Enter your email address.", 
                     method: kitty.validators.notEmpty }
                 ]);
                 validator.addValidator("password", [{
-                    message: "Password cannot be empty", 
+                    message: "Enter your password.", 
                     method: kitty.validators.notEmpty
                 }, {
-                    message: "Password must contain at least 8 characters",
+                    message: "Your password must have at least 8 characters.",
                     method: kitty.validators.minLength, 
                     params: { minLength: 8 }
                 }]);
                 validator.addValidator("colour", [{
-                    message: "You must pick a colour",
+                    message: "Choose at least 1 colour.",
                     method: function(controls) {
                         var valid = false;
                         for(var i = 0; i < controls.length; i++) {
@@ -208,7 +210,7 @@
                     }
                 }]);
                 validator.addValidator("whatever", [{ 
-                    message: "You must select a whatever", 
+                    message: "Choose answer.", 
                     method: kitty.validators.notEmpty 
                 }]);
         </script>
