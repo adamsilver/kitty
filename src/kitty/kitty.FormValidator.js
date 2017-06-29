@@ -1,13 +1,11 @@
-
 kitty.FormValidator = function(form, options) {
 	this.form = form;
 	this.errors = [];
 	this.validators = [];
 	$(this.form).on("submit", $.proxy(this, "onFormSubmit"));
-	this.errorSummary = $(".errorSummary");
-	this.errorSummary.on('click', 'a', $.proxy(this, 'onErrorClicked'));
+	this.summary = $(".errorSummary");
+	this.summary.on('click', 'a', $.proxy(this, 'onErrorClicked'));
 };
-
 
 kitty.FormValidator.prototype.onErrorClicked = function(e) {
     e.preventDefault();
@@ -16,13 +14,13 @@ kitty.FormValidator.prototype.onErrorClicked = function(e) {
     document.getElementById(href).focus();
 };
 
-kitty.FormValidator.prototype.showErrorSummary = function () {
-    this.errorSummary.html(this.getErrorSummaryHtml());
-    this.errorSummary.removeClass('errorSummary-isHidden');
-    this.errorSummary.focus();
+kitty.FormValidator.prototype.showSummary = function () {
+    this.summary.html(this.getSummaryHtml());
+    this.summary.removeClass('errorSummary-isHidden');
+    this.summary.focus();
 };
 
-kitty.FormValidator.prototype.getErrorSummaryHtml = function() {
+kitty.FormValidator.prototype.getSummaryHtml = function() {
 	var errors = this.getErrors();
     var html = '<h2>You have ' + errors.length + ' errors</h2>';
     html += '<ul>';
@@ -38,28 +36,28 @@ kitty.FormValidator.prototype.getErrorSummaryHtml = function() {
     return html;
 };
 
-kitty.FormValidator.prototype.hideErrorSummary = function() {
-    this.errorSummary.addClass('errorSummary-isHidden');
+kitty.FormValidator.prototype.hideSummary = function() {
+    this.summary.addClass('errorSummary-isHidden');
 };
 
 kitty.FormValidator.prototype.onFormSubmit = function (e) {
-	this.clearFieldErrors();
-	this.hideErrorSummary();
+	this.removeInlineErrors();
+	this.hideSummary();
 	if(!this.validate()) {
 		e.preventDefault();
-		this.showErrorSummary();
-		this.showFieldErrors();
+		this.showSummary();
+		this.showInlineErrors();
 	}
 };
 
-kitty.FormValidator.prototype.showFieldErrors = function() {
+kitty.FormValidator.prototype.showInlineErrors = function() {
 	var errors = this.getErrors();
 	for (var i = 0, j = errors.length; i < j; i++) {
-		this.showFieldError(errors[i]);
+		this.showInlineError(errors[i]);
 	}
 };
 
-kitty.FormValidator.prototype.showFieldError = function (error) {
+kitty.FormValidator.prototype.showInlineError = function (error) {
 	var errorSpan = '<span class="error"><span>Error:</span> '+error.message+'</span>';
 	var fieldContainer = $("#" + error.fieldName).parents(".field");
 	var label = fieldContainer.find('label');
@@ -73,7 +71,7 @@ kitty.FormValidator.prototype.showFieldError = function (error) {
 	}
 };
 
-kitty.FormValidator.prototype.clearFieldErrors = function () {
+kitty.FormValidator.prototype.removeInlineErrors = function () {
 	$(this.form).find(".field .error").remove();
 };
 
