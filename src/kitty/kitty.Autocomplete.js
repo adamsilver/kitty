@@ -1,6 +1,4 @@
 // https://haltersweb.github.io/Accessibility/autocomplete.html
-// hide options when click document, but not textbox
-
 kitty.Autocomplete = function(control) {
 	this.container = $(control).parent();
 	this.control = control;
@@ -169,7 +167,7 @@ kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 		options = this.getAllOptions();
 		this.buildOptions(options);
 		this.showOptionsPanel();
-		this.optionsUl.focus();
+		// this.optionsUl.focus();
 	// Chars typed
 	} else {
 		options = this.getOptions(this.textBox.val().trim());
@@ -177,7 +175,7 @@ kitty.Autocomplete.prototype.onTextBoxDownPressed = function(e) {
 			this.buildOptions(options);
 			this.showOptionsPanel();
 
-			this.optionsUl.focus();
+			// this.optionsUl.focus();
 		}
 	}
 	option = this.getFirstOption();
@@ -247,12 +245,7 @@ kitty.Autocomplete.prototype.highlightOption = function(option) {
 	}
 
 	this.activeOptionId = option[0].id;
-	this.updateActiveDescendant(this.activeOptionId);
-	// option.focus();
-};
-
-kitty.Autocomplete.prototype.updateActiveDescendant = function(id) {
-	this.textBox.attr('aria-activedescendant', id);
+	option.focus();
 };
 
 kitty.Autocomplete.prototype.getOptionById = function(id) {
@@ -270,14 +263,9 @@ kitty.Autocomplete.prototype.hideOptions = function() {
 	this.optionsUl.addClass('autocomplete-options-isHidden');
 	this.optionsUl.attr('aria-hidden', 'true');
 	this.textBox.attr('aria-expanded', 'false');
-	this.removeActiveDescendant();
 	this.activeOptionId = null;
 	this.clearOptions();
 	this.textBox.removeAttr('tabindex', '-1');
-};
-
-kitty.Autocomplete.prototype.removeActiveDescendant = function() {
-	this.textBox.removeAttr('aria-activedescendant');
 };
 
 kitty.Autocomplete.prototype.clearOptions = function() {
@@ -350,7 +338,12 @@ kitty.Autocomplete.prototype.removeSelectBox = function() {
 };
 
 kitty.Autocomplete.prototype.createTextBox = function() {
-	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" role="combobox" autocomplete="off" aria-owns="'+this.getOptionsId()+'" aria-autocomplete="list">');
+	this.textBox = $('<input autocapitalize="none" class="autocomplete-textBox" type="text" autocomplete="off">');
+
+	this.textBox.attr('aria-owns', this.getOptionsId());
+	this.textBox.attr('aria-autocomplete', 'list');
+	this.textBox.attr('role', 'combobox');
+
 	this.textBox.prop('id', this.controlId);
 	this.container.append(this.textBox);
 	this.addTextBoxEvents();
@@ -377,7 +370,7 @@ kitty.Autocomplete.prototype.onButtonClick = function(e) {
 };
 
 kitty.Autocomplete.prototype.createOptionsUl = function() {
-	this.optionsUl = $('<ul tabindex="0" id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
+	this.optionsUl = $('<ul id="'+this.getOptionsId()+'" role="listbox" class="autocomplete-options autocomplete-options-isHidden" aria-hidden="true"></ul>');
 	this.container.append(this.optionsUl);
 	this.addSuggestionEvents();
 };
@@ -386,7 +379,9 @@ function isVisible(container, element) {
 	var containerHeight = $(container).height();
 	var elementTop = $(element).offset().top;
 	var containerTop = $(container).offset().top;
-	var elementHeight = $(element).height() + parseInt($(element).css('padding-top')) + parseInt($(element).css('padding-bottom'));
+	var elementPaddingTop = parseInt($(element).css('padding-top'), 10);
+	var elementPaddingBottom = parseInt($(element).css('padding-bottom'), 10);
+	var elementHeight = $(element).height() + elementPaddingTop + elementPaddingBottom;
     var visible;
 
     if ((elementTop - containerTop < 0) || (elementTop - containerTop + elementHeight > containerHeight)) {
@@ -397,6 +392,3 @@ function isVisible(container, element) {
     }
     return visible;
 }
-
-
-
