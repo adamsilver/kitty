@@ -24,7 +24,7 @@
 			}
 
 			.date input {
-				-webkit-appearance: none;
+				/*-webkit-appearance: none;*/
 			    border-radius: 0;
 			    box-sizing: border-box;
 			    -moz-box-sizing: border-box;
@@ -163,13 +163,14 @@
         	<li>Start with input type date</li>
         	<li>If date input isn't supported but has Javascript enhance create custom date widget</li>
         	<li>Otherwise, fall back to text box</li>
+        	<li>In chrome SHIFT+ALT+DOWN</li>
         </ul>
 
         <form action="http://google.com" method="get">
 			<div class="date">
 				<label for="date">Date</label>
 				<div class="calendarControlWrapper">
-					<input type="text" name="date" id="date">
+					<input type="date" name="date" id="date">
 				</div>
 			</div>
 			<input type="submit" name="send" value="Next">
@@ -185,13 +186,13 @@
 				return el.type == "date";
 			}
 
-			// if(!supportsDateInput()) {
+			if(!supportsDateInput()) {
 				new kitty.DatePicker(document.getElementById('date'),{
 					calendarCssClass: 'calendar',
 					calendarId: 'calendar1',
 					startHidden: true
 				});
-			// }
+			}
         </script>
     </body>
 </html>

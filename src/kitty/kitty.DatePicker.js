@@ -1,9 +1,3 @@
-/**
-* @param {Date} options.startDate The start date range
-* @param {Date} options.endDate The end date range
-* @param {Date} options.currentDate The currently active date, defaults to today
-* @param {String} options.calendarClass The class name for the calendar
-*/
 kitty.DatePicker = function(control, options) {
 	this.control = control;
 	this.container = $(control).parent();
@@ -118,7 +112,7 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 	var ariaSelected = 'false';
 	var now = new Date();
 	now.setHours(0,0,0,0);
-	
+
 	while (i < firstDay) {
 		var daysToSubtract = firstDay - i;
 		var paddedDate = new Date();
@@ -149,7 +143,7 @@ kitty.DatePicker.prototype.getCalendarTableRows = function(month, year) {
 		html += this.getCellHtml(d, tdClass, ariaSelected);
 
 		d.setDate( d.getDate()+1 );
-		
+
 		i++;
 	}
 
@@ -185,13 +179,18 @@ kitty.DatePicker.prototype.addEventListeners = function() {
 	this.calendar.on('click', '.'+this.options.calendarClass+'-back', $.proxy(this, 'onBackClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-next', $.proxy(this, 'onNextClick'));
 	this.calendar.on('click', '.'+this.options.calendarClass+'-dayActivator', $.proxy(this, 'onDayClick'));
-	this.calendar.on('keyup', 'table', $.proxy(this, 'onGridKeyUp'));
+	this.calendar.on('keydown', 'table', $.proxy(this, 'onGridKeyDown'));
+	this.calendar.on('keydown', $.proxy(this, 'onCalendarKeyDown'));
 };
 
 kitty.DatePicker.prototype.createToggleButton = function() {
 	this.toggleButton = $('<button class="'+this.options.calendarClass+'-toggleButton" type="button">View calendar</button>');
 	this.container.append(this.toggleButton);
 	this.toggleButton.on('click', $.proxy(this, 'onToggleButtonClick'));
+};
+
+kitty.DatePicker.prototype.focusButton = function() {
+	this.toggleButton.focus();
 };
 
 kitty.DatePicker.prototype.onToggleButtonClick = function(e) {
@@ -207,6 +206,7 @@ kitty.DatePicker.prototype.onDayClick = function(e) {
 	this.selectDate(d);
 	this.updateTextBoxDate(d);
 	this.hide();
+	this.focusTextBox();
 };
 
 kitty.DatePicker.prototype.onBackClick = function(e) {
@@ -234,7 +234,16 @@ kitty.DatePicker.prototype.setupKeys = function() {
    };
 };
 
-kitty.DatePicker.prototype.onGridKeyUp = function(e) {
+kitty.DatePicker.prototype.onCalendarKeyDown = function(e) {
+	switch(e.keyCode) {
+		case this.keys.esc:
+			this.hide();
+			this.focusButton();
+			break
+	}
+};
+
+kitty.DatePicker.prototype.onGridKeyDown = function(e) {
 	switch(e.keyCode) {
 		case this.keys.down:
 			this.onDayDownPressed(e);
@@ -259,6 +268,8 @@ kitty.DatePicker.prototype.onDayUpSpacePressed = function(e) {
 	e.preventDefault();
 	this.updateTextBoxDate(this.selectedDate);
 	this.hide();
+	debugger;
+	this.focusTextBox();
 };
 
 kitty.DatePicker.prototype.onDayDownPressed = function(e) {
@@ -350,6 +361,10 @@ kitty.DatePicker.prototype.selectDate = function(date) {
 
 kitty.DatePicker.prototype.updateTextBoxDate = function(date) {
 	this.control.value = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+};
+
+kitty.DatePicker.prototype.focusTextBox = function() {
+	this.control.focus();
 };
 
 kitty.DatePicker.prototype.unhighlightSelectedDate = function(date) {
