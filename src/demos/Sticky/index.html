@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sticky Demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+        	body {
+                font-family: arial, sans-serif;
+                background-color: #eee;
+            }
+
+            header {
+            	background: black;
+            	color: white;
+            	font-size: 150%;
+            }
+
+            main {
+          
+            }
+
+            main:after {
+				visibility: hidden;
+				display: block;
+				font-size: 0;
+				content: " ";
+				clear: both;
+				height: 0;
+            }
+
+			nav {
+				position: sticky;
+				top: 0;
+				float: left;
+				width: 180px;
+			}
+
+			.content {
+				
+				background: white;
+				width: 100%;
+				margin-left: 180px;
+				display: block;
+			}
+
+			.adam {
+				background: red;
+			}
+
+			.adam-hide {
+				display: none;
+			}
+
+			
+
+        </style>
+    </head>
+    <body>
+    	<header>
+    		I'm a header
+    	</header>
+    	<main>
+    		<nav>
+    			I'm a nav
+    		</nav>
+    		<div class="content">
+    			<div>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content</div>
+    			
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<div class="adam adam-hide"><br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content</div>
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>I'm content
+    			<br>
+    		</div>
+    	</main>
+    	<header>
+    		I'm a footer
+    	</header>
+    	<script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+    	<script>
+    		$(document.body).on('click', function(e) {
+    			$('div.adam').removeClass('adam-hide');
+    		});
+    	</script>
+    </body>
+</html>
