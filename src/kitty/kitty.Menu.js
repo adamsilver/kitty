@@ -1,33 +1,50 @@
-kitty.Menu = function(container) {
+kitty.Menu = function(container, options) {
 	this.container = container;
 	this.menu = this.container.find('.menu-items');
+	this.setupOptions(options);
 	this.setupKeys();
-	this.setupTabIndex();
 	this.menu.on('keydown', 'input', $.proxy(this, 'onButtonKeydown'));
-
-	this.menuButton = $('<button type="button" aria-haspopup="true" aria-expanded="false">Actions<span aria-hidden="true">&#x25be;</span></button>');
-	this.menuButton.on('click', $.proxy(this, 'onMenuButtonclick'));
-
-	this.responsiveListener = new kitty.ResponsiveListener({
-		smallSize: 600
-	});
-	this.responsiveListener.on('smallModeEnabled', $.proxy(this, 'onSmallModeEnabled'));
-	this.responsiveListener.on('smallModeDisabled', $.proxy(this, 'onSmallModeDisabled'));
-	this.responsiveListener.checkMode();
+	this.createToggleButton();
+	this.setupResponsiveChecks();
 };
 
-kitty.Menu.prototype.onSmallModeEnabled = function() {
+kitty.Menu.prototype.setupOptions = function(options) {
+	options = options || {};
+	options.mq = options.mq || '(min-width: 40em)';
+	this.options = options;
+};
+
+kitty.Menu.prototype.setupResponsiveChecks = function() {
+	this.mq = window.matchMedia(this.options.mq);
+	this.mq.addListener($.proxy(this, 'checkMode'));
+	this.checkMode(this.mq);
+};
+
+kitty.Menu.prototype.createToggleButton = function() {
+	this.menuButton = $('<button type="button" aria-haspopup="true" aria-expanded="false">Actions<span aria-hidden="true">&#x25be;</span></button>');
+	this.menuButton.on('click', $.proxy(this, 'onMenuButtonclick'));
+};
+
+kitty.Menu.prototype.checkMode = function(mq) {
+	if(mq.matches) {
+		this.enableBigMode();
+	} else {
+		this.enableSmallMode();
+	}
+};
+
+kitty.Menu.prototype.enableSmallMode = function() {
 	this.container.prepend(this.menuButton);
 	this.hideMenu();
 	this.menu[0].setAttribute('role', 'menu');
-	this.smallMode = true;
+	this.setupTabIndex();
 };
 
-kitty.Menu.prototype.onSmallModeDisabled = function() {
+kitty.Menu.prototype.enableBigMode = function() {
 	this.menuButton.detach();
 	this.showMenu();
 	this.menu[0].setAttribute('role', 'menubar');
-	this.smallMode = false;
+	this.resetTabIndex();
 };
 
 kitty.Menu.prototype.hideMenu = function() {
@@ -65,14 +82,17 @@ kitty.Menu.prototype.setupKeys = function() {
 
 kitty.Menu.prototype.setupTabIndex = function() {
 	this.container.find('input').each($.proxy(function(index, el) {
-		if(index > 0) {
-			el.tabIndex = -1;
-		}
+		el.tabIndex = -1;
+	}, this));
+};
+
+kitty.Menu.prototype.resetTabIndex = function() {
+	this.container.find('input').each($.proxy(function(index, el) {
+		el.tabIndex = 0;
 	}, this));
 };
 
 kitty.Menu.prototype.onButtonKeydown = function(e) {
-	this.removeFirstButtonTabIndex();
 	switch (e.keyCode) {
 		case this.keys.right:
 			e.preventDefault();
@@ -92,15 +112,15 @@ kitty.Menu.prototype.onButtonKeydown = function(e) {
 			break;
 
 		case this.keys.esc:
-			if(this.smallMode) {
+			if(!this.mq.matches) {
 				this.menuButton.focus();
 				this.hideMenu();
-				break;
 			}
+			break;
 		case this.keys.tab:
-			window.setTimeout(function() {
-				this.resetFirstButtonTabIndex();
-			}.bind(this), 1);
+			if(!this.mq.matches) {
+				this.hideMenu();
+			}
 	}
 };
 
@@ -120,12 +140,4 @@ kitty.Menu.prototype.focusPrevious = function(currentButton) {
 	} else {
 		this.container.find('input').last().focus();
 	}
-};
-
-kitty.Menu.prototype.resetFirstButtonTabIndex = function() {
-	this.container.find('input')[0].tabIndex = 0;
-};
-
-kitty.Menu.prototype.removeFirstButtonTabIndex = function() {
-	this.container.find('input')[0].tabIndex = -1;
 };

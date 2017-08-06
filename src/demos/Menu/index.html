@@ -20,31 +20,68 @@
 			.menu button {
 				-webkit-appearance: none;
 				appearance: none;
-				padding: 10px 20px;
+				padding: 5px 20px 10px;
 				border: none;
 				background-color: #eee;
 				font-size: 1em;
 			}
 
-			[role=menuitem] {
+			.menu button span {
+				font-size: 1.5em;
+				position: relative;
+				top: 0px;
+				left: 2px;
+			}
+
+			.menu [role=menuitem] {
 				-webkit-appearance: none;
 				appearance: none;
 				padding: 10px 20px;
 				border: none;
 				background-color: #eee;
 				font-size: 1em;
+				display: block;
+				text-align: left;
+				border-bottom: 2px solid #ddd;
+				width: 100%;
 			}
 
-			.menu [role=menu] {
+			@media(min-width: 45em) {
+				.menu [role=menuitem]:last-child {
+					border-bottom: 2px solid #ddd;
+				}
+			}
+
+			.menu [role=menuitem]:hover {
+				background: #ddd;
+			}
+
+
+			@media(min-width: 45em) {
+				.menu [role=menuitem] {
+					width: auto;
+					display: inline-block;
+				}
+			}
+
+			.menu-items {
+				border: 2px solid #ddd;
+				border-bottom: none;
+				width: 10em;
+			}
+
+			@media(min-width: 45em) {
+				.menu-items {
+					border: none;
+					width: auto;
+				}
+			}
+
+			/*.menu [role=menu] {
 				position: absolute;
 				width: 20em;
-			}
+			}*/
 
-			.menu [role=menu] [role=menuitem] {
-				display: block;
-				width: 10em;
-				text-align: left;
-			}
         </style>
     </head>
     <body>
@@ -67,16 +104,13 @@
 
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
-        <script type="text/javascript" src="../../vendor/jQuery/jquery.debounce.js"></script>
         <script src="../../kitty/kitty.js"></script>
-        <script src="../../kitty/kitty.clone.js"></script>
-        <script src="../../kitty/kitty.inherit.js"></script>
-        <script src="../../kitty/kitty.EventEmitter.js"></script>
-        <script src="../../kitty/kitty.ResponsiveListener.js"></script>
         <script src="../../kitty/kitty.Menu.js"></script>
         <script>
+
         	var container = $('.menu');
-			new kitty.Menu(container);
+			new kitty.Menu(container, { mq: '(min-width: 45em)'});
+
         </script>
     </body>
 </html>
