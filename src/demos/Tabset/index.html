@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tabs demo</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta name="Author" content="Adam Silver">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .tabs [role=tablist] {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tabs [aria-selected=true] {
+                color: red;
+            }
+
+            .tabs li[role=presentation] {
+                display: inline-block;  
+            }
+
+            
+
+        </style>
+    </head>
+    <body>
+        <h1>Tabs</h1>
+
+        <div class="tabs">
+            <ul>
+                <li><a href="#a">Tab a</a></li>
+                <li><a href="#b">Tab b</a></li>
+                <li><a href="#c">Tab c</a></li>
+            </ul>
+            <div class="tabs__panel" id="a">
+                I'm a panel a
+                <button>I'm a button</button>
+            </div>
+            <div class="tabs__panel" id="b">
+                I'm a panel b
+                <a href="">I'm a link</a>
+            </div>
+            <div class="tabs__panel" id="c">
+                I'm a panel c
+            </div>
+        </div>                     
+      
+        <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
+        <script src="../../kitty/kitty.js"></script>
+        <script src="../../kitty/kitty.Tabset.js"></script>
+        <script>
+			new kitty.Tabset($('.tabs'));
+        </script>
+    </body>
+</html>
