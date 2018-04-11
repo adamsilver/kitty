@@ -1,29 +1,29 @@
 kitty.Tabset = function(container) {
 	this.container = container;
-	 this.keys = {
-		left: 37,
-		right: 39
-   };
+	this.keys = { left: 37, right: 39 };
 	this.cssActive = "active";
 	this.cssHide = "hidden";
 	this.links = container.find("> ul a");
 	this.panels = container.find(".tabs__panel");
-	this.panels.addClass("hidden");
-	container.find(".tabs__panel:first").removeClass(this.cssHide);
-	
+
+	// events
 	this.links.on("click", $.proxy(this, 'onTabClick'));
 	this.links.on('keydown', $.proxy(this, 'onTabKeydown'));
 
-	// enhance markup
-	container.find('> ul').attr('role', 'tablist');
-	this.links.attr('role', 'tab');
+	this.setupHtml();
+
+	// setup state
 	this.links.attr('tabindex', '-1');
+	this.panels.addClass("hidden");
+	this.highlightTab(this.links.first());
+	this.showPanel(this.links.first());
+};
+
+kitty.Tabset.prototype.setupHtml = function() {
+	this.container.find('> ul').attr('role', 'tablist');
+	this.links.attr('role', 'tab');
   $('.tabs > ul li').attr('role', 'presentation');
 	this.panels.attr('role', 'tabpanel');
-
-	container.find("> ul a:first")
-		.attr('aria-selected', 'true')
-		.attr('tabindex', '0');
 };
 
 kitty.Tabset.prototype.onTabClick = function(e) {
