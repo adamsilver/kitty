@@ -22,7 +22,7 @@ kitty.Tabs = function(container) {
 kitty.Tabs.prototype.setupHtml = function() {
 	this.container.find('> ul').attr('role', 'tablist');
 	this.links.attr('role', 'tab');
-  $('.tabs > ul li').attr('role', 'presentation');
+    $('.tabs > ul li').attr('role', 'presentation');
 	this.panels.attr('role', 'tabpanel');
 };
 
