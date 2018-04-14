@@ -1,4 +1,4 @@
-kitty.Tabset = function(container) {
+kitty.Tabs = function(container) {
 	this.container = container;
 	this.keys = { left: 37, right: 39 };
 	this.cssActive = "active";
@@ -19,14 +19,14 @@ kitty.Tabset = function(container) {
 	this.showPanel(this.links.first());
 };
 
-kitty.Tabset.prototype.setupHtml = function() {
+kitty.Tabs.prototype.setupHtml = function() {
 	this.container.find('> ul').attr('role', 'tablist');
 	this.links.attr('role', 'tab');
   $('.tabs > ul li').attr('role', 'presentation');
 	this.panels.attr('role', 'tabpanel');
 };
 
-kitty.Tabset.prototype.onTabClick = function(e) {
+kitty.Tabs.prototype.onTabClick = function(e) {
 	e.preventDefault();
 	var newTab = $(e.target);
 	var currentTab = this.getCurrentTab();
@@ -36,7 +36,7 @@ kitty.Tabset.prototype.onTabClick = function(e) {
 	this.showPanel(newTab);
 };
 
-kitty.Tabset.prototype.onTabKeydown = function(e) {
+kitty.Tabs.prototype.onTabKeydown = function(e) {
 	switch(e.keyCode) {
 		case this.keys.left:
 			this.activatePreviousTab();
@@ -47,7 +47,7 @@ kitty.Tabset.prototype.onTabKeydown = function(e) {
 	}
 };
 
-kitty.Tabset.prototype.activateNextTab = function() {
+kitty.Tabs.prototype.activateNextTab = function() {
 	var currentTab = this.getCurrentTab();
 	var nextTab = currentTab.parent().next().find('[role=tab]');
 	if(nextTab[0]) {
@@ -59,7 +59,7 @@ kitty.Tabset.prototype.activateNextTab = function() {
 	}
 };
 
-kitty.Tabset.prototype.activatePreviousTab = function() {
+kitty.Tabs.prototype.activatePreviousTab = function() {
 	var currentTab = this.getCurrentTab();
 	var previousTab = currentTab.parent().prev().find('[role=tab]');
 	if(previousTab[0]) {
@@ -71,31 +71,31 @@ kitty.Tabset.prototype.activatePreviousTab = function() {
 	}
 };
 
-kitty.Tabset.prototype.showPanel = function(tab) {
+kitty.Tabs.prototype.showPanel = function(tab) {
 	$(this.getHref(tab)).removeClass(this.cssHide);
 };
 
-kitty.Tabset.prototype.hidePanel = function(tab) {
+kitty.Tabs.prototype.hidePanel = function(tab) {
 	$(this.getHref(tab)).addClass(this.cssHide);
 };
 
-kitty.Tabset.prototype.unhighlightTab = function(tab) {
+kitty.Tabs.prototype.unhighlightTab = function(tab) {
 	tab.attr('aria-selected', 'false');
 	tab.attr('tabindex', '-1');
 };
 
-kitty.Tabset.prototype.highlightTab = function(tab) {
+kitty.Tabs.prototype.highlightTab = function(tab) {
 	tab.attr('aria-selected', 'true');
 	tab.attr('tabindex', '0');
 };
 
-kitty.Tabset.prototype.getCurrentTab = function() {
+kitty.Tabs.prototype.getCurrentTab = function() {
 	return this.container.find("[role=tab][aria-selected=true]");
 };
 
 // this is because IE doesn't always return the actual value but a relative full path
 // http://labs.thesedays.com/blog/2010/01/08/getting-the-href-value-with-jquery-in-ie/
-kitty.Tabset.prototype.getHref = function(link) {
+kitty.Tabs.prototype.getHref = function(link) {
 	var href = link.attr("href");
 	href = href.slice(href.indexOf("#"), href.length);
 	return href;
