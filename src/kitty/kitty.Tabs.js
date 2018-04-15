@@ -9,7 +9,7 @@ kitty.Tabs = function(container) {
 	// events
 	this.links.on("click", $.proxy(this, 'onTabClick'));
 	this.links.on('keydown', $.proxy(this, 'onTabKeydown'));
-	$(window).on('popstate', $.proxy(this, 'onPopState'));
+	$(window).on('hashchange', $.proxy(this, 'onHashChange'));
 
 	this.setupHtml();
 
@@ -22,26 +22,41 @@ kitty.Tabs = function(container) {
 	if(tab.length) {
 		this.highlightTab(tab);
 		this.showPanel(tab);
-		history.replaceState(this.getHref(tab), null, this.getHref(tab));
+		// history.replaceState(this.getHref(tab), null, this.getHref(tab));
 	} else {
 		// or show the first
 		var firstTab = this.links.first();
 		this.highlightTab(firstTab);
 		this.showPanel(firstTab);
-		history.replaceState(this.getHref(firstTab), null, '/blah');
+		// history.replaceState(this.getHref(firstTab), null, '/blah');
 	}
 };
 
-kitty.Tabs.prototype.onPopState = function(e) {
+kitty.Tabs.prototype.onHashChange = function (e) {
 	var tab = this.getTab(window.location.hash);
+	var currentTab = this.getCurrentTab();
 	if(tab.length) {
-		var currentTab = this.getCurrentTab();
-		this.unhighlightTab(currentTab);
-		this.hidePanel(currentTab);
-		this.highlightTab(tab);
-		this.showPanel(tab);
+		this.hideTab(currentTab);
+		this.showTab(tab);
+	} else {
+		var firstTab = this.links.first();
+		this.hideTab(currentTab);
+		this.showTab(firstTab);
 	}
 };
+
+kitty.Tabs.prototype.hideTab = function (tab) {
+	this.unhighlightTab(tab);
+	this.hidePanel(tab);
+};
+
+kitty.Tabs.prototype.showTab = function (tab) {
+	this.highlightTab(tab);
+	this.showPanel(tab);
+};
+
+
+
 
 kitty.Tabs.prototype.getTab = function(hash) {
 	return this.links.filter('a[href="' + hash +'"]');
