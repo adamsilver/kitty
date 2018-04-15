@@ -24,16 +24,13 @@
             }
 
             .tabs li[role=presentation] {
-                display: inline-block;  
+                display: inline-block;
             }
-
-            
-
         </style>
     </head>
     <body>
         <h1>Tabs</h1>
-
+        <div style="height: 1000px"></div>
         <div class="tabs">
             <ul>
                 <li><a href="#a">Tab a</a></li>
@@ -51,13 +48,14 @@
             <div class="tabs__panel" id="c">
                 I'm a panel c
             </div>
-        </div>                     
-      
+        </div>
+        <div style="height: 1000px"></div>
+
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>
-        <script src="../../kitty/kitty.Tabset.js"></script>
+        <script src="../../kitty/kitty.Tabs.js"></script>
         <script>
-			new kitty.Tabset($('.tabs'));
+			new kitty.Tabs($('.tabs'));
         </script>
     </body>
 </html>
