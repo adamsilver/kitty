@@ -14,42 +14,106 @@
                 display: none;
             }
 
-            .tabs [role=tablist] {
+            [role=tablist] {
                 margin: 0;
                 padding: 0;
             }
 
-            .tabs [aria-selected=true] {
-                color: red;
+            [role=tablist] li {
+                list-style: none;
             }
 
-            .tabs li[role=presentation] {
-                display: inline-block;
+            @media(min-width: 600px) {
+                [role=tablist] li {
+                    position: relative;
+                    bottom: -1px;
+                }
+            }
+
+            [role=tab] {
+                display: block;
+                padding: 10px 15px;
+                text-decoration: none;
+                border: 1px solid #dee0e2;
+                border-bottom: 0;
+            }
+            @media(min-width: 600px) {
+                [role=tab] {
+                    border: 1px solid transparent;
+                    background-color: #dee0e2;
+                    margin: 6px 6px 6px 0;
+                    float: left;
+                }
+            }
+
+            [role=tab][aria-selected=true] {
+                background-color: #dee0e2;
+            }
+            @media(min-width: 600px) {
+                [role=tab][aria-selected=true] {
+                    background-color: #fff;
+                    border-bottom: 0;
+                    border-color: #ccc;
+                    color: #0b0c0c;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                    padding-top: 16px;
+                    padding-bottom: 17px;
+                }
+            }
+
+            [role=tabpanel] {
+                border: 1px solid #bfc1c3;
+                clear: both;
+                overflow: hidden;
+            }
+
+            [role=tabpanel]:focus {
+                outline: 3px solid #ffbf47;
             }
         </style>
     </head>
     <body>
         <h1>Tabs</h1>
-        <div style="height: 1000px"></div>
+        <!-- <div style="height: 1000px;background: red;"></div> -->
         <div class="tabs">
             <ul>
-                <li><a href="#a">Tab a</a></li>
-                <li><a href="#b">Tab b</a></li>
-                <li><a href="#c">Tab c</a></li>
+                <li><a href="#a">Hello</a></li>
+                <li><a href="#b">There</a></li>
+                <li><a href="#c">Cowboy</a></li>
             </ul>
             <div class="tabs__panel" id="a">
-                I'm a panel a
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
+                I'm a panel a<br>
                 <button>I'm a button</button>
             </div>
             <div class="tabs__panel" id="b">
-                I'm a panel b
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
+                I'm a panel b<br>
                 <a href="">I'm a link</a>
             </div>
             <div class="tabs__panel" id="c">
-                I'm a panel c
+                I'm a panel c<br>
+                I'm a panel c<br>
+                I'm a panel c<br>
             </div>
         </div>
-        <div style="height: 1000px"></div>
+        <!-- <div style="height: 200px;"></div> -->
 
         <script type="text/javascript" src="../../vendor/jQuery/jQuery.js"></script>
         <script src="../../kitty/kitty.js"></script>

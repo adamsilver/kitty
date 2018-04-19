@@ -1,7 +1,6 @@
 kitty.Tabs = function(container) {
 	this.container = container;
-	this.keys = { left: 37, right: 39 };
-	this.cssActive = "active";
+	this.keys = { left: 37, right: 39, down: 40 };
 	this.cssHide = "hidden";
 	this.tabs = container.find("> ul a");
 	this.panels = container.find(".tabs__panel");
@@ -15,6 +14,7 @@ kitty.Tabs = function(container) {
 
 	// setup state
 	this.tabs.attr('tabindex', '-1');
+	this.panels.attr('tabindex', '-1');
 	this.panels.addClass("hidden");
 
 	// if there's a tab that matches the hash
@@ -31,6 +31,10 @@ kitty.Tabs = function(container) {
 };
 
 kitty.Tabs.prototype.onHashChange = function (e) {
+	if(this.changingHash) {
+		this.changingHash = false;
+		return;
+	}
 	var tab = this.getTab(window.location.hash);
 	var currentTab = this.getCurrentTab();
 	if(tab.length) {
@@ -62,6 +66,13 @@ kitty.Tabs.prototype.setupHtml = function() {
 	this.container.find('> ul li').attr('role', 'presentation');
 	this.tabs.attr('role', 'tab');
 	this.panels.attr('role', 'tabpanel');
+	this.tabs.each($.proxy(function(i, tab) {
+		var href = this.getHref($(tab));
+		tab.id = 'tab_'+href.slice(1);
+	}, this));
+	this.panels.each($.proxy(function(i, panel) {
+		$(panel).attr('aria-labelledby', this.tabs[i].id);
+	}, this));
 };
 
 kitty.Tabs.prototype.onTabClick = function(e) {
@@ -70,7 +81,16 @@ kitty.Tabs.prototype.onTabClick = function(e) {
 	var currentTab = this.getCurrentTab();
 	this.hideTab(currentTab);
 	this.showTab(newTab);
-	history.pushState(this.getHref(newTab), null, this.getHref(newTab));
+	this.createHistoryEntry(newTab);
+};
+
+kitty.Tabs.prototype.createHistoryEntry = function(tab) {
+	var panel = this.getPanel(tab)[0];
+	var id = panel.id;
+	panel.id = "";
+	this.changingHash = true;
+	window.location.hash = this.getHref(tab).slice(1);
+	panel.id = id;
 };
 
 kitty.Tabs.prototype.onTabKeydown = function(e) {
@@ -81,7 +101,15 @@ kitty.Tabs.prototype.onTabKeydown = function(e) {
 		case this.keys.right:
 			this.activateNextTab();
 			break;
+		case this.keys.down:
+			this.focusCurrentTab();
+			e.preventDefault();
+			break;
 	}
+};
+
+kitty.Tabs.prototype.focusCurrentTab = function() {
+	this.getPanel(this.getCurrentTab()).focus();
 };
 
 kitty.Tabs.prototype.activateNextTab = function() {
@@ -90,8 +118,8 @@ kitty.Tabs.prototype.activateNextTab = function() {
 	if(nextTab[0]) {
 		this.hideTab(currentTab);
 		this.showTab(nextTab);
-		history.pushState(this.getHref(nextTab), null, this.getHref(nextTab));
 		nextTab.focus();
+		this.createHistoryEntry(nextTab);
 	}
 };
 
@@ -101,9 +129,13 @@ kitty.Tabs.prototype.activatePreviousTab = function() {
 	if(previousTab[0]) {
 		this.hideTab(currentTab);
 		this.showTab(previousTab);
-		history.pushState(this.getHref(previousTab), null, this.getHref(previousTab));
 		previousTab.focus();
+		this.createHistoryEntry(previousTab);
 	}
+};
+
+kitty.Tabs.prototype.getPanel = function(tab) {
+	return $(this.getHref(tab));
 };
 
 kitty.Tabs.prototype.showPanel = function(tab) {
